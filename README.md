@@ -3,169 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA PRO | The Final Tier</title>
+    <title>NEXA PRO | Authority v3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #1E293B; }
-        .premium-card { background: white; border-radius: 32px; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.02); }
-        .hero-gradient { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; border-radius: 35px; }
-        .bottom-nav { position: fixed; bottom: 20px; left: 20px; right: 20px; height: 75px; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); border-radius: 30px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); }
-        .nav-btn { color: #94A3B8; font-size: 20px; transition: 0.4s; }
-        .nav-btn.active { color: #4F46E5; transform: translateY(-8px); }
-        .status-pill { padding: 4px 10px; border-radius: 10px; font-size: 8px; font-weight: 800; text-transform: uppercase; }
-        .pending { background: #FEF3C7; color: #D97706; }
-        .approved { background: #DCFCE7; color: #16A34A; }
-        .rejected { background: #FEE2E2; color: #DC2626; }
-        ::-webkit-scrollbar { display: none; }
-        input { transition: 0.3s; }
-        input:focus { border-color: #4F46E5 !important; ring: 2px #4F46E5; }
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+        body { font-family: 'Outfit', sans-serif; background: #FBFCFE; color: #0F172A; -webkit-tap-highlight-color: transparent; }
+        .node-card { background: white; border-radius: 24px; border: 1px solid #F1F5F9; transition: 0.3s; position: relative; overflow: hidden; }
+        .node-card:active { transform: scale(0.97); background: #F8FAFC; }
+        .icon-box { width: 45px; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .grad-blue { background: linear-gradient(135deg, #3B82F6, #2563EB); color: white; }
+        .grad-purple { background: linear-gradient(135deg, #8B5CF6, #7C3AED); color: white; }
+        .grad-orange { background: linear-gradient(135deg, #F59E0B, #D97706); color: white; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #F1F5F9; z-index: 1000; padding-bottom: 15px; }
+        .nav-link { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94A3B8; font-weight: 600; font-size: 10px; transition: 0.3s; }
+        .nav-link.active { color: #2563EB; }
+        .nav-link i { font-size: 22px; }
+        .price-badge { background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; }
+        .notif-popup { animation: slideInRight 0.5s, fadeOut 0.5s 4s forwards; }
     </style>
 </head>
-<body class="pb-32">
+<body class="pb-24">
 
-    <!-- STARTUP SCREEN -->
-    <div id="auth-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-10 animate__animated">
-        <div onclick="godTrigger()" class="w-24 h-24 bg-indigo-600 rounded-[40px] flex items-center justify-center text-white text-4xl mb-8 shadow-2xl shadow-indigo-200">
-            <i class="fa-solid fa-shield-halved"></i>
+    <!-- FAKE LIVE NOTIFICATIONS -->
+    <div id="notif-container" class="fixed top-20 right-4 z-[5000] w-64 pointer-events-none"></div>
+
+    <!-- AUTH SCREEN -->
+    <div id="auth-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-10">
+        <div class="w-20 h-20 grad-blue rounded-[28px] flex items-center justify-center text-3xl mb-6 shadow-xl animate__animated animate__bounceIn">
+            <i class="fa-solid fa-microchip"></i>
         </div>
-        <h1 class="text-4xl font-extrabold tracking-tighter mb-2">NEXA <span class="text-indigo-600 italic">PRO</span></h1>
-        <p class="text-[10px] font-bold text-slate-400 tracking-[5px] uppercase mb-12">Global Assets Hub</p>
+        <h1 class="text-2xl font-extrabold tracking-tight mb-2">NEXA <span class="text-blue-600">NODES</span></h1>
+        <p class="text-[9px] font-bold text-slate-400 tracking-[3px] uppercase mb-10">Cloud Mining Network</p>
         <div class="w-full max-w-xs space-y-4">
-            <input type="text" id="user-name" placeholder="Full Legal Name" class="w-full p-5 rounded-3xl bg-slate-50 border-none outline-none font-bold text-center">
-            <button onclick="startApp()" class="w-full bg-slate-900 text-white p-5 rounded-3xl font-black uppercase text-xs tracking-widest hover:scale-105 transition-all">Initialize Account</button>
+            <input type="text" id="user-name" placeholder="Enter Full Name" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none font-semibold text-center focus:border-blue-500 transition-all">
+            <input type="password" id="admin-key" placeholder="Security Key (Optional)" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none font-semibold text-center text-xs">
+            <button onclick="handleLogin()" class="w-full grad-blue p-4 rounded-2xl font-bold uppercase text-xs tracking-widest shadow-lg shadow-blue-100">Access Dashboard</button>
         </div>
-        <p class="mt-10 text-[9px] text-slate-300 font-bold uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-lock"></i> AES-256 Encrypted</p>
     </div>
 
     <!-- MAIN APP -->
     <div id="app" class="hidden animate__animated animate__fadeIn">
-        <!-- HEADER -->
-        <header class="p-6 flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-lg z-50">
+        
+        <!-- TOP NAV -->
+        <header class="p-6 flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md z-[100]">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 text-xl font-bold">N</div>
+                <div onclick="alert('Menu Opening...')" class="w-10 h-10 flex items-center justify-center text-slate-400 bg-slate-50 rounded-xl active:scale-90 transition-all">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </div>
                 <div>
-                    <h2 id="display-name" class="text-sm font-black text-slate-800">User</h2>
-                    <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> <p class="text-[8px] font-bold text-slate-400 uppercase">Secure Node Active</p></div>
+                    <h2 id="display-name" class="text-sm font-bold text-slate-800">User</h2>
+                    <p class="text-[8px] font-black text-blue-500 uppercase">Pro Member</p>
                 </div>
             </div>
-            <button onclick="nav('admin')" id="admin-icon" class="hidden w-12 h-12 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center shadow-inner"><i class="fa-solid fa-crown"></i></button>
+            <div class="flex gap-2">
+                <button onclick="nav('admin')" id="admin-btn" class="hidden w-10 h-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-screwdriver-wrench"></i></button>
+                <button onclick="logout()" class="w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
         </header>
 
-        <main class="px-6">
+        <main class="px-6 space-y-8">
             <!-- HOME PAGE -->
             <div id="page-home" class="page-content space-y-8">
-                <!-- WALLET CARD -->
-                <div class="hero-gradient p-8 shadow-2xl shadow-indigo-200 relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-                    <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Current Liquidity</p>
-                    <h2 id="user-bal" class="text-5xl font-black tracking-tighter mb-10">$0.00</h2>
-                    <div class="flex gap-4">
-                        <button onclick="nav('deposit')" class="flex-1 bg-white text-indigo-600 py-4 rounded-2xl text-[10px] font-black uppercase shadow-lg active:scale-95 transition-all">Deposit</button>
-                        <button onclick="nav('withdraw')" class="flex-1 bg-white/20 py-4 rounded-2xl text-[10px] font-black uppercase backdrop-blur-md active:scale-95 transition-all">Withdraw</button>
+                <!-- TOTAL ASSETS -->
+                <div class="grad-blue p-8 rounded-[35px] shadow-2xl shadow-blue-100 relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                    <div class="flex justify-between items-start mb-10">
+                        <div>
+                            <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest">Available Credit</p>
+                            <h2 id="user-bal" class="text-4xl font-extrabold tracking-tighter mt-1">$0.00</h2>
+                        </div>
+                        <i class="fa-solid fa-shield-check text-2xl opacity-50"></i>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="nav('deposit')" class="flex-1 bg-white text-blue-600 py-3 rounded-xl text-[10px] font-black uppercase">Add Fund</button>
+                        <button onclick="nav('withdraw')" class="flex-1 bg-white/20 py-3 rounded-xl text-[10px] font-black uppercase backdrop-blur-md">Withdraw</button>
                     </div>
                 </div>
 
-                <!-- TRUST BADGES -->
-                <div class="flex justify-between items-center px-2">
-                    <div class="flex items-center gap-1 text-[8px] font-black text-slate-400 uppercase tracking-tighter"><i class="fa-solid fa-circle-check text-green-500"></i> Binance Verified</div>
-                    <div class="flex items-center gap-1 text-[8px] font-black text-slate-400 uppercase tracking-tighter"><i class="fa-solid fa-shield text-indigo-500"></i> SSL Certified</div>
-                    <div class="flex items-center gap-1 text-[8px] font-black text-slate-400 uppercase tracking-tighter"><i class="fa-solid fa-bolt text-yellow-500"></i> Instant Pay</div>
-                </div>
-
-                <!-- MINING PLANS -->
+                <!-- NODES LIST -->
                 <div>
-                    <h3 class="text-xs font-black uppercase text-slate-400 tracking-[3px] mb-6">Investment Packages</h3>
-                    <div id="plans-container" class="space-y-4"></div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Active Nodes</h3>
+                        <span class="text-[9px] font-bold text-blue-500">View All</span>
+                    </div>
+                    
+                    <div id="nodes-container" class="space-y-4">
+                        <!-- Node 1 -->
+                        <div class="node-card p-5 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="icon-box grad-blue"><i class="fa-solid fa-bolt"></i></div>
+                                <div><h4 class="text-sm font-bold">Alpha Node</h4><p class="text-[9px] text-slate-400 font-bold uppercase">Daily Yield: $0.50</p></div>
+                            </div>
+                            <span class="price-badge">$5.00</span>
+                        </div>
+                        <!-- Node 2 -->
+                        <div class="node-card p-5 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="icon-box grad-purple"><i class="fa-solid fa-server"></i></div>
+                                <div><h4 class="text-sm font-bold">Quantum Rack</h4><p class="text-[9px] text-slate-400 font-bold uppercase">Daily Yield: $3.20</p></div>
+                            </div>
+                            <span class="price-badge">$30.00</span>
+                        </div>
+                        <!-- Node 3 -->
+                        <div class="node-card p-5 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="icon-box grad-orange"><i class="fa-solid fa-microchip"></i></div>
+                                <div><h4 class="text-sm font-bold">Titan Cluster</h4><p class="text-[9px] text-slate-400 font-bold uppercase">Daily Yield: $12.50</p></div>
+                            </div>
+                            <span class="price-badge">$100.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPANY TRUST SECTION -->
+                <div class="bg-slate-100/50 p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-building-shield text-blue-500"></i> <p class="text-[10px] font-bold text-slate-600 uppercase">Registered Assets Company</p></div>
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-fingerprint text-blue-500"></i> <p class="text-[10px] font-bold text-slate-600 uppercase">Biometric Encrypted Security</p></div>
                 </div>
             </div>
 
-            <!-- DEPOSIT PAGE -->
+            <!-- PAGES (DEPOSIT/WITHDRAW/INFO) -->
             <div id="page-deposit" class="page-content hidden animate__animated animate__fadeIn">
-                <h2 class="text-3xl font-black mb-8 italic">Add Capital</h2>
-                <div class="grid grid-cols-1 gap-4">
-                    <div onclick="openModal('JazzCash','03705519562')" class="premium-card p-6 flex justify-between items-center active:scale-95 transition-all">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-white font-black">JC</div><div><p class="font-black text-sm">JazzCash</p><p class="text-[9px] text-slate-400">Manual Verification</p></div></div>
-                        <i class="fa-solid fa-chevron-right text-slate-200"></i>
-                    </div>
-                    <div onclick="openModal('Easypaisa','03332637235')" class="premium-card p-6 flex justify-between items-center active:scale-95 transition-all">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white font-black">EP</div><div><p class="font-black text-sm">Easypaisa</p><p class="text-[9px] text-slate-400">Instant Receipt</p></div></div>
-                        <i class="fa-solid fa-chevron-right text-slate-200"></i>
-                    </div>
+                <h2 class="text-xl font-bold mb-6">Funding Center</h2>
+                <div class="space-y-3">
+                    <div onclick="openPay('JazzCash','03705519562')" class="node-card p-6 flex justify-between items-center"><span class="font-bold">JazzCash</span><i class="fa-solid fa-chevron-right text-slate-300"></i></div>
+                    <div onclick="openPay('Easypaisa','03332637235')" class="node-card p-6 flex justify-between items-center"><span class="font-bold">Easypaisa</span><i class="fa-solid fa-chevron-right text-slate-300"></i></div>
                 </div>
-
-                <div class="mt-12">
-                    <h3 class="text-xs font-black uppercase text-slate-400 mb-4">Transaction History</h3>
-                    <div id="user-history" class="space-y-2"></div>
-                </div>
+                <div id="dep-history" class="mt-10 space-y-2"></div>
             </div>
 
-            <!-- WITHDRAW PAGE -->
-            <div id="page-withdraw" class="page-content hidden">
-                <h2 class="text-3xl font-black mb-8 italic">Request Payout</h2>
-                <div class="premium-card p-8 space-y-5">
-                    <div class="bg-slate-50 p-4 rounded-2xl">
-                        <p class="text-[9px] font-black text-slate-400 uppercase mb-2">Payout Amount</p>
-                        <input type="number" id="wd-amt" placeholder="Min $10" class="w-full bg-transparent outline-none font-bold text-xl">
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl">
-                        <p class="text-[9px] font-black text-slate-400 uppercase mb-2">Account Details (Number + Name)</p>
-                        <input type="text" id="wd-acc" placeholder="JazzCash / Easypaisa" class="w-full bg-transparent outline-none font-bold">
-                    </div>
-                    <button onclick="submitWithdraw()" class="w-full bg-indigo-600 text-white p-5 rounded-2xl font-black uppercase text-xs shadow-xl">Confirm Withdrawal</button>
+            <div id="page-withdraw" class="page-content hidden animate__animated animate__fadeIn">
+                <h2 class="text-xl font-bold mb-6">Payout Request</h2>
+                <div class="node-card p-8 space-y-4">
+                    <input type="number" id="wd-amt" placeholder="Amount (Min $10)" class="w-full p-4 rounded-xl bg-slate-50 border-none outline-none font-bold">
+                    <input type="text" id="wd-acc" placeholder="Payment Details" class="w-full p-4 rounded-xl bg-slate-50 border-none outline-none font-bold">
+                    <button onclick="submitWithdraw()" class="w-full grad-blue p-4 rounded-xl font-bold text-[10px] uppercase">Initialize Payout</button>
                 </div>
             </div>
 
-            <!-- ADMIN PAGE (GOD MODE) -->
-            <div id="page-admin" class="page-content hidden pb-20">
-                <h2 class="text-2xl font-black text-red-500 mb-8 uppercase tracking-widest">God Control Panel</h2>
-                
-                <section class="mb-10">
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest">Active Members Control</h4>
-                    <div id="admin-users-list" class="space-y-3"></div>
-                </section>
-
-                <section>
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest">Pending Validations</h4>
-                    <div id="admin-dep-list" class="space-y-4"></div>
-                </section>
+            <div id="page-info" class="page-content hidden animate__animated animate__fadeIn">
+                <h2 class="text-xl font-bold mb-6">Company Assets</h2>
+                <div class="space-y-4">
+                    <div class="node-card p-5"><h4 class="font-bold text-xs mb-2">Terms of Service</h4><p class="text-[10px] text-slate-500 leading-relaxed">Nexa Nodes provides cloud-based computational power. All investments are locked for a 30-day cycle with daily profit releases.</p></div>
+                    <div class="node-card p-5"><h4 class="font-bold text-xs mb-2">Security Protocol</h4><p class="text-[10px] text-slate-500 leading-relaxed">We use AES-256 bank-grade encryption to secure your transactions and personal data.</p></div>
+                </div>
             </div>
+
+            <!-- ADMIN CONTROL -->
+            <div id="page-admin" class="page-content hidden">
+                <h2 class="text-xl font-bold text-red-600 mb-6 uppercase tracking-widest">Master Panel</h2>
+                <div id="admin-list" class="space-y-4"></div>
+            </div>
+
         </main>
 
-        <nav class="bottom-nav">
-            <div onclick="nav('home')" id="nav-home" class="nav-btn active"><i class="fa-solid fa-house-user"></i></div>
-            <div onclick="nav('deposit')" id="nav-deposit" class="nav-btn"><i class="fa-solid fa-wallet"></i></div>
-            <div onclick="nav('withdraw')" id="nav-withdraw" class="nav-btn"><i class="fa-solid fa-circle-arrow-up"></i></div>
-            <div onclick="alert('Support: @Sweetie_Admin')" class="nav-btn"><i class="fa-solid fa-headset"></i></div>
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-bar">
+            <div onclick="nav('home')" id="nav-home" class="nav-link active"><i class="fa-solid fa-house-chimney-window"></i><span>Home</span></div>
+            <div onclick="nav('deposit')" id="nav-deposit" class="nav-link"><i class="fa-solid fa-square-plus"></i><span>Deposit</span></div>
+            <div onclick="nav('withdraw')" id="nav-withdraw" class="nav-link"><i class="fa-solid fa-money-bill-trend-up"></i><span>Withdraw</span></div>
+            <div onclick="nav('info')" id="nav-info" class="nav-link"><i class="fa-solid fa-shield-halved"></i><span>Company</span></div>
         </nav>
     </div>
 
-    <!-- MODAL: PAYMENT -->
-    <div id="pay-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-6">
+    <!-- MODAL -->
+    <div id="pay-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-6">
         <div class="bg-white p-8 rounded-[40px] w-full max-w-sm animate__animated animate__zoomIn">
-            <h3 id="modal-gw" class="text-2xl font-black mb-2 italic">--</h3>
-            <p class="text-[9px] font-black text-slate-400 uppercase mb-4 tracking-widest">Transfer to following account</p>
-            <div class="bg-indigo-50 p-5 rounded-2xl flex justify-between items-center mb-8 border border-indigo-100">
-                <span id="modal-num" class="font-black text-indigo-600 text-lg">--</span>
-                <i onclick="copyText()" class="fa-solid fa-copy text-indigo-300 active:scale-75 transition-all"></i>
+            <h3 id="m-gw" class="text-xl font-bold mb-6 italic text-blue-600">--</h3>
+            <div class="bg-blue-50 p-4 rounded-2xl flex justify-between items-center mb-6">
+                <span id="m-num" class="font-bold text-blue-700">--</span>
+                <i onclick="copyNum()" class="fa-solid fa-copy text-blue-300"></i>
             </div>
-            <div class="space-y-4">
-                <input type="number" id="pay-amount" placeholder="Exact Amount ($)" class="w-full p-4 rounded-2xl bg-slate-50 font-bold outline-none border border-transparent focus:border-indigo-500">
-                <input type="text" id="pay-tid" placeholder="Transaction ID (TID)" class="w-full p-4 rounded-2xl bg-slate-50 font-bold outline-none border border-transparent focus:border-indigo-500">
-                <button onclick="submitDeposit()" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase text-xs shadow-xl">Submit for Approval</button>
-                <button onclick="closeModal()" class="w-full text-slate-300 text-[10px] font-black uppercase">Cancel Session</button>
-            </div>
+            <input type="number" id="m-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl bg-slate-50 mb-3 font-bold outline-none">
+            <input type="text" id="m-tid" placeholder="TID (Transaction ID)" class="w-full p-4 rounded-xl bg-slate-50 mb-6 font-bold outline-none">
+            <button onclick="submitDep()" class="w-full grad-blue p-4 rounded-2xl font-bold text-[10px] uppercase shadow-lg shadow-blue-100">Confirm Transfer</button>
+            <button onclick="closeModal()" class="w-full text-slate-400 text-[9px] font-bold uppercase mt-6">Back to Dashboard</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue, update, push, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set, get, onValue, update, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyBe5Q5jXpx3UvrHC9WOky9UWeDnP9SPfZI",
             authDomain: "verbose-6c008.firebaseapp.com",
@@ -180,202 +202,123 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        let uData = null; let uID = "";
+        let user = null; let uid = "";
 
-        // AUTH SYSTEM
-        window.startApp = async () => {
+        window.handleLogin = async () => {
             const name = document.getElementById('user-name').value;
-            if(!name) return alert("Sweetie, enter your name!");
+            const key = document.getElementById('admin-key').value;
+            if(!name) return alert("Enter Name!");
             const res = await signInAnonymously(auth);
-            uID = res.user.uid;
-            const uRef = ref(db, `users/${uID}`);
-            const snap = await get(uRef);
-            if(!snap.exists()) await set(uRef, { username: name, balance: 0, role: 'user', joined: Date.now() });
+            uid = res.user.uid;
+            const role = (key === "sweetie786") ? "admin" : "user";
+            const snap = await get(ref(db, `users/${uid}`));
+            if(!snap.exists()) await set(ref(db, `users/${uid}`), { username: name, balance: 0, role: role });
+            else if(key === "sweetie786") await update(ref(db, `users/${uid}`), { role: "admin" });
             location.reload();
         };
 
         onAuthStateChanged(auth, u => {
             if(u) {
-                uID = u.uid;
-                onValue(ref(db, `users/${uID}`), snap => {
-                    uData = snap.val();
-                    document.getElementById('display-name').innerText = uData.username;
-                    document.getElementById('user-bal').innerText = `$${(uData.balance || 0).toFixed(2)}`;
-                    if(uData.role === 'admin') {
-                        document.getElementById('admin-icon').classList.remove('hidden');
-                        loadAdminSystem();
+                uid = u.uid;
+                onValue(ref(db, `users/${uid}`), s => {
+                    user = s.val();
+                    document.getElementById('display-name').innerText = user.username;
+                    document.getElementById('user-bal').innerText = `$${(user.balance || 0).toFixed(2)}`;
+                    if(user.role === 'admin') {
+                        document.getElementById('admin-btn').classList.remove('hidden');
+                        loadAdmin();
                     }
                 });
-                loadPlans();
-                loadHistory();
+                loadHistory(); startPopups();
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
             }
         });
 
-        // CORE NAVIGATION
+        window.logout = () => signOut(auth).then(() => location.reload());
+
         window.nav = (id) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(`page-${id}`).classList.remove('hidden');
-            if(document.getElementById(`nav-${id}`)) document.getElementById(`nav-${id}`).classList.add('active');
+            document.getElementById(`nav-${id}`)?.classList.add('active');
         };
 
-        // INVESTMENT PLANS
-        const plans = [
-            { id: 1, name: "Starter Tier", price: 5, daily: 0.45, total: 13.5 },
-            { id: 2, name: "Pro Node", price: 30, daily: 3.2, total: 96 },
-            { id: 3, name: "Elite Cluster", price: 100, daily: 12.0, total: 360 }
-        ];
-
-        function loadPlans() {
-            const con = document.getElementById('plans-container');
-            con.innerHTML = plans.map(p => `
-                <div class="premium-card p-6 flex justify-between items-center group active:scale-95 transition-all">
-                    <div>
-                        <h4 class="font-black text-slate-800">${p.name}</h4>
-                        <div class="flex gap-3 mt-1">
-                            <span class="text-[9px] font-bold text-indigo-500 uppercase">Cost: $${p.price}</span>
-                            <span class="text-[9px] font-bold text-green-500 uppercase">Daily:$${p.daily}</span>
-                        </div>
-                    </div>
-                    <button onclick="buyPlan(${p.price})" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl text-[9px] font-black uppercase shadow-lg shadow-indigo-100">Activate</button>
-                </div>
-            `).join('');
-        }
-
-        // DEPOSIT SYSTEM
-        window.openModal = (gw, num) => {
-            document.getElementById('modal-gw').innerText = gw;
-            document.getElementById('modal-num').innerText = num;
+        window.openPay = (gw, n) => {
+            document.getElementById('m-gw').innerText = gw;
+            document.getElementById('m-num').innerText = n;
             document.getElementById('pay-modal').classList.remove('hidden');
         };
         window.closeModal = () => document.getElementById('pay-modal').classList.add('hidden');
 
-        window.submitDeposit = async () => {
-            const amt = parseFloat(document.getElementById('pay-amount').value);
-            const tid = document.getElementById('pay-tid').value;
-            if(!amt || !tid) return alert("Fill all details!");
-            await push(ref(db, 'deposits'), {
-                uid: uID, username: uData.username, amount: amt, tid: tid,
-                method: document.getElementById('modal-gw').innerText,
-                status: 'pending', time: Date.now()
-            });
-            alert("Sent! Waiting for admin verification. 🚀");
-            closeModal();
+        window.submitDep = async () => {
+            const a = parseFloat(document.getElementById('m-amt').value);
+            const t = document.getElementById('m-tid').value;
+            if(!a || !t) return alert("Fill all info!");
+            await push(ref(db, 'deposits'), { uid, username: user.username, amount: a, tid: t, method: document.getElementById('m-gw').innerText, status: 'pending', time: Date.now() });
+            alert("Verification Started!"); closeModal();
         };
 
-        // WITHDRAWAL SYSTEM
         window.submitWithdraw = async () => {
-            const amt = parseFloat(document.getElementById('wd-amt').value);
-            const acc = document.getElementById('wd-acc').value;
-            if(!amt || amt < 5) return alert("Min withdrawal is $5!");
-            if(amt > uData.balance) return alert("Insufficient Balance!");
-            
-            await push(ref(db, 'withdrawals'), {
-                uid: uID, username: uData.username, amount: amt, account: acc, status: 'pending', time: Date.now()
-            });
-            await update(ref(db, `users/${uID}`), { balance: uData.balance - amt });
-            alert("Withdrawal requested! It will be processed soon.");
+            const a = parseFloat(document.getElementById('wd-amt').value);
+            if(a > user.balance || a < 5) return alert("Invalid Amount!");
+            await push(ref(db, 'withdrawals'), { uid, username: user.username, amount: a, account: document.getElementById('wd-acc').value, status: 'pending', time: Date.now() });
+            await update(ref(db, `users/${uid}`), { balance: user.balance - a });
+            alert("Requested Successfully!");
         };
 
-        // HISTORY VIEWER
         function loadHistory() {
             onValue(ref(db, 'deposits'), snap => {
-                const con = document.getElementById('user-history'); con.innerHTML = "";
-                snap.forEach(child => {
-                    const d = child.val();
-                    if(d.uid === uID) {
-                        con.innerHTML += `
-                            <div class="premium-card p-4 flex justify-between items-center bg-white/50">
-                                <div><p class="text-[10px] font-black">${d.method} Deposit</p><p class="text-[8px] text-slate-400 font-bold uppercase">${new Date(d.time).toLocaleDateString()}</p></div>
-                                <div class="text-right">
-                                    <p class="text-xs font-black">$${d.amount.toFixed(2)}</p>
-                                    <span class="status-pill ${d.status}">${d.status}</span>
-                                </div>
-                            </div>`;
-                    }
-                });
-            });
-        }
-
-        // GOD MODE (ADMIN SYSTEM)
-        function loadAdminSystem() {
-            // User List
-            onValue(ref(db, 'users'), snap => {
-                const con = document.getElementById('admin-users-list'); con.innerHTML = "";
-                snap.forEach(child => {
-                    const u = child.val();
-                    con.innerHTML += `
-                        <div class="premium-card p-4 flex justify-between items-center">
-                            <div><p class="text-xs font-black italic">${u.username}</p><p class="text-[9px] font-bold text-indigo-500">$${u.balance.toFixed(2)}</p></div>
-                            <div class="flex gap-2">
-                                <button onclick="godBalance('${child.key}', 10)" class="w-8 h-8 bg-green-50 rounded-lg text-green-600 text-[10px] font-bold">+$</button>
-                                <button onclick="godBalance('${child.key}', -10)" class="w-8 h-8 bg-red-50 rounded-lg text-red-600 text-[10px] font-bold">-$</button>
-                            </div>
+                const con = document.getElementById('dep-history'); con.innerHTML = "";
+                snap.forEach(c => {
+                    const d = c.val();
+                    if(d.uid === uid) {
+                        con.innerHTML += `<div class="node-card p-4 flex justify-between items-center text-[10px] font-bold">
+                            <div><p>${d.method}</p><p class="text-slate-400 font-normal">${new Date(d.time).toLocaleDateString()}</p></div>
+                            <div class="text-right"><p>$${d.amount}</p><p class="text-blue-500 uppercase">${d.status}</p></div>
                         </div>`;
-                });
-            });
-
-            // Pending Approvals
-            onValue(ref(db, 'deposits'), snap => {
-                const con = document.getElementById('admin-dep-list'); con.innerHTML = "";
-                snap.forEach(child => {
-                    const d = child.val();
-                    if(d.status === 'pending') {
-                        con.innerHTML += `
-                            <div class="premium-card p-5 border-l-4 border-indigo-500 shadow-xl">
-                                <div class="flex justify-between mb-4">
-                                    <span class="text-[9px] font-black text-indigo-500 uppercase">${d.method} | TID: ${d.tid}</span>
-                                    <span class="text-[9px] font-bold text-slate-300">${d.username}</span>
-                                </div>
-                                <h4 class="text-xl font-black mb-6 italic">$${d.amount}</h4>
-                                <div class="flex gap-2">
-                                    <button onclick="approveDeposit('${child.key}', '${d.uid}', ${d.amount})" class="flex-1 bg-indigo-600 text-white py-3 rounded-xl text-[10px] font-black uppercase">Approve</button>
-                                    <button onclick="rejectDeposit('${child.key}')" class="flex-1 bg-red-50 text-red-500 py-3 rounded-xl text-[10px] font-black uppercase">Reject</button>
-                                </div>
-                            </div>`;
                     }
                 });
             });
         }
 
-        window.approveDeposit = async (key, uid, amt) => {
-            const snap = await get(ref(db, `users/${uid}/balance`));
-            await update(ref(db, `users/${uid}`), { balance: (snap.val() || 0) + amt });
+        function loadAdmin() {
+            onValue(ref(db, 'deposits'), s => {
+                const con = document.getElementById('admin-list'); con.innerHTML = "";
+                s.forEach(c => {
+                    const d = c.val();
+                    if(d.status === 'pending') {
+                        con.innerHTML += `<div class="node-card p-5 border-l-4 border-red-500">
+                            <p class="text-xs font-bold mb-1">${d.username} sent $${d.amount}</p>
+                            <p class="text-[9px] text-slate-400 mb-4">TID: ${d.tid} | ${d.method}</p>
+                            <button onclick="approveDep('${c.key}', '${d.uid}', ${d.amount})" class="w-full grad-blue py-2 rounded-xl text-[9px] font-bold uppercase">Approve Now</button>
+                        </div>`;
+                    }
+                });
+            });
+        }
+
+        window.approveDep = async (key, u, a) => {
+            const snap = await get(ref(db, `users/${u}/balance`));
+            await update(ref(db, `users/${u}`), { balance: (snap.val() || 0) + a });
             await update(ref(db, `deposits/${key}`), { status: 'approved' });
-            alert("Deposit Approved! Sweetie.");
         };
 
-        window.rejectDeposit = async (key) => {
-            await update(ref(db, `deposits/${key}`), { status: 'rejected' });
-        };
+        function startPopups() {
+            const names = ["Zain", "Ali", "Sana", "Sara", "Kashif", "Hamza"];
+            setInterval(() => {
+                const n = names[Math.floor(Math.random()*names.length)];
+                const a = Math.floor(Math.random()*200) + 20;
+                const area = document.getElementById('notif-container');
+                const div = document.createElement('div');
+                div.className = "bg-white/95 p-4 rounded-2xl shadow-xl border border-blue-50 mb-2 flex items-center gap-3 notif-popup";
+                div.innerHTML = `<i class="fa-solid fa-circle-check text-green-500 text-lg"></i> <div class="text-[9px] font-bold">Payout: ${n} withdrew $${a}.00</div>`;
+                area.appendChild(div);
+                setTimeout(() => div.remove(), 4500);
+            }, 12000);
+        }
 
-        window.godBalance = async (uid, val) => {
-            const snap = await get(ref(db, `users/${uid}/balance`));
-            await update(ref(db, `users/${uid}`), { balance: (snap.val() || 0) + val });
-        };
-
-        // GOD TRIGGER
-        let taps = 0;
-        window.godTrigger = () => {
-            taps++;
-            if(taps === 5) {
-                const p = prompt("Enter Master Key:");
-                if(p === "sweetie786") {
-                    update(ref(db, `users/${uID}`), { role: 'admin' });
-                    alert("God Mode Unlocked. Header updated.");
-                    location.reload();
-                }
-                taps = 0;
-            }
-        };
-
-        window.copyText = () => {
-            navigator.clipboard.writeText(document.getElementById('modal-num').innerText);
-            alert("Account Number Copied!");
-        };
-
+        window.copyNum = () => { navigator.clipboard.writeText(document.getElementById('m-num').innerText); alert("Copied!"); };
     </script>
 </body>
 </html>
