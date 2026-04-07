@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,16 +11,14 @@
         :root { --primary: #2563eb; --bg: #F8FAFC; --card: #FFFFFF; --text: #1E293B; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-tap-highlight-color: transparent; }
         .trust-card { background: var(--card); border-radius: 24px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37,99,235,0.2); transition: 0.3s; }
-        .btn-primary:active { transform: scale(0.96); }
+        .btn-primary { background: var(--primary); color: white; transition: 0.3s; }
         .nav-active { color: var(--primary) !important; border-top: 3px solid var(--primary); }
         input, select { background: #F1F5F9 !important; border: 1px solid #E2E8F0 !important; color: #1E293B !important; }
-        .status-badge { padding: 2px 8px; border-radius: 100px; font-size: 7px; font-weight: 900; text-transform: uppercase; }
     </style>
 </head>
 <body class="pb-24">
 
-    <!-- LOGIN / AUTH -->
+    <!-- LOGIN SCREEN -->
     <div id="auth-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-8">
         <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl mb-4 shadow-xl shadow-blue-200"><i class="fa-solid fa-server"></i></div>
         <h1 class="text-xl font-extrabold tracking-tight mb-2">NEXA <span class="text-blue-600">NODES</span></h1>
@@ -33,7 +32,6 @@
 
     <!-- MAIN APP -->
     <div id="app" class="hidden">
-        
         <header class="p-6 flex justify-between items-center bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
             <div>
                 <h3 id="display-name" class="text-sm font-extrabold text-slate-800">--</h3>
@@ -54,7 +52,6 @@
                 </div>
             </div>
 
-            <!-- ANALYTICS -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="trust-card p-5">
                     <i class="fa-solid fa-microchip text-blue-600 text-xs mb-2"></i>
@@ -68,30 +65,35 @@
                 </div>
             </div>
 
-            <!-- PROMO CLAIM -->
             <div class="trust-card p-5 border-l-4 border-amber-400">
                 <p class="text-[9px] font-extrabold uppercase text-slate-500 mb-3">Claim Incentive Bonus</p>
                 <div class="flex gap-2">
-                    <input id="promo-input" placeholder="Promo Code (e.g. GOLD214)" class="flex-1 p-3 rounded-lg text-[10px] uppercase font-bold outline-none">
+                    <input id="promo-input" placeholder="Promo Code" class="flex-1 p-3 rounded-lg text-[10px] uppercase font-bold outline-none">
                     <button onclick="submitPromo()" class="bg-amber-400 text-black px-4 rounded-lg text-[9px] font-black uppercase">Submit</button>
                 </div>
                 <p id="promo-msg" class="text-[7px] mt-2 font-black text-blue-500 uppercase tracking-tighter"></p>
             </div>
-
-            <!-- INVITE -->
-            <div class="trust-card p-5">
-                <p class="text-[9px] font-extrabold uppercase text-slate-500 mb-2">Partnership ID</p>
-                <div class="flex gap-2 items-center bg-slate-50 p-2 rounded-lg">
-                    <input id="ref-link" readonly value="..." class="flex-1 bg-transparent text-[9px] font-bold text-blue-600 border-none outline-none">
-                    <button onclick="copyRef()" class="text-slate-400 px-2"><i class="fa-solid fa-copy"></i></button>
-                </div>
-            </div>
         </main>
 
-        <!-- PAGE: NODES (15+5) -->
+        <!-- PAGE: NODES -->
         <main id="page-nodes" class="page-content hidden px-6 py-6 space-y-4">
             <h2 class="text-lg font-extrabold uppercase tracking-tighter">Mining Infrastructure</h2>
             <div id="nodes-container" class="space-y-3 pb-10"></div>
+        </main>
+
+        <!-- PAGE: DEPOSIT -->
+        <main id="page-deposit" class="page-content hidden px-6 py-6 space-y-6">
+            <h2 class="text-lg font-extrabold uppercase tracking-tighter">Funding Hub</h2>
+            <div class="space-y-4">
+                <div onclick="openPay('JazzCash','03705519562')" class="trust-card p-6 flex justify-between items-center border-l-[6px] border-red-500">
+                    <div><p class="text-[10px] font-black uppercase">JazzCash Official</p><p class="text-[8px] text-slate-400 italic font-bold">Verified Gateway</p></div>
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                </div>
+                <div onclick="openPay('Easypaisa','03332637235')" class="trust-card p-6 flex justify-between items-center border-l-[6px] border-green-500">
+                    <div><p class="text-[10px] font-black uppercase">Easypaisa Fast</p><p class="text-[8px] text-slate-400 italic font-bold">Automated Payouts</p></div>
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                </div>
+            </div>
         </main>
 
         <!-- PAGE: WITHDRAW -->
@@ -108,28 +110,16 @@
             </div>
         </main>
 
-        <!-- PAGE: LEGAL / ABOUT -->
+        <!-- PAGE: LEGAL -->
         <main id="page-info" class="page-content hidden px-6 py-6 space-y-6 pb-24">
-            <h2 class="text-lg font-extrabold uppercase tracking-tighter">Corporate Compliance</h2>
+            <h2 class="text-lg font-extrabold uppercase tracking-tighter">Compliance</h2>
             <div class="trust-card p-6 space-y-6 text-[10px] leading-relaxed text-slate-600">
                 <section>
-                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Mission Statement</h4>
-                    <p>Nexa Nodes provides high-performance computing power to global blockchain networks, allowing retail investors to earn stable daily yields.</p>
-                </section>
-                <section>
-                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Privacy Protocol</h4>
-                    <p>Humara platform 256-bit encryption use karta hai. Aapki banking info aur private data kabhi store ya share nahi hota.</p>
-                </section>
-                <section>
-                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Standard Terms</h4>
-                    <ul class="list-disc ml-4 space-y-1">
-                        <li>Withdrawal processing: 1-12 Business Hours.</li>
-                        <li>Strict KYC: One account per person only.</li>
-                        <li>Min Withdrawal: $1 (285 PKR).</li>
-                    </ul>
+                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Institutional Privacy</h4>
+                    <p>Nexa Nodes uses AES-256 encryption. Your funds and data are fully protected under institutional protocols.</p>
                 </section>
                 <a href="https://chat.whatsapp.com/EbfTbr66JQLFEmjnxrReE3" class="block w-full bg-green-500 text-white p-4 rounded-xl text-center font-bold uppercase text-[9px]">
-                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Official Support Group
+                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Official Support
                 </a>
             </div>
         </main>
@@ -140,26 +130,26 @@
             <div class="flex flex-wrap gap-2">
                 <button onclick="loadAdmin('dep')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-[8px] font-black">DEPOSITS</button>
                 <button onclick="loadAdmin('wit')" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-[8px] font-black">PAYOUTS</button>
-                <button onclick="loadAdminPromo()" class="bg-amber-500 text-white px-4 py-2 rounded-lg text-[8px] font-black">PROMO REQS</button>
-                <button onclick="loadUsers()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-[8px] font-black">BONUSES</button>
+                <button onclick="loadAdminPromo()" class="bg-amber-500 text-white px-4 py-2 rounded-lg text-[8px] font-black">PROMOS</button>
+                <button onclick="loadUsers()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-[8px] font-black">USER LIST</button>
             </div>
             <div id="admin-list" class="space-y-4"></div>
         </main>
 
         <!-- NAVIGATION -->
-        <nav class="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 flex justify-around items-center z-50 px-2">
+        <nav class="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 flex justify-around items-center z-50">
             <div onclick="nav('home')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-home"><i class="fa-solid fa-house"></i><span class="text-[8px] font-black mt-1 uppercase">Home</span></div>
             <div onclick="nav('nodes')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-nodes"><i class="fa-solid fa-microchip"></i><span class="text-[8px] font-black mt-1 uppercase">Nodes</span></div>
             <div onclick="nav('withdraw')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-withdraw"><i class="fa-solid fa-wallet"></i><span class="text-[8px] font-black mt-1 uppercase">Cash</span></div>
             <div onclick="nav('info')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-info"><i class="fa-solid fa-shield-halved"></i><span class="text-[8px] font-black mt-1 uppercase">Legal</span></div>
-            <div onclick="nav('admin')" class="nav-item hidden flex flex-col items-center flex-1 py-3 text-red-500" id="btn-admin"><i class="fa-solid fa-user-gear"></i><span class="text-[8px] font-black mt-1 uppercase">Admin</span></div>
+            <div onclick="nav('admin')" class="nav-item hidden flex flex-col items-center flex-1 py-3 text-red-500" id="btn-admin"><i class="fa-solid fa-user-gear"></i><span class="text-[8px] font-black mt-1 uppercase">Root</span></div>
         </nav>
     </div>
 
     <!-- PAYMENT MODAL -->
     <div id="pay-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-6">
         <div class="trust-card p-8 w-full max-w-sm">
-            <h3 id="m-gw" class="text-lg font-extrabold text-blue-600 mb-2 uppercase">--</h3>
+            <h3 id="m-gw" class="text-lg font-extrabold text-blue-600 mb-2 uppercase italic">--</h3>
             <p id="m-num" class="bg-slate-50 p-4 rounded-xl font-bold text-slate-900 text-center tracking-widest text-lg mb-6 border border-slate-100" onclick="copyNum()">--</p>
             <div class="space-y-3">
                 <input type="number" id="m-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl outline-none text-xs font-bold">
@@ -191,7 +181,6 @@
         const RATE = 285;
         let userData = null, uid = "";
 
-        // AUTH
         window.handleLogin = async () => {
             const name = document.getElementById('user-name').value;
             const key = document.getElementById('admin-key').value;
@@ -212,12 +201,12 @@
                 uid = u.uid;
                 onValue(ref(db, `users/${uid}`), s => {
                     userData = s.val();
+                    if(!userData) return;
                     document.getElementById('display-name').innerText = userData.username;
                     document.getElementById('user-bal').innerText = `$${(userData.balance || 0).toFixed(2)}`;
                     document.getElementById('pkr-bal').innerText = `≈ Rs. ${(userData.balance * RATE).toLocaleString()}`;
                     document.getElementById('active-plans').innerText = userData.plans || 0;
                     document.getElementById('team-count').innerText = userData.team || 0;
-                    document.getElementById('ref-link').value = `https://nexanodes.com/reg?id=${uid}`;
                     if(userData.role === 'admin') document.getElementById('btn-admin').classList.remove('hidden');
                 });
                 loadNodes(); nav('home');
@@ -226,7 +215,6 @@
             }
         });
 
-        // CORE NAV
         window.nav = (id) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('nav-active'));
@@ -234,17 +222,16 @@
             document.getElementById(`btn-${id}`)?.classList.add('nav-active');
         };
 
-        // NODES SYSTEM (15 Tiers + 5 VIP)
         function loadNodes() {
             const con = document.getElementById('nodes-container');
             con.innerHTML = "";
-            for(let i=1; i<=15; i++) con.innerHTML += createNode(`Quantum Node v.${i}`, i*5, 'blue');
-            [200, 500, 1000, 2500, 5000].forEach((c, idx) => con.innerHTML += createNode(`Institutional Rig VIP ${idx+1}`, c, 'indigo'));
+            for(let i=1; i<=15; i++) con.innerHTML += createNode(`Quantum Rig v.${i}`, i*5, 'blue');
+            [200, 500, 1000, 2500, 5000].forEach((c, idx) => con.innerHTML += createNode(`VIP Enterprise Node ${idx+1}`, c, 'indigo'));
         }
         function createNode(n, c, col) {
             return `<div class="trust-card p-4 flex justify-between items-center border-l-4 border-${col}-600">
                 <div><p class="text-[9px] font-black text-slate-800 uppercase">${n}</p><p class="text-[8px] text-slate-400 font-bold">$${c} • Rs. ${c*RATE}</p></div>
-                <button onclick="buyPlan(${c})" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-[8px] font-black border border-blue-100 uppercase">Deploy</button>
+                <button onclick="buyPlan(${c})" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-[8px] font-black border border-blue-100">Activate</button>
             </div>`;
         }
         window.buyPlan = async (c) => {
@@ -253,22 +240,20 @@
             alert("Rig Deployment Successful!");
         };
 
-        // PROMO REQUEST SYSTEM (Manual)
         window.submitPromo = async () => {
             const code = document.getElementById('promo-input').value.trim().toUpperCase();
-            if(!code) return alert("Sweetie, code to likho!");
+            if(!code) return alert("Code likho sweetie!");
             await push(ref(db, 'promo_requests'), { uid, username: userData.username, code, status: 'pending', time: Date.now() });
             document.getElementById('promo-msg').innerText = "Request Logged. Waiting for Admin Approval... ⏳";
             document.getElementById('promo-input').value = "";
         };
 
-        // FUNDING & PAYOUTS
         window.openPay = (gw, n) => { document.getElementById('m-gw').innerText = gw; document.getElementById('m-num').innerText = n; document.getElementById('pay-modal').classList.remove('hidden'); };
         window.closeModal = () => document.getElementById('pay-modal').classList.add('hidden');
         window.submitDep = async () => {
             const a = parseFloat(document.getElementById('m-amt').value);
             const t = document.getElementById('m-tid').value;
-            if(!a || !t) return alert("Fill all details!");
+            if(!a || !t) return alert("Details missing!");
             await push(ref(db, 'deposits'), { uid, username: userData.username, amount: a, tid: t, method: document.getElementById('m-gw').innerText, status: 'pending' });
             alert("Funding request submitted!"); closeModal();
         };
@@ -282,7 +267,6 @@
             alert("Withdrawal Logged!");
         };
 
-        // ADMIN FUNCTIONS
         window.loadAdmin = (tab) => {
             const path = tab === 'dep' ? 'deposits' : 'withdraws';
             onValue(ref(db, path), s => {
@@ -292,8 +276,8 @@
                     if(d.status === 'pending') {
                         con.innerHTML += `<div class="trust-card p-4 text-[9px] bg-slate-50 border-none">
                             <p class="font-black text-slate-800 uppercase">${d.username} | <span class="text-blue-600">$${d.amount}</span></p>
-                            <p class="text-slate-400 mb-3 tracking-tighter">${tab==='dep'?'TID: '+d.tid : 'Number: '+d.number}</p>
-                            <button onclick="approveAction('${path}', '${c.key}', '${d.uid}', ${d.amount}, '${tab}')" class="w-full btn-primary py-2 rounded-lg font-black">Approve</button>
+                            <p class="text-slate-400 mb-3">${tab==='dep'?'TID: '+d.tid : 'No: '+d.number}</p>
+                            <button onclick="approveAction('${path}', '${c.key}', '${d.uid}', ${d.amount}, '${tab}')" class="w-full btn-primary py-2 rounded-lg font-black uppercase text-[8px]">Approve</button>
                         </div>`;
                     }
                 });
@@ -307,10 +291,10 @@
                     const d = c.val();
                     if(d.status === 'pending') {
                         con.innerHTML += `<div class="trust-card p-4 text-[9px]">
-                            <p class="font-black text-slate-800 uppercase">${d.username} is claiming: <span class="text-amber-600">${d.code}</span></p>
+                            <p class="font-black text-slate-800 uppercase">${d.username} claimed <span class="text-amber-600">${d.code}<                            </span></p>
                             <div class="flex gap-2 mt-3">
-                                <input id="b-amt-${c.key}" type="number" placeholder="Enter $ Bonus" class="flex-1 p-2 rounded text-[9px] border border-slate-200 outline-none">
-                                <button onclick="approvePromo('${c.key}', '${d.uid}')" class="bg-green-600 text-white px-4 rounded-lg font-black">Verify</button>
+                                <input id="b-amt-${c.key}" type="number" placeholder="Reward $" class="flex-1 p-2 rounded text-[9px] outline-none">
+                                <button onclick="approvePromo('${c.key}', '${d.uid}')" class="bg-green-600 text-white px-4 rounded-lg font-bold">Approve</button>
                             </div>
                         </div>`;
                     }
@@ -320,64 +304,72 @@
 
         window.approvePromo = async (key, u_uid) => {
             const amt = parseFloat(document.getElementById(`b-amt-${key}`).value);
-            if(!amt) return alert("Set reward first!");
-            const uSnap = await get(ref(db, `users/${u_uid}`));
-            await update(ref(db, `users/${u_uid}`), { balance: (uSnap.val().balance || 0) + amt });
-            await update(ref(db, `promo_requests/${key}`), { status: 'approved' });
-            alert("Bonus Issued!");
+            if(!amt) return alert("Sweetie, pehle reward amount likho!");
+            
+            try {
+                const uSnap = await get(ref(db, `users/${u_uid}`));
+                const currentBal = uSnap.val().balance || 0;
+                
+                await update(ref(db, `users/${u_uid}`), { balance: currentBal + amt });
+                await update(ref(db, `promo_requests/${key}`), { status: 'approved' });
+                
+                alert("Bonus Successfully Issued!");
+                loadAdminPromo(); // Refresh list
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
         };
 
         window.loadUsers = () => {
             onValue(ref(db, 'users'), s => {
-                const con = document.getElementById('admin-list'); con.innerHTML = "<p class='text-[8px] font-black uppercase text-slate-400 mb-2'>Member Directory (Direct Bonus)</p>";
+                const con = document.getElementById('admin-list'); con.innerHTML = "";
                 s.forEach(u => {
                     const user = u.val();
                     con.innerHTML += `<div class="trust-card p-4 flex justify-between items-center text-[9px]">
-                        <div><p class="font-black">${user.username}</p><p class="text-[7px] text-slate-400 select-all">${u.key}</p></div>
-                        <button onclick="directBonus('${u.key}')" class="bg-blue-600 text-white px-3 py-1 rounded font-bold">Gift</button>
+                        <div>
+                            <p class="font-black text-slate-800 uppercase">${user.username}</p>
+                            <p class="text-[7px] text-slate-400 select-all">UID: ${u.key}</p>
+                            <p class="text-[8px] font-bold text-blue-600">Bal: $${(user.balance || 0).toFixed(2)}</p>
+                        </div>
+                        <button onclick="directBonus('${u.key}')" class="bg-blue-600 text-white px-3 py-1 rounded font-bold uppercase text-[8px]">Add Bonus</button>
                     </div>`;
                 });
             });
         };
 
         window.directBonus = async (u_uid) => {
-            const amt = parseFloat(prompt("Enter Bonus Amount ($):"));
-            if(!amt) return;
+            const amt = parseFloat(prompt("Enter Direct Bonus Amount ($):"));
+            if(!amt || isNaN(amt)) return;
+            
             const snap = await get(ref(db, `users/${u_uid}/balance`));
             await update(ref(db, `users/${u_uid}`), { balance: (snap.val() || 0) + amt });
-            alert("Bonus Sent!");
+            alert("Bonus Sent Directly!");
         };
 
         window.approveAction = async (path, key, u_uid, amt, tab) => {
-            if(tab === 'dep') {
-                const snap = await get(ref(db, `users/${u_uid}/balance`));
-                await update(ref(db, `users/${u_uid}`), { balance: (snap.val() || 0) + amt });
+            try {
+                if(tab === 'dep') {
+                    const snap = await get(ref(db, `users/${u_uid}/balance`));
+                    await update(ref(db, `users/${u_uid}`), { balance: (snap.val() || 0) + amt });
+                }
+                await update(ref(db, `${path}/${key}`), { status: 'approved' });
+                alert("Transaction Approved!");
+            } catch (e) {
+                alert("Failed to approve: " + e.message);
             }
-            await update(ref(db, `${path}/${key}`), { status: 'approved' });
-            alert("Verified!");
         };
 
-        window.copyRef = () => { navigator.clipboard.writeText(document.getElementById('ref-link').value); alert("Link Copied!"); };
-        window.copyNum = () => { navigator.clipboard.writeText(document.getElementById('m-num').innerText); alert("Copied!"); };
-        window.logout = () => signOut(auth).then(() => location.reload());
-    </script>
+        window.copyNum = () => { 
+            const num = document.getElementById('m-num').innerText;
+            navigator.clipboard.writeText(num); 
+            alert("Number Copied: " + num); 
+        };
 
-    <!-- DEPOSIT TRIGGERS (In Deposit Page) -->
-    <script>
-        // Manually handling Deposit Gateway selections
-        document.getElementById('page-deposit').innerHTML = `
-            <h2 class="text-lg font-extrabold uppercase px-6 py-6 tracking-tighter">Funding Hub</h2>
-            <div class="px-6 space-y-4">
-                <div onclick="openPay('JazzCash','03705519562')" class="trust-card p-6 flex justify-between items-center border-l-[6px] border-red-500">
-                    <div><p class="text-[10px] font-black uppercase">JazzCash Official</p><p class="text-[8px] text-slate-400">Institutional Merchant</p></div>
-                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
-                </div>
-                <div onclick="openPay('Easypaisa','03332637235')" class="trust-card p-6 flex justify-between items-center border-l-[6px] border-green-500">
-                    <div><p class="text-[10px] font-black uppercase">Easypaisa Fast</p><p class="text-[8px] text-slate-400">Automated Gateway</p></div>
-                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
-                </div>
-            </div>
-        `;
+        window.logout = () => {
+            signOut(auth).then(() => {
+                location.reload();
+            });
+        };
     </script>
 </body>
 </html>
