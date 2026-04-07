@@ -3,122 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXA | Secure Portal</title>
+    <title>NEXA | Ultimate Investment Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #030712;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-        }
-
-        /* Moving Gradient Background */
-        .bg-animate {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, #1e3a8a 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #701a75 0%, transparent 40%);
-            z-index: -1;
-            filter: blur(50px);
-            animation: moveBg 15s infinite alternate;
-        }
-
-        @keyframes moveBg {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1) translate(20px, 20px); }
-        }
-
-        .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-            border-radius: 2.5rem;
-        }
-
-        .input-box {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .input-box:focus-within {
-            border-color: #3b82f6;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-        }
-
-        .btn-prime {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            transition: 0.3s;
-        }
-
-        .btn-prime:hover {
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: white; overflow-x: hidden; }
+        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .neon-border { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.5); }
+        .hidden { display: none; }
+        .plan-card { background: rgba(255, 255, 255, 0.03); border-radius: 20px; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .plan-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
+        input, select { background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
     </style>
 </head>
-<body class="text-white p-6">
+<body>
 
-    <div class="bg-animate"></div>
-
-    <div class="glass-card w-full max-w-md p-10 relative overflow-hidden">
-        <!-- Logo Section -->
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">NEXA</h1>
-            <p id="form-subtitle" class="text-gray-400 text-sm mt-2">Secure Anonymous Investment Protocol</p>
-        </div>
-
-        <form id="auth-form" class="space-y-5">
-            <!-- Full Name (Only for Signup) -->
-            <div id="name-container" class="input-box flex items-center rounded-2xl px-4 py-3">
-                <i class="fa-solid fa-id-card text-gray-500 mr-3"></i>
-                <input type="text" id="full-name" class="bg-transparent w-full outline-none text-sm" placeholder="Full Name">
-            </div>
-
-            <!-- Username -->
-            <div class="input-box flex items-center rounded-2xl px-4 py-3">
-                <i class="fa-solid fa-at text-gray-500 mr-3"></i>
-                <input type="text" id="username" required class="bg-transparent w-full outline-none text-sm" placeholder="Username">
-            </div>
-
-            <!-- Private Access Key (Acts like Password for security feel) -->
-            <div class="input-box flex items-center rounded-2xl px-4 py-3">
-                <i class="fa-solid fa-key text-gray-500 mr-3"></i>
-                <input type="password" id="access-key" required class="bg-transparent w-full outline-none text-sm" placeholder="Private Access Key">
-            </div>
-
-            <button type="submit" id="submit-btn" class="btn-prime w-full py-4 rounded-2xl font-bold tracking-wide uppercase text-sm shadow-lg">
-                Create Secure Account
-            </button>
-        </form>
-
-        <div class="mt-8 text-center text-sm">
-            <p class="text-gray-500">
-                <span id="toggle-text">Already have a NEXA ID?</span>
-                <button onclick="toggleMode()" id="toggle-btn" class="text-blue-400 font-bold ml-1 hover:underline">Login</button>
+    <!-- SECTION 1: AUTHENTICATION (LOGIN/SIGNUP) -->
+    <div id="auth-page" class="min-h-screen flex items-center justify-center p-6">
+        <div class="glass w-full max-w-md p-8 rounded-[2.5rem] text-center">
+            <h1 id="logo" class="text-5xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-pink-500 mb-2 cursor-pointer">NEXA</h1>
+            <p id="auth-subtitle" class="text-gray-400 text-sm mb-8">Secure Anonymous Investment Protocol</p>
+            
+            <form id="auth-form" class="space-y-4">
+                <input type="text" id="reg-name" class="w-full p-4 rounded-2xl outline-none hidden" placeholder="Full Name">
+                <input type="text" id="auth-user" required class="w-full p-4 rounded-2xl outline-none" placeholder="Username">
+                <input type="password" id="auth-key" required class="w-full p-4 rounded-2xl outline-none" placeholder="Secret Access Key">
+                <button type="submit" id="auth-btn" class="w-full bg-blue-600 py-4 rounded-2xl font-bold uppercase tracking-widest shadow-lg">Enter NEXA</button>
+            </form>
+            <p class="mt-6 text-sm text-gray-500">
+                <span id="toggle-text">Don't have an account?</span>
+                <button onclick="toggleAuth()" id="toggle-btn" class="text-blue-400 font-bold ml-1">Create One</button>
             </p>
-        </div>
-
-        <!-- Security Badge -->
-        <div class="mt-6 flex justify-center items-center gap-2 opacity-50">
-            <i class="fa-solid fa-shield-halved text-xs text-green-400"></i>
-            <span class="text-[10px] uppercase tracking-widest font-bold">End-to-End Encrypted</span>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
+    <!-- SECTION 2: MAIN DASHBOARD -->
+    <div id="dashboard-page" class="hidden min-h-screen">
+        <nav class="glass sticky top-0 z-50 p-4 flex justify-between items-center px-8">
+            <h2 class="text-2xl font-black text-blue-500">NEXA</h2>
+            <div class="flex gap-6 items-center">
+                <div class="text-right"><p class="text-[10px] text-gray-500">BALANCE</p><p id="user-bal" class="text-green-400 font-bold">$0.00</p></div>
+                <button onclick="logout()" class="text-gray-500 hover:text-white"><i class="fa-solid fa-power-off"></i></button>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto p-6 space-y-10">
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="glass p-6 rounded-3xl">
+                    <p class="text-gray-400 text-sm">Welcome back, <span id="user-display" class="text-white font-bold">...</span></p>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="openModal('deposit-modal')" class="bg-blue-600 px-6 py-2 rounded-xl text-sm font-bold">Deposit</button>
+                        <button onclick="openModal('withdraw-modal')" class="bg-white/5 border border-white/10 px-6 py-2 rounded-xl text-sm font-bold">Withdraw</button>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-3xl flex flex-col justify-center">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Referral Link</p>
+                    <p id="ref-link" class="text-blue-400 text-xs mt-1 truncate">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Plans -->
+            <h3 class="text-2xl font-black">Investment <span class="text-blue-500">Plans</span></h3>
+            <div id="plans-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </main>
+    </div>
+
+    <!-- SECTION 3: MODALS (DEPOSIT/WITHDRAW) -->
+    <div id="deposit-modal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
+        <div class="glass w-full max-w-md p-8 rounded-3xl">
+            <h3 class="text-2xl font-bold mb-4 text-blue-400">Deposit Funds</h3>
+            <p class="text-xs text-gray-400 mb-4 font-mono">Easypaisa: 03379827882<br>JazzCash/SadaPay: 03705519562</p>
+            <form id="dep-form" class="space-y-4">
+                <input type="number" id="d-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl outline-none" required>
+                <input type="text" id="d-tid" placeholder="TID Number" class="w-full p-4 rounded-xl outline-none" required>
+                <button type="submit" class="w-full bg-blue-600 py-4 rounded-xl font-bold">Submit Deposit</button>
+                <button type="button" onclick="closeModals()" class="w-full text-gray-500 text-sm mt-2">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="withdraw-modal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6">
+        <div class="glass w-full max-w-md p-8 rounded-3xl">
+            <h3 class="text-2xl font-bold mb-4 text-pink-500">Withdraw Funds</h3>
+            <form id="wit-form" class="space-y-4">
+                <input type="number" id="w-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl outline-none" required>
+                <select id="w-meth" class="w-full p-4 rounded-xl outline-none">
+                    <option>Easypaisa</option><option>JazzCash</option><option>SadaPay</option>
+                </select>
+                <input type="text" id="w-acc" placeholder="Account Number" class="w-full p-4 rounded-xl outline-none" required>
+                <button type="submit" class="w-full bg-pink-600 py-4 rounded-xl font-bold">Request Withdrawal</button>
+                <button type="button" onclick="closeModals()" class="w-full text-gray-500 text-sm mt-2">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FIREBASE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, get, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBe5Q5jXpx3UvrHC9WOky9UWeDnP9SPfZI",
@@ -134,68 +119,96 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        let isLogin = false;
-
-        window.toggleMode = () => {
+        // --- AUTH LOGIC ---
+        let isLogin = true;
+        window.toggleAuth = () => {
             isLogin = !isLogin;
-            const nameField = document.getElementById('name-container');
-            const submitBtn = document.getElementById('submit-btn');
-            const toggleBtn = document.getElementById('toggle-btn');
-            const toggleText = document.getElementById('toggle-text');
-
-            if (isLogin) {
-                nameField.style.display = 'none';
-                submitBtn.innerText = 'Login to NEXA';
-                toggleText.innerText = "Don't have an account?";
-                toggleBtn.innerText = 'Sign Up';
-            } else {
-                nameField.style.display = 'flex';
-                submitBtn.innerText = 'Create Secure Account';
-                toggleText.innerText = "Already have a NEXA ID?";
-                toggleBtn.innerText = 'Login';
-            }
+            document.getElementById('reg-name').classList.toggle('hidden');
+            document.getElementById('auth-btn').innerText = isLogin ? 'Enter NEXA' : 'Create Account';
+            document.getElementById('toggle-btn').innerText = isLogin ? 'Create One' : 'Login';
         };
 
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const fullName = document.getElementById('full-name').value;
-            
-            try {
-                // Professional Loading Feel
-                document.getElementById('submit-btn').innerText = "Verifying Protocol...";
-                
-                // Anonymous Authentication in Background
-                const cred = await signInAnonymously(auth);
-                const user = cred.user;
-
-                // Check LocalStorage to link session
-                localStorage.setItem('nexa_session', user.uid);
-                localStorage.setItem('nexa_user', username);
-
-                const userRef = ref(db, 'users/' + user.uid);
-                const snapshot = await get(userRef);
-
-                if (!snapshot.exists()) {
-                    // Create Account in DB
-                    await set(userRef, {
-                        uid: user.uid,
-                        username: username,
-                        fullName: fullName || "NEXA Investor",
-                        balance: 0,
-                        status: "Verified",
-                        joinedAt: new Date().toLocaleDateString()
-                    });
-                }
-
-                alert(`Success sweetie! Account ${isLogin ? 'Verified' : 'Created'}.`);
-                window.location.href = "dashboard.html";
-
-            } catch (error) {
-                alert("Security Protocol Failed: " + error.message);
-                document.getElementById('submit-btn').innerText = isLogin ? "Login" : "Create Account";
+        // Secret Admin Tap
+        let taps = 0;
+        document.getElementById('logo').onclick = () => {
+            taps++;
+            if(taps === 4) {
+                const key = prompt("Admin Key?");
+                if(key === "NEXA786") alert("Admin access granted! (Redirecting to Panel...)");
             }
-        });
+            setTimeout(() => taps = 0, 2000);
+        };
+
+        document.getElementById('auth-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('auth-user').value;
+            const res = await signInAnonymously(auth);
+            const uid = res.user.uid;
+            
+            const userRef = ref(db, 'users/' + uid);
+            const snap = await get(userRef);
+            
+            if(!snap.exists()) {
+                await set(userRef, { username: user, balance: 0, joined: new Date().getTime() });
+            }
+            
+            localStorage.setItem('nexa_uid', uid);
+            showDashboard(uid);
+        };
+
+        function showDashboard(uid) {
+            document.getElementById('auth-page').classList.add('hidden');
+            document.getElementById('dashboard-page').classList.remove('hidden');
+            
+            onValue(ref(db, 'users/' + uid), (snap) => {
+                const data = snap.val();
+                document.getElementById('user-bal').innerText = `$${data.balance.toFixed(2)}`;
+                document.getElementById('user-display').innerText = data.username;
+                document.getElementById('ref-link').innerText = `https://nexa.com/join?id=${uid.substring(0,6)}`;
+            });
+            renderPlans();
+        }
+
+        function renderPlans() {
+            const container = document.getElementById('plans-container');
+            container.innerHTML = "";
+            for(let i=1; i<=20; i++) {
+                const cost = 200 + (i*50);
+                const profit = 10 + (i*2);
+                container.innerHTML += `
+                    <div class="plan-card p-6 text-center">
+                        <p class="text-[10px] text-blue-400 font-bold">PLAN ${i}</p>
+                        <h4 class="text-3xl font-black my-2">${profit}%</h4>
+                        <p class="text-xs text-gray-500 mb-4">Daily Profit</p>
+                        <div class="bg-white/5 py-2 rounded-lg mb-4 text-sm font-bold">$${cost}</div>
+                        <button onclick="alert('Balance insufficient sweetie!')" class="w-full py-2 bg-blue-600 rounded-lg text-xs font-bold uppercase">Invest</button>
+                    </div>
+                `;
+            }
+        }
+
+        // --- TRANSACTION LOGIC ---
+        window.openModal = (id) => document.getElementById(id).classList.remove('hidden');
+        window.closeModals = () => {
+            document.getElementById('deposit-modal').classList.add('hidden');
+            document.getElementById('withdraw-modal').classList.add('hidden');
+        };
+
+        document.getElementById('dep-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const uid = localStorage.getItem('nexa_uid');
+            const amt = document.getElementById('d-amt').value;
+            const tid = document.getElementById('d-tid').value;
+            await push(ref(db, 'requests/deposits'), { uid, amt, tid, status: 'pending' });
+            alert("Deposit request sent sweetie!");
+            closeModals();
+        };
+
+        window.logout = () => { localStorage.clear(); location.reload(); };
+
+        // Auto-load session
+        const saved = localStorage.getItem('nexa_uid');
+        if(saved) showDashboard(saved);
     </script>
 </body>
 </html>
