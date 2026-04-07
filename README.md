@@ -1,131 +1,172 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA | Digital Assets</title>
+    <title>NEXA | Quantum Finance</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #1a1a1a; -webkit-tap-highlight-color: transparent; }
-        .app-shell { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #ffffff; position: relative; padding-bottom: 90px; }
-        .glass-header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid #f1f5f9; }
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; padding: 12px 0 25px 0; z-index: 1000; }
-        .nav-link { text-align: center; color: #94a3b8; font-size: 10px; font-weight: 700; flex: 1; transition: 0.3s; }
-        .nav-link.active { color: #2563eb; transform: translateY(-2px); }
-        .nav-link i { font-size: 20px; display: block; margin-bottom: 4px; }
-        .asset-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; border-radius: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .node-btn { transition: 0.2s active; }
-        .node-btn:active { transform: scale(0.96); }
+        
+        :root { --p: #2563eb; --s: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #0f172a; overflow-x: hidden; }
+
+        /* Modern Blurs */
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.4; }
+        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(25px); border: 1px solid rgba(0,0,0,0.05); }
+        
+        /* Node Animation */
+        .node-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* Floating Nav */
+        .dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; 
+                background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border-radius: 24px; padding: 12px;
+                display: flex; justify-content: space-around; z-index: 2000; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        .dock-item { color: #94a3b8; font-size: 10px; font-weight: 700; text-align: center; flex: 1; transition: 0.3s; }
+        .dock-item.active { color: #3b82f6; transform: translateY(-5px); }
+        .dock-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+
+        .btn-quantum { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; transition: 0.4s; border-radius: 18px; }
+        .btn-quantum:hover { box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3); transform: translateY(-2px); }
+        
         .hidden { display: none; }
-        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { width: 0px; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50">
 
-    <div class="app-shell shadow-2xl shadow-gray-200">
+    <!-- Background Orbs -->
+    <div class="orb w-64 h-64 bg-blue-200 top-10 -left-20"></div>
+    <div class="orb w-80 h-80 bg-purple-100 bottom-20 -right-20"></div>
+
+    <div class="max-w-md mx-auto min-h-screen relative pb-32">
         
-        <!-- TOP HEADER -->
-        <header class="glass-header px-6 py-5 flex justify-between items-center">
-            <h1 id="main-logo" class="text-2xl font-black text-blue-600 tracking-tighter cursor-pointer">NEXA</h1>
-            <div id="user-actions" class="hidden flex items-center gap-4">
-                <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center"><i class="fa-solid fa-moon text-gray-400"></i></button>
-                <button onclick="logout()" class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500"><i class="fa-solid fa-power-off"></i></button>
+        <!-- HEADER -->
+        <header class="p-6 flex justify-between items-center sticky top-0 z-[100] glass mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black" id="app-logo">N</div>
+                <h1 class="text-xl font-extrabold tracking-tighter">NEXA<span class="text-blue-600">.</span></h1>
+            </div>
+            <div id="top-actions" class="hidden flex gap-3">
+                <div class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-black border border-green-100 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></span> SECURE
+                </div>
             </div>
         </header>
 
-        <!-- PAGE: LOGIN -->
-        <div id="page-login" class="px-8 pt-16">
-            <div class="mb-12">
-                <h2 class="text-3xl font-black mb-2">Welcome to <span class="text-blue-600">NEXA</span></h2>
-                <p class="text-gray-400 font-medium">The most trusted digital node network.</p>
+        <!-- PAGE: AUTH -->
+        <div id="page-auth" class="px-8 pt-12 animate__animated animate__fadeIn">
+            <h2 class="text-4xl font-black mb-2 tracking-tight">Digital <br><span class="text-blue-600">Quantum</span> Node.</h2>
+            <p class="text-gray-400 text-sm mb-10 font-medium">Verified autonomous staking protocol.</p>
+            
+            <div class="space-y-4">
+                <div class="glass p-2 rounded-3xl">
+                    <input type="text" id="username" placeholder="Node Identity" class="w-full p-4 rounded-2xl bg-white border-none outline-none text-sm font-bold">
+                </div>
+                <div class="glass p-2 rounded-3xl">
+                    <input type="password" id="password" placeholder="Access Key" class="w-full p-4 rounded-2xl bg-white border-none outline-none text-sm font-bold">
+                </div>
+                <button onclick="login()" class="w-full btn-quantum py-5 font-black uppercase tracking-widest text-sm shadow-2xl">Initialize Connection</button>
             </div>
-            <form id="login-form" class="space-y-4">
-                <input type="text" id="username" placeholder="Username" class="w-full p-5 rounded-2xl bg-gray-50 border-none outline-none focus:ring-2 ring-blue-100 transition" required>
-                <input type="password" id="password" placeholder="Access Key" class="w-full p-5 rounded-2xl bg-gray-50 border-none outline-none focus:ring-2 ring-blue-100 transition" required>
-                <button type="submit" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black shadow-xl shadow-blue-100 mt-4">AUTHENTICATE</button>
-            </form>
         </div>
 
-        <!-- PAGE: HOME (DASHBOARD) -->
-        <div id="page-home" class="hidden px-6 pt-4 space-y-8">
-            <div class="asset-card p-8 relative overflow-hidden">
+        <!-- PAGE: HOME -->
+        <div id="page-home" class="hidden px-6 pt-4 animate__animated animate__fadeIn">
+            <!-- Balance Card -->
+            <div class="glass p-8 rounded-[40px] border-none shadow-2xl bg-gradient-to-br from-white to-blue-50 relative overflow-hidden">
                 <div class="relative z-10">
-                    <p class="text-[10px] font-bold opacity-60 uppercase tracking-[2px]">Net Portfolio Value</p>
-                    <h2 id="balance" class="text-4xl font-black mt-2 tracking-tight">$0.00</h2>
-                    <div class="flex gap-3 mt-8">
-                        <button onclick="openModal('deposit-modal')" class="flex-1 bg-blue-600 py-3 rounded-xl text-xs font-black">DEPOSIT</button>
-                        <button onclick="openModal('withdraw-modal')" class="flex-1 bg-white/10 py-3 rounded-xl text-xs font-black backdrop-blur-md">WITHDRAW</button>
+                    <div class="flex justify-between items-start mb-6">
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Active Liquidity</p>
+                        <i class="fa-solid fa-signal text-blue-600 text-xs node-pulse"></i>
+                    </div>
+                    <h2 id="balance" class="text-5xl font-black tracking-tighter text-slate-900">$0.00</h2>
+                    <p class="text-[10px] text-green-500 font-bold mt-2">+2.4% Yield Today</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 mt-8">
+                        <button onclick="openModal('dep-modal')" class="btn-quantum py-3 text-xs font-black">STAKE</button>
+                        <button onclick="openModal('wit-modal')" class="bg-slate-900 text-white py-3 rounded-[18px] text-xs font-black">HARVEST</button>
                     </div>
                 </div>
-                <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-blue-500 rounded-full blur-[60px] opacity-20"></div>
+                <i class="fa-solid fa-chart-pie absolute -right-4 -bottom-4 text-8xl opacity-[0.03]"></i>
             </div>
 
-            <div>
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-black text-gray-800 text-lg">Active Nodes</h3>
-                    <button onclick="showPage('nodes')" class="text-blue-600 text-[10px] font-black uppercase">View All</button>
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-3 gap-4 mt-8">
+                <div class="text-center p-4 glass rounded-3xl">
+                    <i class="fa-solid fa-link text-blue-500 mb-2"></i>
+                    <p class="text-[9px] font-bold opacity-40">NODES</p>
+                    <p class="text-sm font-black">128</p>
                 </div>
-                <div id="plans-grid" class="grid grid-cols-2 gap-4">
-                    <!-- Dynamic Plans $5+ -->
+                <div class="text-center p-4 glass rounded-3xl">
+                    <i class="fa-solid fa-shield text-green-500 mb-2"></i>
+                    <p class="text-[9px] font-bold opacity-40">SAFE</p>
+                    <p class="text-sm font-black">100%</p>
                 </div>
+                <div class="text-center p-4 glass rounded-3xl">
+                    <i class="fa-solid fa-users text-purple-500 mb-2"></i>
+                    <p class="text-[9px] font-bold opacity-40">USER</p>
+                    <p class="text-sm font-black">9k+</p>
+                </div>
+            </div>
+
+            <h3 class="font-black text-lg mt-10 mb-6 flex items-center gap-2">
+                <span class="w-1 h-6 bg-blue-600 rounded-full"></span> Available Nodes
+            </h3>
+            <div id="plans-grid" class="grid grid-cols-1 gap-4">
+                <!-- Advanced Plans Go Here -->
             </div>
         </div>
 
-        <!-- PAGE: HISTORY -->
-        <div id="page-history" class="hidden px-6 pt-4">
-            <h3 class="font-black text-2xl mb-6">Activity Logs</h3>
-            <div id="history-list" class="space-y-3">
-                <p class="text-center text-gray-300 text-xs py-20">No transactions recorded yet.</p>
+        <!-- PAGE: ACCOUNT (Referrals & Support) -->
+        <div id="page-account" class="hidden px-6 pt-4 animate__animated animate__fadeIn">
+            <h3 class="font-black text-2xl mb-6">User Protocol</h3>
+            <div class="glass p-6 rounded-[30px] mb-4">
+                <p class="text-xs font-bold text-gray-400 mb-2 uppercase">Referral Link</p>
+                <div class="flex gap-2">
+                    <input type="text" readonly value="https://nexa.com/join?ref=786" class="flex-1 bg-white/50 p-3 rounded-xl text-[10px] border border-dashed border-gray-200">
+                    <button class="bg-blue-600 text-white px-4 rounded-xl text-xs font-bold">COPY</button>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-900 rounded-[30px] text-white">
+                <h4 class="font-bold text-sm mb-4">Need Assistance sweetie?</h4>
+                <button class="w-full bg-white text-slate-900 py-3 rounded-xl font-black text-xs">CHAT WITH AI SUPPORT</button>
             </div>
         </div>
 
-        <!-- PAGE: ABOUT & POLICY -->
-        <div id="page-policy" class="hidden px-6 pt-4">
-            <h3 class="font-black text-2xl mb-6">Security & Policy</h3>
-            <div class="space-y-4">
-                <div class="p-6 bg-gray-50 rounded-3xl border border-gray-100">
-                    <h4 class="font-bold text-sm mb-2 text-blue-600">Data Encryption</h4>
-                    <p class="text-[11px] leading-relaxed text-gray-500">NEXA uses end-to-end 256-bit encryption to protect your node access and financial data. We never store keys on public servers.</p>
-                </div>
-                <div class="p-6 bg-gray-50 rounded-3xl border border-gray-100">
-                    <h4 class="font-bold text-sm mb-2 text-green-600">Withdrawal Rules</h4>
-                    <p class="text-[11px] leading-relaxed text-gray-500">Minimum withdrawal is $10. Transfers are processed via Easypaisa/JazzCash within 24 hours of verification.</p>
-                </div>
-            </div>
-        </div>
+        <!-- DOCK NAVIGATION -->
+        <nav id="dock" class="hidden dock">
+            <button onclick="showPage('home')" class="dock-item active" id="nav-home"><i class="fa-solid fa-ghost"></i>Home</button>
+            <button onclick="showPage('nodes')" class="dock-item" id="nav-nodes"><i class="fa-solid fa-microchip"></i>Nodes</button>
+            <button onclick="showPage('account')" class="dock-item" id="nav-account"><i class="fa-solid fa-user-astronaut"></i>Profile</button>
+            <button onclick="showPage('policy')" class="dock-item" id="nav-policy"><i class="fa-solid fa-fingerprint"></i>Secure</button>
+        </nav>
 
         <!-- MODAL: DEPOSIT -->
-        <div id="deposit-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[2000] flex items-end">
-            <div class="w-full bg-white rounded-t-[40px] p-10 animate-slide-up">
-                <h3 class="text-2xl font-black mb-6 text-center">Fund Account</h3>
-                <div class="bg-blue-50 p-6 rounded-3xl mb-6">
-                    <p class="text-[10px] font-bold text-blue-500 uppercase mb-2">Payment Details</p>
-                    <p class="text-sm font-bold opacity-70">Easypaisa: <span class="text-blue-600">03379827882</span></p>
-                    <p class="text-sm font-bold opacity-70 mt-1">SadaPay: <span class="text-blue-600">03705519562</span></p>
+        <div id="dep-modal" class="hidden fixed inset-0 bg-white z-[5000] p-8 animate__animated animate__slideInUp">
+            <div class="flex justify-between mb-10">
+                <h2 class="text-3xl font-black italic">TRANSFER</h2>
+                <button onclick="closeModal('dep-modal')" class="text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="p-6 bg-blue-600 rounded-[30px] text-white shadow-xl">
+                    <p class="text-[10px] font-bold opacity-60 uppercase mb-4">Official Gateways</p>
+                    <p class="text-lg font-black">Easypaisa: 03379827882</p>
+                    <p class="text-lg font-black mt-2">JazzCash: 03705519562</p>
                 </div>
-                <input type="number" id="d-amount" placeholder="Amount ($)" class="w-full p-5 rounded-2xl bg-gray-50 mb-4 outline-none border-none">
-                <input type="text" id="d-tid" placeholder="Transaction ID (TID)" class="w-full p-5 rounded-2xl bg-gray-50 mb-6 outline-none border-none">
-                <button onclick="submitDeposit()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black shadow-lg">NOTIFY ADMIN</button>
-                <button onclick="closeModal('deposit-modal')" class="w-full mt-4 text-xs font-bold text-gray-300">CANCEL</button>
+                <input type="number" id="d-amt" placeholder="Enter Amount ($)" class="w-full p-5 rounded-3xl bg-gray-50 border-none outline-none font-bold">
+                <input type="text" id="d-tid" placeholder="Enter TID Code" class="w-full p-5 rounded-3xl bg-gray-50 border-none outline-none font-bold">
+                <button onclick="submitDep()" class="w-full btn-quantum py-5 font-black shadow-lg">CONFIRM STAKING</button>
             </div>
         </div>
-
-        <!-- BOTTOM NAVIGATION -->
-        <nav id="navbar" class="hidden bottom-nav">
-            <button onclick="showPage('home')" id="btn-home" class="nav-link active"><i class="fa-solid fa-house-chimney"></i>Home</button>
-            <button onclick="showPage('history')" id="btn-history" class="nav-link"><i class="fa-solid fa-chart-line"></i>Logs</button>
-            <button onclick="showPage('policy')" id="btn-policy" class="nav-link"><i class="fa-solid fa-shield-halved"></i>Policy</button>
-        </nav>
 
     </div>
 
-    <!-- SCRIPT (FIREBASE & LOGIC) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getDatabase, ref, set, get, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBe5Q5jXpx3UvrHC9WOky9UWeDnP9SPfZI",
@@ -138,29 +179,24 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getDatabase(app);
+        const auth = getAuth(app);
 
-        // --- NAVIGATION ENGINE ---
+        // --- ENGINE ---
         window.showPage = (id) => {
-            const pages = ['login', 'home', 'history', 'policy'];
-            pages.forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
+            ['auth', 'home', 'account', 'policy'].forEach(p => document.getElementById('page-' + p)?.classList.add('hidden'));
             document.getElementById('page-' + id).classList.remove('hidden');
-            
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            const activeNav = document.getElementById('btn-' + id);
-            if(activeNav) activeNav.classList.add('active');
+            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+            document.getElementById('nav-' + id)?.classList.add('active');
         };
 
-        // --- LOGIN LOGIC ---
-        document.getElementById('login-form').onsubmit = async (e) => {
-            e.preventDefault();
+        window.login = async () => {
+            const user = document.getElementById('username').value;
             const res = await signInAnonymously(auth);
             const uid = res.user.uid;
-            const name = document.getElementById('username').value;
             
             const snap = await get(ref(db, 'users/' + uid));
-            if(!snap.exists()) await set(ref(db, 'users/' + uid), { username: name, balance: 0, joins: Date.now() });
+            if(!snap.exists()) await set(ref(db, 'users/' + uid), { username: user, balance: 0, rank: 'Bronze' });
             
             localStorage.setItem('nexa_uid', uid);
             location.reload();
@@ -168,74 +204,71 @@
 
         const uid = localStorage.getItem('nexa_uid');
         if(uid) {
-            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-auth').classList.add('hidden');
             document.getElementById('page-home').classList.remove('hidden');
-            document.getElementById('navbar').classList.remove('hidden');
-            document.getElementById('user-actions').classList.remove('hidden');
+            document.getElementById('dock').classList.remove('hidden');
+            document.getElementById('top-actions').classList.remove('hidden');
 
-            // Listen for balance updates
             onValue(ref(db, 'users/' + uid), s => {
                 const d = s.val();
                 if(d) document.getElementById('balance').innerText = `$${d.balance.toFixed(2)}`;
             });
 
-            // Fetch Plans ($5 start)
             onValue(ref(db, 'plans'), s => {
                 const grid = document.getElementById('plans-grid');
                 grid.innerHTML = "";
-                if(s.exists()) {
-                    s.forEach(p => {
-                        const pd = p.val();
-                        grid.innerHTML += `
-                        <div class="p-6 bg-gray-50 rounded-[30px] border border-gray-100 text-center node-btn">
-                            <p class="text-[9px] font-black text-gray-300 uppercase">${pd.name}</p>
-                            <h4 class="text-2xl font-black text-gray-800 my-1">${pd.profit}%</h4>
-                            <p class="text-[9px] text-blue-600 font-bold mb-4 italic">Daily Farm</p>
-                            <button onclick="invest(${pd.min})" class="w-full py-2 bg-white border border-gray-200 rounded-xl text-[10px] font-black hover:bg-blue-600 hover:text-white transition">STAKE $${pd.min}</button>
-                        </div>`;
-                    });
-                }
+                s.forEach(p => {
+                    const pd = p.val();
+                    grid.innerHTML += `
+                    <div class="glass p-6 rounded-[35px] flex justify-between items-center border-none shadow-sm mb-2">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-sm">${pd.name}</h4>
+                                <p class="text-[10px] text-gray-400 font-bold">${pd.profit}% Daily Yield</p>
+                            </div>
+                        </div>
+                        <button onclick="invest(${pd.min})" class="bg-slate-900 text-white px-5 py-2 rounded-xl text-[10px] font-black">STAKE $${pd.min}</button>
+                    </div>`;
+                });
             });
         }
 
-        // --- ADMIN GOD MODE ---
-        let clicks = 0;
-        document.getElementById('main-logo').onclick = () => {
-            clicks++;
-            if(clicks === 4) {
-                const k = prompt("Master Access Key:");
+        // --- GOD MODE (ADMIN) ---
+        let taps = 0;
+        document.getElementById('app-logo').onclick = () => {
+            taps++;
+            if(taps === 4) {
+                const k = prompt("Quantum Master Key:");
                 if(k === "NEXA786") {
-                    const action = prompt("1: Add Plan | 2: View Requests");
-                    if(action === "1") {
-                        const n = prompt("Plan Name:");
-                        const m = prompt("Min Stake ($):");
-                        const p = prompt("Daily %:");
+                    const cmd = prompt("1: Add Plan | 2: Edit User Balance");
+                    if(cmd === "1") {
+                        const n = prompt("Name:"); const m = prompt("Min ($):"); const p = prompt("Profit %:");
                         push(ref(db, 'plans'), { name: n, min: m, profit: p });
-                        alert("Created!");
-                    } else if (action === "2") {
-                        alert("Checking server for pending requests sweetie...");
+                    } else if(cmd === "2") {
+                        const target = prompt("User ID:"); const amt = prompt("New Balance:");
+                        update(ref(db, 'users/' + target), { balance: parseFloat(amt) });
                     }
                 }
             }
-            setTimeout(() => clicks = 0, 2000);
+            setTimeout(() => taps = 0, 2000);
         };
 
         window.openModal = (id) => document.getElementById(id).classList.remove('hidden');
         window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
-        window.logout = () => { localStorage.clear(); location.reload(); };
-        
-        window.submitDeposit = () => {
-            const amt = document.getElementById('d-amount').value;
+        window.submitDep = () => {
+            const amt = document.getElementById('d-amt').value;
             const tid = document.getElementById('d-tid').value;
             if(amt && tid) {
-                push(ref(db, 'requests/deposits'), { uid, amt, tid, time: Date.now() });
-                alert("Request filed sweetie! Wait for verification.");
-                closeModal('deposit-modal');
+                push(ref(db, 'requests/deposits'), { uid, amt, tid, status: 'pending' });
+                alert("Quantum Staking Request Sent sweetie!");
+                closeModal('dep-modal');
             }
         };
 
-        window.invest = (min) => alert(`Insufficient node fuel sweetie! Deposit $${min} or more.`);
-
+        window.invest = (min) => alert(`Sweetie, you need $${min} in your vault to unlock this node!`);
     </script>
 </body>
 </html>
