@@ -3,124 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA | Sovereign Digital Node</title>
+    <title>NEXA | Digital Sovereign</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        :root { --primary: #2563eb; --neon: #00f2ff; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #0f172a; user-select: none; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap');
         
-        /* Glassmorphism */
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .card-main { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; border-radius: 35px; position: relative; overflow: hidden; }
+        :root { --accent: #3b82f6; --neon: #00f2ff; --bg: #05070a; }
+        body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: white; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+
+        /* Neumorphic Glass */
+        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 32px; }
+        .neon-glow { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
         
+        /* Premium Card */
+        .card-elite { background: linear-gradient(160deg, #1e293b 0%, #05070a 100%); border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden; }
+        .card-elite::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%); }
+
+        /* Animated Tabs */
+        .tab-btn { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.5; }
+        .tab-btn.active { opacity: 1; transform: translateY(-5px); color: var(--neon); }
+
+        /* Custom Inputs */
+        .nexa-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; width: 100%; color: white; outline: none; transition: 0.3s; }
+        .nexa-input:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); }
+
         /* Admin Overlay */
-        #admin-panel { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.98); z-index: 2000; display: none; padding: 25px; overflow-y: auto; }
-        .admin-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 20px; transition: 0.3s; }
-        .admin-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
-        
-        /* Neon Animations */
-        .neon-pulse { animation: pulse-blue 2s infinite; }
-        @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
+        #god-ui { position: fixed; inset: 0; background: rgba(5,7,10,0.98); z-index: 9999; display: none; padding: 30px; border-top: 2px solid var(--accent); }
+        .admin-stat { background: rgba(255,255,255,0.03); border-radius: 24px; padding: 20px; border-left: 4px solid var(--accent); }
 
-        .dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; background: #0f172a; border-radius: 28px; padding: 12px; display: flex; justify-content: space-around; z-index: 1000; }
-        .dock-item { color: #64748b; font-size: 10px; font-weight: 700; text-align: center; flex: 1; transition: 0.3s; }
-        .dock-item.active { color: #3b82f6; transform: translateY(-5px); }
-        .dock-item i { font-size: 22px; display: block; margin-bottom: 4px; }
-
-        .input-field { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 18px; width: 100%; outline: none; font-weight: 600; }
-        .btn-premium { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; border-radius: 20px; font-weight: 800; }
         .hidden { display: none; }
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- ADMIN GOD MODE OVERLAY -->
-    <div id="admin-panel" class="animate__animated">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h2 class="text-white text-3xl font-black italic tracking-tighter">GOD MODE<span class="text-blue-500">.</span></h2>
-                <p class="text-blue-400 text-[10px] font-bold tracking-[3px] uppercase">Sovereign Control</p>
-            </div>
-            <button onclick="closeAdmin()" class="w-12 h-12 rounded-2xl bg-white/10 text-white flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+    <!-- GOD MODE OVERLAY -->
+    <div id="god-ui" class="animate__animated">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="font-sync text-2xl font-bold tracking-tighter">GOD<span class="text-blue-500">MODE</span></h2>
+            <button onclick="toggleGodMode(false)" class="w-12 h-12 glass-panel flex items-center justify-center text-red-400"><i class="fa-solid fa-power-off"></i></button>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-            <!-- Balance Hack -->
-            <div onclick="adminEditBalance()" class="admin-card text-center">
-                <i class="fa-solid fa-wand-magic-sparkles text-blue-400 text-3xl mb-3"></i>
-                <h4 class="text-white text-xs font-bold uppercase">Edit Balance</h4>
+        <div class="space-y-6">
+            <div class="admin-stat">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Network Control</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="adminEditBalance()" class="bg-blue-600/20 text-blue-400 p-4 rounded-2xl text-xs font-bold border border-blue-500/30">EDIT BALANCE</button>
+                    <button onclick="adminAddPromo()" class="bg-purple-600/20 text-purple-400 p-4 rounded-2xl text-xs font-bold border border-purple-500/30">NEW PROMO</button>
+                </div>
             </div>
-            <!-- Promo Factory -->
-            <div onclick="adminAddPromo()" class="admin-card text-center">
-                <i class="fa-solid fa-ticket text-purple-400 text-3xl mb-3"></i>
-                <h4 class="text-white text-xs font-bold uppercase">Promo Factory</h4>
-            </div>
-            <!-- Node Injector -->
-            <div onclick="adminAddNode()" class="admin-card text-center">
-                <i class="fa-solid fa-microchip text-green-400 text-3xl mb-3"></i>
-                <h4 class="text-white text-xs font-bold uppercase">Inject Node</h4>
-            </div>
-            <!-- System Purge -->
-            <div onclick="adminSystemWipe()" class="admin-card text-center">
-                <i class="fa-solid fa-skull text-red-500 text-3xl mb-3"></i>
-                <h4 class="text-white text-xs font-bold uppercase">Purge Data</h4>
-            </div>
-        </div>
 
-        <div class="mt-8 p-6 bg-blue-600/10 border border-blue-500/20 rounded-[30px]">
-            <h4 class="text-blue-400 font-black text-xs mb-4 uppercase tracking-widest">Active System Logs</h4>
-            <div id="admin-logs" class="text-[10px] font-mono text-gray-400 space-y-2">
-                <p>> System initialized...</p>
-                <p>> Waiting for master command...</p>
+            <div class="admin-stat">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Plan Injector</p>
+                <button onclick="adminAddNode()" class="w-full bg-green-600/20 text-green-400 p-4 rounded-2xl text-xs font-bold border border-green-500/30">INJECT NEW NODE</button>
+            </div>
+
+            <div class="admin-stat">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Live Console</p>
+                <div id="console" class="font-mono text-[10px] text-blue-300 h-32 overflow-y-auto">
+                    > System Kernel 5.0 Active...<br>
+                    > Encryption Layer: Enabled...
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="max-w-md mx-auto min-h-screen relative pb-32">
-        <!-- HEADER -->
-        <header class="glass sticky top-0 z-[500] px-6 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div id="god-trigger" class="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black shadow-lg cursor-pointer neon-pulse">N</div>
-                <h1 class="text-xl font-extrabold tracking-tighter italic">NEXA<span class="text-blue-600">.</span></h1>
+    <div class="max-w-md mx-auto min-h-screen px-6 py-8 relative">
+        
+        <!-- TOP NAVIGATION -->
+        <header class="flex justify-between items-center mb-10">
+            <div id="nexa-logo" class="flex items-center gap-3 cursor-pointer">
+                <div class="w-12 h-12 glass-panel flex items-center justify-center neon-glow">
+                    <i class="fa-solid fa-atom text-blue-500 animate-spin-slow"></i>
+                </div>
+                <span class="font-sync text-lg font-bold tracking-tighter">NEXA<span class="text-blue-500">.</span></span>
             </div>
-            <button onclick="logout()" id="logout-btn" class="hidden w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center border border-red-100"><i class="fa-solid fa-power-off"></i></button>
+            <div class="flex gap-3">
+                <button onclick="showPage('help')" class="w-12 h-12 glass-panel flex items-center justify-center"><i class="fa-solid fa-shield-halved text-xs text-gray-400"></i></button>
+                <button onclick="logout()" class="w-12 h-12 glass-panel flex items-center justify-center text-red-500"><i class="fa-solid fa-right-from-bracket text-xs"></i></button>
+            </div>
         </header>
 
-        <!-- DASHBOARD (Home Page) -->
-        <div id="p-home" class="px-6 pt-6 animate__animated animate__fadeIn">
-            <div class="card-main p-8 shadow-2xl">
-                <p class="text-[10px] font-bold opacity-50 uppercase tracking-[2px]">Net Liquid Capital</p>
-                <h2 id="user-bal" class="text-5xl font-black mt-2 tracking-tighter">$0.00</h2>
-                <div class="flex gap-3 mt-8">
-                    <button onclick="showPage('deposit')" class="flex-1 bg-blue-600 py-4 rounded-2xl text-[10px] font-black uppercase">Stake</button>
-                    <button onclick="showPage('withdraw')" class="flex-1 bg-white/10 py-4 rounded-2xl text-[10px] font-black backdrop-blur-md uppercase">Harvest</button>
+        <!-- DASHBOARD SECTION -->
+        <section id="sec-home" class="animate__animated animate__fadeIn">
+            <div class="card-elite p-8 rounded-[40px] mb-8">
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] font-bold text-gray-400 tracking-[4px] uppercase">Liquidity Pool</span>
+                        <i class="fa-brands fa-nfc-directional text-blue-500"></i>
+                    </div>
+                    <h2 id="user-bal" class="text-5xl font-bold tracking-tighter mb-8">$0.00</h2>
+                    <div class="flex gap-4">
+                        <button onclick="showPage('deposit')" class="flex-1 bg-blue-600 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-blue-500/20">Deposit</button>
+                        <button onclick="showPage('withdraw')" class="flex-1 glass-panel py-4 rounded-2xl text-[10px] font-bold uppercase tracking-widest">Withdraw</button>
+                    </div>
                 </div>
-                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500 rounded-full blur-[80px] opacity-20"></div>
             </div>
 
-            <div class="mt-8 glass p-5 rounded-[28px] shadow-sm flex items-center gap-3">
-                <input type="text" id="promo-input" placeholder="Promo Code?" class="bg-transparent flex-1 outline-none font-bold text-xs">
-                <button onclick="applyPromo()" class="bg-blue-600 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase">Apply</button>
+            <!-- PROMO WIDGET -->
+            <div class="glass-panel p-5 mb-10 flex items-center gap-4">
+                <div class="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center text-blue-500"><i class="fa-solid fa-tags text-xs"></i></div>
+                <input type="text" id="promo-in" placeholder="Enter Promo" class="bg-transparent flex-1 outline-none text-xs font-bold uppercase tracking-widest">
+                <button onclick="applyPromo()" class="text-blue-500 font-bold text-[10px] uppercase">Apply</button>
             </div>
 
-            <h3 class="font-black text-xl mt-10 mb-6 italic">Network Nodes</h3>
-            <div id="nodes-list" class="space-y-4"></div>
-        </div>
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-sync text-xs font-bold tracking-widest uppercase">Quantum Nodes</h3>
+                <span class="text-[8px] px-3 py-1 bg-green-500/10 text-green-400 rounded-full font-bold">100% SECURE</span>
+            </div>
 
-        <!-- OTHER SECTIONS (DEPOSIT, WITHDRAW) HIDDEN BY DEFAULT -->
-        <div id="p-deposit" class="hidden px-6 pt-6"></div>
-        <div id="p-withdraw" class="hidden px-6 pt-6"></div>
+            <!-- NODES CONTAINER -->
+            <div id="nodes-grid" class="space-y-4 pb-24">
+                <!-- Injected via JS -->
+            </div>
+        </section>
 
-        <!-- DOCK -->
-        <nav id="app-dock" class="hidden dock">
-            <button onclick="showPage('home')" id="nav-home" class="dock-item active"><i class="fa-solid fa-house"></i>Home</button>
-            <button onclick="showPage('deposit')" id="nav-deposit" class="dock-item"><i class="fa-solid fa-wallet"></i>Stake</button>
-            <button onclick="showPage('withdraw')" id="nav-withdraw" class="dock-item"><i class="fa-solid fa-hand-holding-dollar"></i>Harvest</button>
-            <button onclick="showPage('admin')" id="nav-admin" class="dock-item"><i class="fa-solid fa-gear"></i>Setup</button>
+        <!-- DEPOSIT SECTION -->
+        <section id="sec-deposit" class="hidden animate__animated animate__fadeInUp">
+            <h2 class="font-sync text-xl font-bold mb-8 italic">Add <span class="text-blue-500">Liquidity</span></h2>
+            <div class="space-y-6">
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="setDepMethod('Easypaisa')" class="glass-panel p-6 text-center focus:border-blue-500">
+                        <i class="fa-solid fa-mobile-button text-green-500 text-xl mb-2"></i>
+                        <p class="text-[8px] font-bold uppercase">Easypaisa</p>
+                    </button>
+                    <button onclick="setDepMethod('JazzCash')" class="glass-panel p-6 text-center focus:border-blue-500">
+                        <i class="fa-solid fa-bolt text-yellow-500 text-xl mb-2"></i>
+                        <p class="text-[8px] font-bold uppercase">JazzCash</p>
+                    </button>
+                    <button onclick="setDepMethod('SadaPay')" class="glass-panel p-6 text-center focus:border-blue-500">
+                        <i class="fa-solid fa-credit-card text-pink-500 text-xl mb-2"></i>
+                        <p class="text-[8px] font-bold uppercase">SadaPay</p>
+                    </button>
+                </div>
+                <div id="dep-form" class="hidden space-y-4">
+                    <div class="glass-panel p-6 border-blue-500/30">
+                        <p class="text-[10px] text-blue-400 font-bold mb-1">RECIPIENT ACCOUNT</p>
+                        <p class="text-2xl font-bold tracking-widest mb-1">03379827882</p>
+                        <p class="text-[10px] text-gray-500">NAME: NEXA CORP VENTURES</p>
+                    </div>
+                    <input type="number" id="dep-amt" placeholder="Stake Amount ($)" class="nexa-input">
+                    <input type="text" id="dep-tid" placeholder="Transaction ID (TID)" class="nexa-input">
+                    <button onclick="submitDeposit()" class="w-full bg-blue-600 py-5 rounded-2xl font-bold text-xs uppercase tracking-widest shadow-xl">Confirm Staking</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVIGATION DOCK -->
+        <nav class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md glass-panel p-3 flex justify-around items-center z-[1000] border-white/5">
+            <button onclick="showPage('home')" class="tab-btn active"><i class="fa-solid fa-house-chimney text-xl"></i></button>
+            <button onclick="showPage('deposit')" class="tab-btn"><i class="fa-solid fa-plus-minus text-xl"></i></button>
+            <button onclick="showPage('withdraw')" class="tab-btn"><i class="fa-solid fa-hand-holding-dollar text-xl"></i></button>
+            <button onclick="showPage('help')" class="tab-btn"><i class="fa-solid fa-info-circle text-xl"></i></button>
         </nav>
+
     </div>
 
     <script type="module">
@@ -141,107 +180,97 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
-
         const uid = localStorage.getItem('nexa_uid');
 
-        // --- GOD MODE CORE ---
+        // --- NAVIGATION ENGINE ---
+        window.showPage = (id) => {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('sec-' + id)?.classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Visual active state handling
+        };
+
+        // --- GOD MODE ENGINE ---
         let taps = 0;
-        document.getElementById('god-trigger').onclick = () => {
+        document.getElementById('nexa-logo').onclick = () => {
             taps++;
             if(taps === 4) {
-                const pass = prompt("Enter Master Key:");
-                if(pass === "NEXA786") {
-                    document.getElementById('admin-panel').style.display = 'block';
-                    document.getElementById('admin-panel').classList.add('animate__fadeInUp');
-                    logAdmin("Root Access Granted.");
-                }
+                const p = prompt("Master Access Key:");
+                if(p === "NEXA786") toggleGodMode(true);
                 taps = 0;
             }
             setTimeout(() => taps = 0, 2000);
         };
 
-        window.closeAdmin = () => {
-            document.getElementById('admin-panel').classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
-            setTimeout(() => {
-                document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('admin-panel').classList.remove('animate__fadeOutDown');
-            }, 500);
+        window.toggleGodMode = (show) => {
+            const ui = document.getElementById('god-ui');
+            ui.style.display = show ? 'block' : 'none';
+            if(show) ui.classList.add('animate__fadeInUp');
         };
 
-        function logAdmin(msg) {
-            const logs = document.getElementById('admin-logs');
-            logs.innerHTML += `<p>> ${msg}</p>`;
-            logs.scrollTop = logs.scrollHeight;
-        }
-
-        // --- ADMIN ACTIONS ---
+        // --- ADMIN COMMANDS ---
         window.adminEditBalance = async () => {
-            const target = prompt("Target User UID:");
-            const amount = prompt("New Balance ($):");
-            if(target && amount) {
-                await update(ref(db, `users/${target}`), { balance: parseFloat(amount) });
-                logAdmin(`Balance updated for ${target} to $${amount}`);
-                alert("Done sweetie!");
+            const id = prompt("User UID:");
+            const bal = prompt("New Balance ($):");
+            if(id && bal) {
+                await update(ref(db, `users/${id}`), { balance: parseFloat(bal) });
+                alert("Financial Matrix Updated sweetie!");
             }
         };
 
         window.adminAddPromo = async () => {
-            const code = prompt("New Promo Code:").toUpperCase();
-            const bonus = prompt("Bonus Amount ($):");
-            if(code && bonus) {
-                await set(ref(db, `promos/${code}`), { bonus: parseFloat(bonus) });
-                logAdmin(`Promo Code ${code} created with$${bonus} bonus.`);
-                alert("Promo factory active sweetie!");
-            }
+            const c = prompt("Code:").toUpperCase();
+            const b = prompt("Bonus ($):");
+            if(c && b) await set(ref(db, `promos/${c}`), { bonus: parseFloat(b) });
         };
 
-        window.adminAddNode = async () => {
-            const name = prompt("Node Name:");
-            const min = prompt("Min Stake ($):");
-            const profit = prompt("Daily Profit (%):");
-            if(name && min) {
-                await push(ref(db, 'plans'), { name, min: parseFloat(min), profit: parseFloat(profit) });
-                logAdmin(`New Node [${name}] injected into network.`);
-            }
-        };
-
-        // --- CORE FUNCTIONALITY ---
-        async function initApp() {
+        // --- CORE LOGIC ---
+        async function initialize() {
             if(!uid) {
-                const user = prompt("Node Name sweetie?");
-                if(user) {
+                const name = prompt("Enter Node Name sweetie:");
+                if(name) {
                     const res = await signInAnonymously(auth);
-                    await set(ref(db, `users/${res.user.uid}`), { username: user, balance: 0 });
+                    await set(ref(db, `users/${res.user.uid}`), { username: name, balance: 0 });
                     localStorage.setItem('nexa_uid', res.user.uid);
                     location.reload();
                 }
             } else {
-                document.getElementById('app-dock').classList.remove('hidden');
                 onValue(ref(db, `users/${uid}`), s => {
                     if(s.exists()) document.getElementById('user-bal').innerText = `$${s.val().balance.toFixed(2)}`;
                 });
+                
+                // Load Nodes
                 onValue(ref(db, 'plans'), s => {
-                    const list = document.getElementById('nodes-list');
-                    list.innerHTML = "";
+                    const grid = document.getElementById('nodes-grid');
+                    grid.innerHTML = "";
                     s.forEach(p => {
                         const d = p.val();
-                        list.innerHTML += `<div class="glass p-5 rounded-[28px] flex justify-between items-center animate__animated animate__fadeInUp">
+                        grid.innerHTML += `
+                        <div class="glass-panel p-6 flex justify-between items-center animate__animated animate__fadeInUp">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center"><i class="fa-solid fa-microchip"></i></div>
-                                <div><h4 class="text-xs font-black uppercase text-gray-400">${d.name}</h4><p class="text-sm font-black">${d.profit}% Daily</p></div>
+                                <div class="w-12 h-12 bg-blue-600/10 rounded-2xl flex items-center justify-center text-blue-500 shadow-inner">
+                                    <i class="fa-solid fa-microchip text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">${d.name}</h4>
+                                    <p class="text-sm font-bold text-blue-400">${d.profit}% Daily Yield</p>
+                                </div>
                             </div>
-                            <button onclick="alert('Insufficient Funds!')" class="bg-slate-900 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase">Stake $${d.min}</button>
+                            <button class="bg-white/5 px-6 py-3 rounded-xl text-[10px] font-bold uppercase border border-white/10 hover:bg-blue-600 transition">Stake $${d.min}</button>
                         </div>`;
                     });
                 });
             }
         }
 
-        window.showPage = (id) => {
-            alert(`Page ${id} is ready to be linked sweetie! Master Dashboard is Live.`);
+        window.setDepMethod = (m) => {
+            document.getElementById('dep-form').classList.remove('hidden');
+            // Add focus visual
         };
 
-        initApp();
+        window.logout = () => { localStorage.clear(); location.reload(); };
+        
+        initialize();
     </script>
 </body>
 </html>
