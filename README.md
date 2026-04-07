@@ -2,148 +2,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA PRO | Authority v5</title>
+    <title>NEXA NODES | High-Yield Mining</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #0F172A; color: #F8FAFC; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; }
-        .gold-text { background: linear-gradient(to right, #FDE68A, #F59E0B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
-        .icon-btn { width: 52px; height: 52px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.3s; }
-        .icon-btn:active { transform: scale(0.9); background: rgba(99, 102, 241, 0.2); }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 10px; }
-        .nav-item { color: #64748B; font-size: 22px; transition: 0.3s; }
-        .nav-item.active { color: #6366F1; }
-        .plan-card { transition: 0.3s; border-left: 4px solid #6366F1; }
-        .animate-spin-slow { animation: spin 8s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        :root { --primary: #2563eb; --bg: #F8FAFC; --card: #FFFFFF; --text: #1E293B; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-tap-highlight-color: transparent; }
+        .trust-card { background: var(--card); border-radius: 24px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37,99,235,0.2); transition: 0.3s; }
+        .btn-primary:active { transform: scale(0.96); }
+        .nav-active { color: var(--primary) !important; border-top: 3px solid var(--primary); }
+        input, select { background: #F1F5F9 !important; border: 1px solid #E2E8F0 !important; color: #1E293B !important; }
+        .status-badge { padding: 2px 8px; border-radius: 100px; font-size: 7px; font-weight: 900; text-transform: uppercase; }
     </style>
 </head>
-<body class="pb-28">
+<body class="pb-24">
 
-    <!-- AUTH SCREEN -->
-    <div id="auth-screen" class="fixed inset-0 bg-[#0F172A] z-[9999] flex flex-col items-center justify-center p-10">
-        <div class="w-20 h-20 bg-indigo-600 rounded-[30px] flex items-center justify-center text-3xl mb-8 shadow-[0_0_40px_rgba(79,70,229,0.4)] animate-pulse">
-            <i class="fa-solid fa-crown"></i>
-        </div>
-        <h1 class="text-2xl font-black italic tracking-widest mb-10 text-white uppercase">Nexa <span class="text-indigo-500">Nodes</span></h1>
-        <div class="w-full max-w-xs space-y-4">
-            <input type="text" id="user-name" placeholder="Full Name" class="w-full p-5 rounded-2xl bg-slate-800/50 border border-slate-700 outline-none font-bold text-slate-200">
-            <input type="password" id="admin-key" placeholder="Security Key (Optional)" class="w-full p-5 rounded-2xl bg-slate-800/50 border border-slate-700 outline-none font-bold text-slate-200">
-            <button onclick="handleLogin()" class="w-full bg-indigo-600 p-5 rounded-2xl font-black uppercase text-xs tracking-widest text-white">Connect Rig</button>
+    <!-- LOGIN / AUTH -->
+    <div id="auth-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-8">
+        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl mb-4 shadow-xl shadow-blue-200"><i class="fa-solid fa-server"></i></div>
+        <h1 class="text-xl font-extrabold tracking-tight mb-2">NEXA <span class="text-blue-600">NODES</span></h1>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-8 text-center">Institutional Mining Interface</p>
+        <div class="w-full max-w-xs space-y-3">
+            <input type="text" id="user-name" placeholder="Full Member Name" class="w-full p-4 rounded-xl outline-none text-sm font-semibold">
+            <input type="password" id="admin-key" placeholder="Security Key (Optional)" class="w-full p-4 rounded-xl outline-none text-sm font-semibold">
+            <button onclick="handleLogin()" class="w-full btn-primary p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest">Access Secure Dashboard</button>
         </div>
     </div>
 
     <!-- MAIN APP -->
     <div id="app" class="hidden">
-        <header class="p-6 flex justify-between items-center sticky top-0 bg-[#0F172A]/80 backdrop-blur-md z-[100]">
+        
+        <header class="p-6 flex justify-between items-center bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
             <div>
-                <h3 id="display-name" class="text-sm font-black uppercase tracking-tighter">User</h3>
-                <p class="text-[8px] font-black text-indigo-500 uppercase">Live Node Active</p>
+                <h3 id="display-name" class="text-sm font-extrabold text-slate-800">--</h3>
+                <p class="text-[8px] font-black text-blue-600 uppercase tracking-widest"><i class="fa-solid fa-circle-check mr-1"></i> Verified Operator</p>
             </div>
-            <div class="flex gap-2">
-                <button onclick="nav('admin')" id="admin-btn" class="hidden w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-bolt"></i></button>
-                <button onclick="logout()" class="w-10 h-10 bg-slate-800 text-slate-500 rounded-xl flex items-center justify-center"><i class="fa-solid fa-power-off"></i></button>
-            </div>
+            <button onclick="logout()" class="w-10 h-10 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center"><i class="fa-solid fa-power-off"></i></button>
         </header>
 
         <!-- PAGE: HOME -->
-        <main id="page-home" class="page-content px-6 space-y-8 animate__animated animate__fadeIn">
-            <div class="glass-card p-8 text-center border-t-2 border-indigo-500/50">
-                <p class="text-[9px] font-black text-slate-500 uppercase tracking-[4px] mb-4">Balance Assets</p>
-                <h2 id="user-bal" class="text-5xl font-black tracking-tighter mb-2">$0.00</h2>
-                <p id="pkr-bal" class="text-[10px] font-bold text-indigo-400">Rs. 0</p>
-            </div>
-
-            <div class="glass-card p-6 flex items-center justify-between border-l-4 border-green-500">
-                <div>
-                    <p class="text-[8px] font-black text-slate-500 uppercase">Auto-Mining Cycle</p>
-                    <p id="countdown" class="text-lg font-black text-green-400 tracking-widest">23:59:59</p>
-                </div>
-                <div class="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-500 animate-spin-slow">
-                    <i class="fa-solid fa-gear"></i>
+        <main id="page-home" class="page-content px-6 py-6 space-y-6">
+            <div class="trust-card p-8 text-center border-t-[6px] border-blue-600 relative overflow-hidden">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[3px] mb-2">Portfolio Valuation</p>
+                <h2 id="user-bal" class="text-4xl font-extrabold text-slate-900">$0.00</h2>
+                <p id="pkr-bal" class="text-xs font-bold text-blue-500 mt-1 italic">≈ Rs. 0.00</p>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="nav('deposit')" class="flex-1 btn-primary py-3 rounded-xl text-[9px] font-black uppercase">Add Funds</button>
+                    <button onclick="nav('withdraw')" class="flex-1 bg-slate-900 text-white py-3 rounded-xl text-[9px] font-black uppercase">Payout</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-4 gap-4">
-                <div onclick="nav('nodes')" class="flex flex-col items-center">
-                    <div class="icon-btn text-indigo-400"><i class="fa-solid fa-server"></i></div>
-                    <span class="text-[8px] font-black text-slate-500 uppercase mt-2">Nodes</span>
+            <!-- ANALYTICS -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="trust-card p-5">
+                    <i class="fa-solid fa-microchip text-blue-600 text-xs mb-2"></i>
+                    <p class="text-[8px] font-bold text-slate-400 uppercase">Active Rigs</p>
+                    <p id="active-plans" class="text-xl font-extrabold">0</p>
                 </div>
-                <div onclick="nav('deposit')" class="flex flex-col items-center">
-                    <div class="icon-btn text-blue-400"><i class="fa-solid fa-plus-circle"></i></div>
-                    <span class="text-[8px] font-black text-slate-500 uppercase mt-2">Fund</span>
+                <div class="trust-card p-5">
+                    <i class="fa-solid fa-users text-blue-600 text-xs mb-2"></i>
+                    <p class="text-[8px] font-bold text-slate-400 uppercase">Team Size</p>
+                    <p id="team-count" class="text-xl font-extrabold">0</p>
                 </div>
-                <div onclick="nav('withdraw')" class="flex flex-col items-center">
-                    <div class="icon-btn text-red-400"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
-                    <span class="text-[8px] font-black text-slate-500 uppercase mt-2">Out</span>
+            </div>
+
+            <!-- PROMO CLAIM -->
+            <div class="trust-card p-5 border-l-4 border-amber-400">
+                <p class="text-[9px] font-extrabold uppercase text-slate-500 mb-3">Claim Incentive Bonus</p>
+                <div class="flex gap-2">
+                    <input id="promo-input" placeholder="Promo Code (e.g. GOLD214)" class="flex-1 p-3 rounded-lg text-[10px] uppercase font-bold outline-none">
+                    <button onclick="submitPromo()" class="bg-amber-400 text-black px-4 rounded-lg text-[9px] font-black uppercase">Submit</button>
                 </div>
-                <div onclick="nav('info')" class="flex flex-col items-center">
-                    <div class="icon-btn text-amber-400"><i class="fa-solid fa-shield-halved"></i></div>
-                    <span class="text-[8px] font-black text-slate-500 uppercase mt-2">Legal</span>
+                <p id="promo-msg" class="text-[7px] mt-2 font-black text-blue-500 uppercase tracking-tighter"></p>
+            </div>
+
+            <!-- INVITE -->
+            <div class="trust-card p-5">
+                <p class="text-[9px] font-extrabold uppercase text-slate-500 mb-2">Partnership ID</p>
+                <div class="flex gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                    <input id="ref-link" readonly value="..." class="flex-1 bg-transparent text-[9px] font-bold text-blue-600 border-none outline-none">
+                    <button onclick="copyRef()" class="text-slate-400 px-2"><i class="fa-solid fa-copy"></i></button>
                 </div>
             </div>
         </main>
 
         <!-- PAGE: NODES (15+5) -->
-        <main id="page-nodes" class="page-content hidden px-6 space-y-6 pb-20">
-            <h2 class="text-xl font-black italic gold-text">MINING RIGS</h2>
-            <div id="nodes-container" class="space-y-4"></div>
+        <main id="page-nodes" class="page-content hidden px-6 py-6 space-y-4">
+            <h2 class="text-lg font-extrabold uppercase tracking-tighter">Mining Infrastructure</h2>
+            <div id="nodes-container" class="space-y-3 pb-10"></div>
         </main>
 
-        <!-- PAGE: DEPOSIT -->
-        <main id="page-deposit" class="page-content hidden px-6 space-y-6">
-            <h2 class="text-xl font-black italic uppercase">Funding Center</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="openPay('JazzCash','03705519562')" class="glass-card p-6 text-center border-b-4 border-red-600">
-                    <i class="fa-solid fa-building-columns text-red-500 text-2xl mb-2"></i>
-                    <p class="text-[10px] font-black uppercase">JazzCash</p>
-                </div>
-                <div onclick="openPay('Easypaisa','03332637235')" class="glass-card p-6 text-center border-b-4 border-green-600">
-                    <i class="fa-solid fa-wallet text-green-500 text-2xl mb-2"></i>
-                    <p class="text-[10px] font-black uppercase">Easypaisa</p>
-                </div>
+        <!-- PAGE: WITHDRAW -->
+        <main id="page-withdraw" class="page-content hidden px-6 py-6 space-y-6">
+            <h2 class="text-lg font-extrabold uppercase tracking-tighter">Liquidity Payout</h2>
+            <div class="trust-card p-6 space-y-4">
+                <select id="w-method" class="w-full p-4 rounded-xl outline-none text-xs font-bold">
+                    <option value="JazzCash">JazzCash</option>
+                    <option value="Easypaisa">Easypaisa</option>
+                </select>
+                <input type="text" id="w-num" placeholder="Account Number" class="w-full p-4 rounded-xl outline-none text-xs font-bold">
+                <input type="number" id="w-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl outline-none text-xs font-bold">
+                <button onclick="submitWithdraw()" class="w-full btn-primary p-4 rounded-xl font-bold uppercase text-[9px]">Initiate Withdrawal</button>
+            </div>
+        </main>
+
+        <!-- PAGE: LEGAL / ABOUT -->
+        <main id="page-info" class="page-content hidden px-6 py-6 space-y-6 pb-24">
+            <h2 class="text-lg font-extrabold uppercase tracking-tighter">Corporate Compliance</h2>
+            <div class="trust-card p-6 space-y-6 text-[10px] leading-relaxed text-slate-600">
+                <section>
+                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Mission Statement</h4>
+                    <p>Nexa Nodes provides high-performance computing power to global blockchain networks, allowing retail investors to earn stable daily yields.</p>
+                </section>
+                <section>
+                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Privacy Protocol</h4>
+                    <p>Humara platform 256-bit encryption use karta hai. Aapki banking info aur private data kabhi store ya share nahi hota.</p>
+                </section>
+                <section>
+                    <h4 class="text-slate-900 font-extrabold mb-1 uppercase tracking-widest">Standard Terms</h4>
+                    <ul class="list-disc ml-4 space-y-1">
+                        <li>Withdrawal processing: 1-12 Business Hours.</li>
+                        <li>Strict KYC: One account per person only.</li>
+                        <li>Min Withdrawal: $1 (285 PKR).</li>
+                    </ul>
+                </section>
+                <a href="https://chat.whatsapp.com/EbfTbr66JQLFEmjnxrReE3" class="block w-full bg-green-500 text-white p-4 rounded-xl text-center font-bold uppercase text-[9px]">
+                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Official Support Group
+                </a>
             </div>
         </main>
 
         <!-- PAGE: ADMIN -->
-        <main id="page-admin" class="page-content hidden px-6 space-y-6">
-            <h2 class="text-xl font-black text-red-600 italic uppercase">Master Control</h2>
-            <div id="admin-requests" class="space-y-4 text-center text-slate-600 text-[10px]">Scanning for signals...</div>
+        <main id="page-admin" class="page-content hidden px-6 py-6 space-y-6">
+            <h2 class="text-lg font-extrabold text-red-600 uppercase">Administrator Hub</h2>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="loadAdmin('dep')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-[8px] font-black">DEPOSITS</button>
+                <button onclick="loadAdmin('wit')" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-[8px] font-black">PAYOUTS</button>
+                <button onclick="loadAdminPromo()" class="bg-amber-500 text-white px-4 py-2 rounded-lg text-[8px] font-black">PROMO REQS</button>
+                <button onclick="loadUsers()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-[8px] font-black">BONUSES</button>
+            </div>
+            <div id="admin-list" class="space-y-4"></div>
         </main>
 
-        <!-- NAV -->
-        <nav class="bottom-nav">
-            <div onclick="nav('home')" class="nav-item active" id="btn-home"><i class="fa-solid fa-house-user"></i></div>
-            <div onclick="nav('nodes')" class="nav-item" id="btn-nodes"><i class="fa-solid fa-microchip"></i></div>
-            <div onclick="nav('deposit')" class="nav-item" id="btn-deposit"><i class="fa-solid fa-circle-plus"></i></div>
-            <div onclick="nav('admin')" class="nav-item hidden" id="btn-admin"><i class="fa-solid fa-bolt"></i></div>
+        <!-- NAVIGATION -->
+        <nav class="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 flex justify-around items-center z-50 px-2">
+            <div onclick="nav('home')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-home"><i class="fa-solid fa-house"></i><span class="text-[8px] font-black mt-1 uppercase">Home</span></div>
+            <div onclick="nav('nodes')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-nodes"><i class="fa-solid fa-microchip"></i><span class="text-[8px] font-black mt-1 uppercase">Nodes</span></div>
+            <div onclick="nav('withdraw')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-withdraw"><i class="fa-solid fa-wallet"></i><span class="text-[8px] font-black mt-1 uppercase">Cash</span></div>
+            <div onclick="nav('info')" class="nav-item flex flex-col items-center flex-1 py-3 text-slate-400" id="btn-info"><i class="fa-solid fa-shield-halved"></i><span class="text-[8px] font-black mt-1 uppercase">Legal</span></div>
+            <div onclick="nav('admin')" class="nav-item hidden flex flex-col items-center flex-1 py-3 text-red-500" id="btn-admin"><i class="fa-solid fa-user-gear"></i><span class="text-[8px] font-black mt-1 uppercase">Admin</span></div>
         </nav>
     </div>
 
     <!-- PAYMENT MODAL -->
-    <div id="pay-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[10000] hidden flex items-center justify-center p-8">
-        <div class="glass-card p-8 w-full max-w-sm animate__animated animate__zoomIn">
-            <h3 id="m-gw" class="text-xl font-black gold-text mb-6 uppercase">--</h3>
-            <div class="bg-white/5 p-4 rounded-xl flex justify-between items-center mb-6 border border-white/10">
-                <span id="m-num" class="font-black text-indigo-400 tracking-widest text-lg">--</span>
-                <i onclick="copyNum()" class="fa-solid fa-copy text-slate-500"></i>
+    <div id="pay-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-6">
+        <div class="trust-card p-8 w-full max-w-sm">
+            <h3 id="m-gw" class="text-lg font-extrabold text-blue-600 mb-2 uppercase">--</h3>
+            <p id="m-num" class="bg-slate-50 p-4 rounded-xl font-bold text-slate-900 text-center tracking-widest text-lg mb-6 border border-slate-100" onclick="copyNum()">--</p>
+            <div class="space-y-3">
+                <input type="number" id="m-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl outline-none text-xs font-bold">
+                <input type="text" id="m-tid" placeholder="Transaction ID (TID)" class="w-full p-4 rounded-xl outline-none text-xs font-bold">
+                <button onclick="submitDep()" class="w-full btn-primary p-4 rounded-xl font-bold uppercase text-[9px]">Confirm Funding</button>
+                <button onclick="closeModal()" class="w-full text-slate-400 text-[8px] font-bold uppercase mt-2">Cancel</button>
             </div>
-            <input type="number" id="m-amt" placeholder="Amount ($)" class="w-full p-4 rounded-xl bg-black border border-slate-800 text-white mb-4 outline-none font-bold">
-            <input type="text" id="m-tid" placeholder="Transaction ID (TID)" class="w-full p-4 rounded-xl bg-black border border-slate-800 text-white mb-6 outline-none font-bold">
-            <button onclick="submitDep()" class="w-full bg-indigo-600 p-4 rounded-xl font-black uppercase text-[10px]">Verify Assets</button>
-            <button onclick="closeModal()" class="w-full text-slate-600 text-[8px] font-black uppercase mt-4">Abort Session</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue, update, push, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, get, onValue, update, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyBe5Q5jXpx3UvrHC9WOky9UWeDnP9SPfZI",
             authDomain: "verbose-6c008.firebaseapp.com",
@@ -157,8 +188,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
-        const PKR_RATE = 285;
-        let user = null, uid = "";
+        const RATE = 285;
+        let userData = null, uid = "";
 
         // AUTH
         window.handleLogin = async () => {
@@ -167,10 +198,12 @@
             if(!name) return alert("Sweetie, enter your name!");
             const res = await signInAnonymously(auth);
             uid = res.user.uid;
-            const role = (key === "sweetie786") ? "admin" : "user";
             const s = await get(ref(db, `users/${uid}`));
-            if(!s.exists()) await set(ref(db, `users/${uid}`), { username: name, balance: 0, role, join_date: Date.now() });
-            else if(key === "sweetie786") await update(ref(db, `users/${uid}`), { role: "admin" });
+            if(!s.exists()) {
+                await set(ref(db, `users/${uid}`), { username: name, balance: 0, role: (key==="sweetie786"?"admin":"user"), joined: Date.now(), plans: 0, team: 0 });
+            } else if(key==="sweetie786") {
+                await update(ref(db, `users/${uid}`), { role: "admin" });
+            }
             location.reload();
         };
 
@@ -178,103 +211,173 @@
             if(u) {
                 uid = u.uid;
                 onValue(ref(db, `users/${uid}`), s => {
-                    user = s.val();
-                    document.getElementById('display-name').innerText = user.username;
-                    document.getElementById('user-bal').innerText = `$${(user.balance || 0).toFixed(2)}`;
-                    document.getElementById('pkr-bal').innerText = `Rs. ${(user.balance * PKR_RATE).toLocaleString()}`;
-                    if(user.role === 'admin') {
-                        document.getElementById('btn-admin').classList.remove('hidden');
-                        document.getElementById('admin-btn').classList.remove('hidden');
-                        loadAdmin();
-                    }
+                    userData = s.val();
+                    document.getElementById('display-name').innerText = userData.username;
+                    document.getElementById('user-bal').innerText = `$${(userData.balance || 0).toFixed(2)}`;
+                    document.getElementById('pkr-bal').innerText = `≈ Rs. ${(userData.balance * RATE).toLocaleString()}`;
+                    document.getElementById('active-plans').innerText = userData.plans || 0;
+                    document.getElementById('team-count').innerText = userData.team || 0;
+                    document.getElementById('ref-link').value = `https://nexanodes.com/reg?id=${uid}`;
+                    if(userData.role === 'admin') document.getElementById('btn-admin').classList.remove('hidden');
                 });
-                loadNodes(); startTimer();
+                loadNodes(); nav('home');
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
             }
         });
 
-        // NAV
+        // CORE NAV
         window.nav = (id) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('nav-active'));
             document.getElementById(`page-${id}`).classList.remove('hidden');
-            document.getElementById(`btn-${id}`)?.classList.add('active');
+            document.getElementById(`btn-${id}`)?.classList.add('nav-active');
         };
 
-        // NODES (15 STANDARD + 5 VIP)
+        // NODES SYSTEM (15 Tiers + 5 VIP)
         function loadNodes() {
-            const container = document.getElementById('nodes-container');
-            container.innerHTML = "";
-            for(let i=1; i<=15; i++) {
-                const cost = i * 5;
-                container.innerHTML += createNodeCard(`Nexa Standard v${i}`, cost, 'indigo', 'fa-microchip');
-            }
-            const vip = [200, 500, 1000, 2500, 5000];
-            vip.forEach((c, idx) => container.innerHTML += createNodeCard(`ELITE VIP ${idx+1}`, c, 'yellow', 'fa-crown'));
+            const con = document.getElementById('nodes-container');
+            con.innerHTML = "";
+            for(let i=1; i<=15; i++) con.innerHTML += createNode(`Quantum Node v.${i}`, i*5, 'blue');
+            [200, 500, 1000, 2500, 5000].forEach((c, idx) => con.innerHTML += createNode(`Institutional Rig VIP ${idx+1}`, c, 'indigo'));
         }
-
-        function createNodeCard(n, c, col, icon) {
-            return `<div class="glass-card p-5 flex justify-between items-center border-l-4 border-${col}-500">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-${col}-500/10 rounded-xl flex items-center justify-center text-${col}-500"><i class="fa-solid ${icon}"></i></div>
-                    <div>
-                        <h4 class="text-[10px] font-black uppercase text-white">${n}</h4>
-                        <p class="text-[9px] text-slate-500 font-bold">$${c} <span class="text-${col}-400">(Rs. ${(c*PKR_RATE).toLocaleString()})</span></p>
-                    </div>
-                </div>
-                <button class="bg-${col}-600 px-4 py-2 rounded-xl text-[8px] font-black uppercase">Activate</button>
+        function createNode(n, c, col) {
+            return `<div class="trust-card p-4 flex justify-between items-center border-l-4 border-${col}-600">
+                <div><p class="text-[9px] font-black text-slate-800 uppercase">${n}</p><p class="text-[8px] text-slate-400 font-bold">$${c} • Rs. ${c*RATE}</p></div>
+                <button onclick="buyPlan(${c})" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-[8px] font-black border border-blue-100 uppercase">Deploy</button>
             </div>`;
         }
-
-        // DEPOSIT
-        window.openPay = (gw, n) => {
-            document.getElementById('m-gw').innerText = gw;
-            document.getElementById('m-num').innerText = n;
-            document.getElementById('pay-modal').classList.remove('hidden');
+        window.buyPlan = async (c) => {
+            if(userData.balance < c) return alert("Sweetie, balance low hai!");
+            await update(ref(db, `users/${uid}`), { balance: userData.balance - c, plans: (userData.plans || 0) + 1 });
+            alert("Rig Deployment Successful!");
         };
+
+        // PROMO REQUEST SYSTEM (Manual)
+        window.submitPromo = async () => {
+            const code = document.getElementById('promo-input').value.trim().toUpperCase();
+            if(!code) return alert("Sweetie, code to likho!");
+            await push(ref(db, 'promo_requests'), { uid, username: userData.username, code, status: 'pending', time: Date.now() });
+            document.getElementById('promo-msg').innerText = "Request Logged. Waiting for Admin Approval... ⏳";
+            document.getElementById('promo-input').value = "";
+        };
+
+        // FUNDING & PAYOUTS
+        window.openPay = (gw, n) => { document.getElementById('m-gw').innerText = gw; document.getElementById('m-num').innerText = n; document.getElementById('pay-modal').classList.remove('hidden'); };
         window.closeModal = () => document.getElementById('pay-modal').classList.add('hidden');
         window.submitDep = async () => {
             const a = parseFloat(document.getElementById('m-amt').value);
             const t = document.getElementById('m-tid').value;
-            if(!a || !t) return alert("Fill all fields!");
-            await push(ref(db, 'deposits'), { uid, username: user.username, amount: a, tid: t, method: document.getElementById('m-gw').innerText, status: 'pending', time: Date.now() });
-            alert("Sent for verification! 🚀"); closeModal();
+            if(!a || !t) return alert("Fill all details!");
+            await push(ref(db, 'deposits'), { uid, username: userData.username, amount: a, tid: t, method: document.getElementById('m-gw').innerText, status: 'pending' });
+            alert("Funding request submitted!"); closeModal();
+        };
+        window.submitWithdraw = async () => {
+            const a = parseFloat(document.getElementById('w-amt').value);
+            const n = document.getElementById('w-num').value;
+            const m = document.getElementById('w-method').value;
+            if(userData.balance < a || a < 1) return alert("Insufficient Liquidity!");
+            await update(ref(db, `users/${uid}`), { balance: userData.balance - a });
+            await push(ref(db, 'withdraws'), { uid, username: userData.username, amount: a, number: n, method: m, status: 'pending' });
+            alert("Withdrawal Logged!");
         };
 
-        // ADMIN
-        function loadAdmin() {
-            onValue(ref(db, 'deposits'), s => {
-                const con = document.getElementById('admin-requests'); con.innerHTML = "";
+        // ADMIN FUNCTIONS
+        window.loadAdmin = (tab) => {
+            const path = tab === 'dep' ? 'deposits' : 'withdraws';
+            onValue(ref(db, path), s => {
+                const con = document.getElementById('admin-list'); con.innerHTML = "";
                 s.forEach(c => {
                     const d = c.val();
                     if(d.status === 'pending') {
-                        con.innerHTML += `<div class="glass-card p-5 border-l-4 border-indigo-500 text-left">
-                            <p class="text-[10px] font-bold text-white">${d.username} sent $${d.amount}</p>
-                            <p class="text-[8px] text-slate-500 mb-4">TID: ${d.tid}</p>
-                            <button onclick="approveDep('${c.key}', '${d.uid}', ${d.amount})" class="w-full bg-indigo-600 py-2 rounded-lg text-[8px] font-black uppercase tracking-widest">Approve</button>
+                        con.innerHTML += `<div class="trust-card p-4 text-[9px] bg-slate-50 border-none">
+                            <p class="font-black text-slate-800 uppercase">${d.username} | <span class="text-blue-600">$${d.amount}</span></p>
+                            <p class="text-slate-400 mb-3 tracking-tighter">${tab==='dep'?'TID: '+d.tid : 'Number: '+d.number}</p>
+                            <button onclick="approveAction('${path}', '${c.key}', '${d.uid}', ${d.amount}, '${tab}')" class="w-full btn-primary py-2 rounded-lg font-black">Approve</button>
                         </div>`;
                     }
                 });
             });
-        }
-        window.approveDep = async (k, u, a) => {
-            const snap = await get(ref(db, `users/${u}/balance`));
-            await update(ref(db, `users/${u}`), { balance: (snap.val() || 0) + a });
-            await update(ref(db, `deposits/${k}`), { status: 'approved' });
-            alert("Approved!");
         };
 
-        function startTimer() {
-            let h=23, m=59, s=59;
-            setInterval(() => {
-                s--; if(s<0){s=59; m--;} if(m<0){m=59; h--;} if(h<0) h=23;
-                document.getElementById('countdown').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-            }, 1000);
-        }
+        window.loadAdminPromo = () => {
+            onValue(ref(db, 'promo_requests'), s => {
+                const con = document.getElementById('admin-list'); con.innerHTML = "";
+                s.forEach(c => {
+                    const d = c.val();
+                    if(d.status === 'pending') {
+                        con.innerHTML += `<div class="trust-card p-4 text-[9px]">
+                            <p class="font-black text-slate-800 uppercase">${d.username} is claiming: <span class="text-amber-600">${d.code}</span></p>
+                            <div class="flex gap-2 mt-3">
+                                <input id="b-amt-${c.key}" type="number" placeholder="Enter $ Bonus" class="flex-1 p-2 rounded text-[9px] border border-slate-200 outline-none">
+                                <button onclick="approvePromo('${c.key}', '${d.uid}')" class="bg-green-600 text-white px-4 rounded-lg font-black">Verify</button>
+                            </div>
+                        </div>`;
+                    }
+                });
+            });
+        };
 
+        window.approvePromo = async (key, u_uid) => {
+            const amt = parseFloat(document.getElementById(`b-amt-${key}`).value);
+            if(!amt) return alert("Set reward first!");
+            const uSnap = await get(ref(db, `users/${u_uid}`));
+            await update(ref(db, `users/${u_uid}`), { balance: (uSnap.val().balance || 0) + amt });
+            await update(ref(db, `promo_requests/${key}`), { status: 'approved' });
+            alert("Bonus Issued!");
+        };
+
+        window.loadUsers = () => {
+            onValue(ref(db, 'users'), s => {
+                const con = document.getElementById('admin-list'); con.innerHTML = "<p class='text-[8px] font-black uppercase text-slate-400 mb-2'>Member Directory (Direct Bonus)</p>";
+                s.forEach(u => {
+                    const user = u.val();
+                    con.innerHTML += `<div class="trust-card p-4 flex justify-between items-center text-[9px]">
+                        <div><p class="font-black">${user.username}</p><p class="text-[7px] text-slate-400 select-all">${u.key}</p></div>
+                        <button onclick="directBonus('${u.key}')" class="bg-blue-600 text-white px-3 py-1 rounded font-bold">Gift</button>
+                    </div>`;
+                });
+            });
+        };
+
+        window.directBonus = async (u_uid) => {
+            const amt = parseFloat(prompt("Enter Bonus Amount ($):"));
+            if(!amt) return;
+            const snap = await get(ref(db, `users/${u_uid}/balance`));
+            await update(ref(db, `users/${u_uid}`), { balance: (snap.val() || 0) + amt });
+            alert("Bonus Sent!");
+        };
+
+        window.approveAction = async (path, key, u_uid, amt, tab) => {
+            if(tab === 'dep') {
+                const snap = await get(ref(db, `users/${u_uid}/balance`));
+                await update(ref(db, `users/${u_uid}`), { balance: (snap.val() || 0) + amt });
+            }
+            await update(ref(db, `${path}/${key}`), { status: 'approved' });
+            alert("Verified!");
+        };
+
+        window.copyRef = () => { navigator.clipboard.writeText(document.getElementById('ref-link').value); alert("Link Copied!"); };
         window.copyNum = () => { navigator.clipboard.writeText(document.getElementById('m-num').innerText); alert("Copied!"); };
         window.logout = () => signOut(auth).then(() => location.reload());
+    </script>
+
+    <!-- DEPOSIT TRIGGERS (In Deposit Page) -->
+    <script>
+        // Manually handling Deposit Gateway selections
+        document.getElementById('page-deposit').innerHTML = `
+            <h2 class="text-lg font-extrabold uppercase px-6 py-6 tracking-tighter">Funding Hub</h2>
+            <div class="px-6 space-y-4">
+                <div onclick="openPay('JazzCash','03705519562')" class="trust-card p-6 flex justify-between items-center border-l-[6px] border-red-500">
+                    <div><p class="text-[10px] font-black uppercase">JazzCash Official</p><p class="text-[8px] text-slate-400">Institutional Merchant</p></div>
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                </div>
+                <div onclick="openPay('Easypaisa','03332637235')" class="trust-card p-6 flex justify-between items-center border-l-[6px] border-green-500">
+                    <div><p class="text-[10px] font-black uppercase">Easypaisa Fast</p><p class="text-[8px] text-slate-400">Automated Gateway</p></div>
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                </div>
+            </div>
+        `;
     </script>
 </body>
 </html>
