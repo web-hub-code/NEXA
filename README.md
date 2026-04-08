@@ -1,28 +1,31 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA | Cloud Infrastructure</title>
+    <title>NEXA | Next-Gen Infrastructure</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap');
-        :root { --accent: #2563EB; --dark: #0F172A; }
-        body { font-family: 'Outfit', sans-serif; background: #F1F5F9; color: var(--dark); }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 20px 50px -15px rgba(0,0,0,0.05); }
-        .input-box { background: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 18px; width: 100%; font-weight: 600; outline: none; transition: 0.3s; }
-        .input-box:focus { border-color: var(--accent); ring: 2px var(--accent); }
-        .tab-btn { color: #94A3B8; font-weight: 800; font-size: 10px; text-transform: uppercase; transition: 0.3s; }
-        .tab-active { color: var(--accent); transform: translateY(-3px); }
-        .node-badge { background: linear-gradient(90deg, #2563EB, #60A5FA); color: white; padding: 4px 12px; border-radius: 10px; font-size: 10px; font-weight: 900; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        :root { --p: #2563EB; --s: #0F172A; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: var(--s); }
+        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.4); }
+        .card-neo { border-radius: 32px; background: #fff; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .btn-grad { background: linear-gradient(135deg, #2563EB, #4F46E5); color: white; border-radius: 18px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .input-neo { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; padding: 18px; width: 100%; outline: none; font-weight: 600; }
+        .nav-icon { font-size: 22px; color: #94a3b8; transition: 0.3s; }
+        .nav-active { color: var(--p) !important; transform: scale(1.15); }
+        
+        /* Live Popup Style Like Cloud-Node */
+        #live-notify { position: fixed; bottom: 120px; left: 20px; right: 20px; z-index: 999; transform: translateY(200px); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .notify-show { transform: translateY(0) !important; }
         .hidden { display: none !important; }
     </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, set, get, update, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBe5Q5jXpx3UvrHC9WOky9UWeDnP9SPfZI",
@@ -38,13 +41,12 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // --- State Management ---
-        let currentUser = JSON.parse(localStorage.getItem('nexa_user')) || null;
+        // --- Logic Engine ---
         let adminClicks = 0;
 
-        window.handleAuth = async (type) => {
-            const user = document.getElementById('auth-user').value;
-            if(!user) return alert("Please enter username, sweetie!");
+        window.authAction = async (mode) => {
+            const user = document.getElementById('user-input').value;
+            if(!user) return alert("Enter Username sweetie!");
             
             try {
                 await signInAnonymously(auth);
@@ -52,215 +54,211 @@
                 const userRef = ref(db, 'users/' + uid);
                 const snap = await get(userRef);
 
-                if(type === 'signup' && !snap.exists()) {
-                    const userData = { username: user, balance: 0.00, pkr_balance: 0, uid: uid };
-                    await set(userRef, userData);
-                    localStorage.setItem('nexa_user', JSON.stringify(userData));
+                if(mode === 'new' && !snap.exists()) {
+                    await set(userRef, { username: user, balance: 2.0, pkr: 150, uid: uid });
+                    localStorage.setItem('nexa_session', uid);
                     location.reload();
-                } else if (type === 'login' && snap.exists()) {
-                    localStorage.setItem('nexa_user', JSON.stringify(snap.val()));
+                } else if(mode === 'old' && snap.exists()) {
+                    localStorage.setItem('nexa_session', uid);
                     location.reload();
-                } else {
-                    alert("Account issue! Check username.");
-                }
-            } catch (e) { alert(e.message); }
+                } else { alert("User not found or already exists!"); }
+            } catch (e) { alert(e.error); }
         };
 
-        onAuthStateChanged(auth, (user) => {
-            if (user && currentUser) {
-                document.getElementById('auth-page').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                syncData(user.uid);
+        window.onload = () => {
+            const session = localStorage.getItem('nexa_session');
+            if(session) {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-screen').classList.remove('hidden');
+                loadApp(session);
+                startLiveNotifications();
             }
-        });
+        };
 
-        function syncData(uid) {
+        function loadApp(uid) {
             onValue(ref(db, 'users/' + uid), (s) => {
-                const data = s.val();
-                document.getElementById('disp-user').innerText = data.username;
-                document.getElementById('disp-bal-usd').innerText = "$" + data.balance.toFixed(2);
-                document.getElementById('disp-bal-pkr').innerText = "Rs. " + data.pkr_balance;
+                const d = s.val();
+                document.getElementById('nav-user').innerText = d.username;
+                document.getElementById('stat-usd').innerText = "$" + d.balance.toFixed(2);
+                document.getElementById('stat-pkr').innerText = "Rs. " + d.pkr;
             });
-            // Fetch Admin Numbers
-            onValue(ref(db, 'admin/settings'), (s) => {
-                const settings = s.val() || { jazz: "03705519562", easy: "03379827882", sada: "03705519562" };
-                window.adminNumbers = settings;
-            });
+            onValue(ref(db, 'admin/settings'), (s) => { window.adminData = s.val(); });
         }
 
-        window.openDeposit = (method) => {
-            const num = method === 'jazz' ? window.adminNumbers.jazz : (method === 'easy' ? window.adminNumbers.easy : window.adminNumbers.sada);
-            prompt(`Send Payment to ${method.toUpperCase()} Number:\n\n${num}\n\nThen send screenshot to Admin. Enter Transaction ID here:`, "");
+        // --- Live Notification Engine (Cloud-Node Style) ---
+        function startLiveNotifications() {
+            const names = ["Ahmad", "Sarah", "Zain", "Fatima", "Someone from Karachi", "User786", "Sophia"];
+            const amounts = ["$40,000", "Rs. 5,000", "$150", "Rs. 25,000", "$1,200"];
+            
+            setInterval(() => {
+                const box = document.getElementById('live-notify');
+                document.getElementById('notif-name').innerText = names[Math.floor(Math.random()*names.length)];
+                document.getElementById('notif-amt').innerText = amounts[Math.floor(Math.random()*amounts.length)];
+                box.classList.add('notify-show');
+                setTimeout(() => box.classList.remove('notify-show'), 4000);
+            }, 12000);
+        }
+
+        window.openPay = (m) => {
+            const num = m === 'jazz' ? window.adminData.jazz : window.adminData.easy;
+            prompt(`Send Payment to ${m.toUpperCase()}:\n${num}\nEnter Trans-ID:`, "");
         };
 
         window.triggerAdmin = () => {
             adminClicks++;
             if(adminClicks >= 5) {
-                const p = prompt("Enter Secret Key:");
-                if(p === "SWEETIE786") document.getElementById('admin-modal').classList.remove('hidden');
+                const k = prompt("Secret Key:");
+                if(k === "SWEETIE786") document.getElementById('admin-pane').classList.toggle('hidden');
                 adminClicks = 0;
             }
         };
 
-        window.updateNumbers = async () => {
-            const j = document.getElementById('adm-jazz').value;
-            const e = document.getElementById('adm-easy').value;
-            await update(ref(db, 'admin/settings'), { jazz: j, easy: e });
-            alert("Numbers Updated Successfully! 💋");
+        window.updateSettings = () => {
+            const j = document.getElementById('adm-j').value;
+            const e = document.getElementById('adm-e').value;
+            update(ref(db, 'admin/settings'), { jazz: j, easy: e });
+            alert("Settings Saved Sweetie! 💋");
         };
 
-        window.switchPage = (p) => {
-            ['home','wallet','history'].forEach(id => document.getElementById('pg-'+id).classList.add('hidden'));
-            document.getElementById('pg-'+p).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
-            event.currentTarget.classList.add('tab-active');
+        window.switchTab = (t) => {
+            ['dash','pay','log'].forEach(id => document.getElementById('s-'+id).classList.add('hidden'));
+            document.getElementById('s-'+t).classList.remove('hidden');
+            document.querySelectorAll('.nav-icon').forEach(i => i.classList.remove('nav-active'));
+            event.currentTarget.classList.add('nav-active');
         };
     </script>
 </head>
-<body class="pb-32">
+<body class="pb-24">
 
-    <!-- Login/Signup -->
-    <div id="auth-page" class="fixed inset-0 bg-white z-[9999] flex flex-col p-8 justify-center">
-        <div class="mb-12 text-center">
-            <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto flex items-center justify-center rotate-12 mb-6">
-                <i class="fa-solid fa-bolt text-white text-3xl -rotate-12"></i>
+    <!-- Live Notification Pop-up -->
+    <div id="live-notify">
+        <div class="glass p-4 rounded-3xl shadow-2xl border-l-4 border-blue-600 flex items-center gap-4 max-w-sm mx-auto">
+            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center animate-pulse"><i class="fa-solid fa-check"></i></div>
+            <div>
+                <p class="text-[10px] font-bold text-slate-400">SUCCESSFUL WITHDRAWAL</p>
+                <p class="text-xs font-black"><span id="notif-name">...</span> withdrawn <span id="notif-amt" class="text-blue-600">...</span></p>
             </div>
-            <h1 class="text-4xl font-black italic tracking-tighter">NEXA PRO</h1>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">Next Gen Mining Terminal</p>
-        </div>
-        <div class="space-y-4">
-            <input id="auth-user" type="text" placeholder="Choose Username" class="input-box">
-            <button onclick="handleAuth('login')" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest">Login to Account</button>
-            <button onclick="handleAuth('signup')" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-100">Create New Account</button>
         </div>
     </div>
 
-    <!-- Main App -->
-    <div id="main-app" class="hidden">
-        <header class="p-6 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="fixed inset-0 bg-white z-[9999] p-8 flex flex-col justify-center">
+        <div class="text-center mb-12">
+            <div class="w-20 h-20 bg-blue-600 rounded-[2.5rem] mx-auto flex items-center justify-center rotate-12 shadow-2xl shadow-blue-200 mb-6">
+                <i class="fa-solid fa-cloud text-white text-3xl -rotate-12"></i>
+            </div>
+            <h1 class="text-3xl font-black italic tracking-tighter">NEXA NODE</h1>
+            <p class="text-[10px] font-black text-slate-300 uppercase mt-2 tracking-[0.3em]">Quantum Infrastructure</p>
+        </div>
+        <div class="space-y-4">
+            <input id="user-input" type="text" placeholder="Username" class="input-neo">
+            <button onclick="authAction('old')" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl">Login Terminal</button>
+            <button onclick="authAction('new')" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest">Create Identity</button>
+        </div>
+    </div>
+
+    <!-- App Screen -->
+    <div id="app-screen" class="hidden">
+        <header class="p-6 flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-50">
             <div onclick="triggerAdmin()" class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div>
-                    <h2 id="disp-user" class="text-sm font-black italic leading-none">...</h2>
-                    <p class="text-[8px] font-bold text-slate-400 uppercase tracking-tighter mt-1">Status: Platinum User</p>
-                </div>
+                <div class="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-bolt text-white text-sm"></i></div>
+                <h2 id="nav-user" class="font-black italic text-sm">...</h2>
             </div>
             <div class="text-right">
-                <h3 id="disp-bal-usd" class="text-blue-600 font-black text-lg leading-none">$0.00</h3>
-                <p id="disp-bal-pkr" class="text-[10px] font-bold text-slate-400 mt-1">Rs. 0</p>
+                <h3 id="stat-usd" class="text-blue-600 font-black leading-none">$0.00</h3>
+                <p id="stat-pkr" class="text-[9px] font-bold text-slate-400 uppercase mt-1 leading-none">Rs. 0</p>
             </div>
         </header>
 
         <main class="p-5">
             <!-- Dashboard -->
-            <div id="pg-home" class="space-y-6">
-                <!-- Promo Card -->
-                <div class="glass-card p-8 bg-slate-900 text-white relative overflow-hidden">
+            <div id="s-dash" class="space-y-6">
+                <div class="card-neo p-8 bg-slate-900 text-white relative overflow-hidden">
                     <div class="relative z-10">
-                        <span class="node-badge">LIVE NODES</span>
-                        <h1 class="text-4xl font-black mt-4 mb-8">15+5 <span class="text-xs font-normal opacity-50 uppercase tracking-widest">Power Active</span></h1>
-                        <button onclick="alert('Claimed! 💋')" class="bg-blue-600 px-8 py-3 rounded-xl font-black text-[10px] uppercase">Claim Rewards</button>
+                        <span class="bg-blue-600 px-3 py-1 rounded-lg text-[8px] font-black">SYSTEM STATUS: ACTIVE</span>
+                        <h1 class="text-4xl font-black mt-4 italic">15+5 Nodes</h1>
+                        <p class="text-[10px] opacity-40 font-bold mt-2 uppercase tracking-widest italic">Mining at 4.2 Petahash</p>
                     </div>
-                    <i class="fa-solid fa-atom absolute -right-10 -bottom-10 text-white/5 text-[15rem] animate-spin-slow"></i>
+                    <i class="fa-solid fa-server absolute -right-6 -bottom-6 text-white/5 text-[10rem]"></i>
                 </div>
 
-                <!-- Premium Dollar Nodes -->
-                <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-widest px-2">Premium Dollar Nodes ($)</h3>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="glass-card p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-microchip"></i></div>
-                            <span class="text-xl font-black">$5.00</span>
-                        </div>
-                        <h4 class="font-black">Alpha Cloud Node</h4>
-                        <p class="text-[10px] text-slate-400 font-bold mb-6 italic">Daily Profit: $0.35 | 360 Days</p>
-                        <button class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase">Activate Node</button>
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Premium Nodes ($)</h3>
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                </div>
+                
+                <div class="card-neo p-6 border-b-4 border-blue-600">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-microchip"></i></div>
+                        <div class="text-right"><p class="text-2xl font-black">$5.00</p><p class="text-[8px] font-bold text-slate-400">MIN ENTRY</p></div>
                     </div>
+                    <h4 class="font-black text-lg">Cloud Core v5</h4>
+                    <p class="text-xs text-slate-500 mt-1 mb-6">Yield: <span class="text-blue-600 font-bold">$0.45 Daily</span> • Duration: 360 Days</p>
+                    <button class="w-full btn-grad py-4">Activate Node</button>
                 </div>
 
-                <!-- Economy PKR Nodes -->
-                <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-widest px-2 mt-8">Economy PKR Nodes (Rs.)</h3>
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="glass-card p-6 border-l-4 border-blue-600">
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-server"></i></div>
-                            <span class="text-xl font-black">Rs. 250</span>
-                        </div>
-                        <h4 class="font-black">Starter PKR Node</h4>
-                        <p class="text-[10px] text-slate-400 font-bold mb-6 italic">Daily Profit: Rs. 15 | 360 Days</p>
-                        <button class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-[10px] uppercase">Buy Now</button>
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 mt-8">Economy Nodes (PKR)</h3>
+                <div class="card-neo p-6 border-b-4 border-slate-900">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-bolt-lightning"></i></div>
+                        <div class="text-right"><p class="text-2xl font-black">Rs. 250</p><p class="text-[8px] font-bold text-slate-400">STARTER</p></div>
                     </div>
+                    <h4 class="font-black text-lg">Local Pulse v1</h4>
+                    <p class="text-xs text-slate-500 mt-1 mb-6">Yield: <span class="text-slate-900 font-bold">Rs. 18 Daily</span> • Duration: 360 Days</p>
+                    <button class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-[10px] uppercase">Buy Now</button>
                 </div>
             </div>
 
             <!-- Wallet -->
-            <div id="pg-wallet" class="hidden space-y-6">
-                <div class="glass-card p-6">
-                    <h3 class="font-black mb-4">Deposit Assets</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="openDeposit('jazz')" class="p-4 bg-slate-50 rounded-2xl border flex flex-col items-center gap-2">
-                            <i class="fa-solid fa-phone text-green-500"></i>
-                            <span class="text-[10px] font-black uppercase">JazzCash</span>
+            <div id="s-pay" class="hidden space-y-6">
+                <div class="card-neo p-6">
+                    <h3 class="font-black text-xs uppercase mb-6 tracking-widest text-blue-600">Secure Deposit</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="openPay('jazz')" class="p-6 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition">
+                            <i class="fa-solid fa-phone text-green-500 text-2xl"></i>
+                            <span class="text-[10px] font-black">JAZZCASH</span>
                         </button>
-                        <button onclick="openDeposit('easy')" class="p-4 bg-slate-50 rounded-2xl border flex flex-col items-center gap-2">
-                            <i class="fa-solid fa-wallet text-blue-500"></i>
-                            <span class="text-[10px] font-black uppercase">EasyPaisa</span>
+                        <button onclick="openPay('easy')" class="p-6 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition">
+                            <i class="fa-solid fa-wallet text-blue-500 text-2xl"></i>
+                            <span class="text-[10px] font-black">EASYPAISA</span>
                         </button>
-                        <button onclick="openDeposit('sada')" class="p-4 bg-slate-50 rounded-2xl border flex flex-col items-center gap-2">
-                            <i class="fa-solid fa-credit-card text-teal-500"></i>
-                            <span class="text-[10px] font-black uppercase">Sadapay</span>
-                        </button>
-                        <div class="p-4 bg-slate-100 rounded-2xl border opacity-50 flex flex-col items-center gap-2 cursor-not-allowed">
-                            <i class="fa-brands fa-bitcoin text-orange-500"></i>
-                            <span class="text-[10px] font-black uppercase">Binance Soon</span>
-                        </div>
                     </div>
                 </div>
 
-                <div class="glass-card p-6">
-                    <h3 class="font-black mb-4 italic text-blue-600">Withdraw Funds</h3>
-                    <div class="space-y-3">
-                        <input type="text" placeholder="Account Title (Username)" class="input-box">
-                        <input type="number" placeholder="Withdraw Amount" class="input-box">
-                        <input type="text" placeholder="JazzCash/EasyPaisa Number" class="input-box">
-                        <button class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-xs uppercase">Submit Request</button>
+                <div class="card-neo p-8">
+                    <h3 class="font-black text-xs uppercase mb-6 tracking-widest">Withdrawal Terminal</h3>
+                    <div class="space-y-4">
+                        <input type="text" placeholder="Account Name" class="input-neo">
+                        <input type="number" placeholder="Withdraw Amount" class="input-neo">
+                        <input type="text" placeholder="Account Number" class="input-neo">
+                        <button class="w-full btn-grad py-5 shadow-lg shadow-blue-100">Initiate Payout</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Admin Logic -->
+            <div id="admin-pane" class="hidden card-neo p-6 border-2 border-red-500 bg-red-50 mt-10">
+                <h2 class="text-red-600 font-black text-center mb-6">MASTER OVERRIDE</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400">Jazz/Sada Number</label>
+                        <input id="adm-j" type="text" class="input-neo" value="03705519562">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400">EasyPaisa Number</label>
+                        <input id="adm-e" type="text" class="input-neo" value="03379827882">
+                    </div>
+                    <button onclick="updateSettings()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-black">SAVE SYSTEM NUMBERS</button>
                 </div>
             </div>
         </main>
 
         <!-- Navigation -->
-        <nav class="fixed bottom-8 left-8 right-8 h-20 glass-card border-none flex justify-around items-center px-6 z-50 shadow-2xl">
-            <button onclick="switchPage('home')" class="tab-btn tab-active flex flex-col items-center">
-                <i class="fa-solid fa-house-chimney text-xl"></i>
-                <span class="mt-1">Dash</span>
-            </button>
-            <button onclick="switchPage('wallet')" class="tab-btn flex flex-col items-center">
-                <i class="fa-solid fa-wallet text-xl"></i>
-                <span class="mt-1">Wallet</span>
-            </button>
-            <button onclick="switchPage('history')" class="tab-btn flex flex-col items-center">
-                <i class="fa-solid fa-clock-rotate-left text-xl"></i>
-                <span class="mt-1">Log</span>
-            </button>
+        <nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-[2.5rem] flex justify-around items-center px-6 z-[1000] shadow-2xl">
+            <button onclick="switchTab('dash')" class="nav-icon nav-active"><i class="fa-solid fa-ghost"></i></button>
+            <button onclick="switchTab('pay')" class="nav-icon"><i class="fa-solid fa-wallet"></i></button>
+            <button onclick="switchTab('log')" class="nav-icon"><i class="fa-solid fa-receipt"></i></button>
         </nav>
-
-        <!-- Admin Modal -->
-        <div id="admin-modal" class="fixed inset-0 bg-black/80 z-[10000] p-6 hidden overflow-y-auto">
-            <div class="bg-white rounded-[40px] p-8 max-w-md mx-auto">
-                <h2 class="text-red-600 font-black text-xl mb-6 uppercase italic">Admin Terminal</h2>
-                <div class="space-y-4">
-                    <label class="text-[10px] font-black uppercase text-slate-400">JazzCash / SadaPay Number</label>
-                    <input id="adm-jazz" type="text" value="03705519562" class="input-box">
-                    <label class="text-[10px] font-black uppercase text-slate-400">EasyPaisa Number</label>
-                    <input id="adm-easy" type="text" value="03379827882" class="input-box">
-                    <button onclick="updateNumbers()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-xs">UPDATE SYSTEM NUMBERS</button>
-                    <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="w-full bg-slate-200 py-3 rounded-xl font-black text-[10px]">EXIT TERMINAL</button>
-                </div>
-            </div>
-        </div>
     </div>
 
 </body>
