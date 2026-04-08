@@ -3,175 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA ELITE | Premium Investment</title>
+    <title>NEXA ELITE | Global Mining</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
-        :root { --primary: #6366f1; --accent: #a855f7; --bg: #030712; }
-        body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: #f3f4f6; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap');
+        :root { --primary: #6366f1; --bg: #020617; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #f8fafc; }
         
-        /* Modern Glass UI */
-        .glass-card { background: rgba(31, 41, 55, 0.5); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; }
-        .neon-glow { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-        .gradient-text { background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        .node-card { background: linear-gradient(145deg, #1e293b, #0f172a); border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); }
+        .mining-anim { animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); } 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); } }
         
-        /* Attractive Spin Wheel */
-        #wheel-container { position: relative; width: 300px; height: 300px; margin: 0 auto; border: 10px solid #1f2937; border-radius: 50%; box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.05); }
-        #wheel { width: 100%; height: 100%; border-radius: 50%; transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); position: relative; overflow: hidden; }
-        .wheel-segment { position: absolute; width: 50%; height: 50%; transform-origin: 100% 100%; display: flex; justify-content: center; align-items: flex-start; padding-top: 20px; font-weight: 700; color: white; border: 1px solid rgba(0,0,0,0.1); }
-        #wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); z-index: 50; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); color: #fbbf24; font-size: 40px; }
-        
-        .tab-btn.active { color: #818cf8; position: relative; }
-        .tab-btn.active::after { content: ''; position: absolute; bottom: -10px; left: 25%; width: 50%; height: 3px; background: #818cf8; border-radius: 10px; }
+        #wheel-container { position: relative; width: 280px; height: 280px; margin: auto; }
+        #wheel { width: 100%; height: 100%; border-radius: 50%; transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1); border: 8px solid #1e293b; }
+        .wheel-segment { position: absolute; width: 50%; height: 50%; transform-origin: 100% 100%; display: flex; justify-content: center; align-items: flex-start; padding-top: 15px; font-weight: 800; font-size: 10px; color: white; }
     </style>
 </head>
 <body class="pb-32">
 
-    <!-- Top Status Bar -->
-    <div class="p-4 flex justify-between items-center glass-card m-4 mt-6 neon-glow">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg">N</div>
-            <div>
-                <h4 id="display-name" class="text-sm font-bold">Investo_User</h4>
-                <div class="flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span><span class="text-[8px] uppercase tracking-tighter opacity-60">Verified VIP 1</span></div>
+    <!-- Header Section -->
+    <div class="p-6 flex justify-between items-center bg-slate-900/50 border-b border-white/5">
+        <div>
+            <h1 class="text-2xl font-black tracking-tighter italic">NEXA<span class="text-indigo-500">ELITE</span></h1>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Server: HK-Active</span>
             </div>
         </div>
         <div class="text-right">
-            <p class="text-[9px] uppercase font-bold opacity-50">Global Balance</p>
-            <h2 id="user-bal" class="text-lg font-black gradient-text">$0.00</h2>
+            <p class="text-[9px] font-black text-indigo-400 uppercase">Available Assets</p>
+            <h2 id="user-bal" class="text-xl font-black text-white">$0.00</h2>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-app">
+    <!-- Main Viewport -->
+    <main id="app-content">
         
-        <!-- HOME TAB -->
+        <!-- HOME TAB (Mining Nodes) -->
         <div id="tab-home" class="tab-content p-5 space-y-6">
-            <!-- Jackpot Counter -->
-            <div class="text-center py-4">
-                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Current Reward Pool</p>
-                <h1 class="text-4xl font-black italic">$148,290.<span class="text-sm">92</span></h1>
+            <div class="flex items-center justify-between">
+                <h3 class="font-black text-sm uppercase tracking-tighter">Mining Nodes <span class="text-indigo-500">(v4.0)</span></h3>
+                <i class="fa-solid fa-microchip text-indigo-500 animate-pulse"></i>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div class="glass-card p-5 text-center border-b-4 border-indigo-500" onclick="switchTab('wallet')">
-                    <i class="fa-solid fa-arrow-down-long text-indigo-400 mb-2"></i>
-                    <p class="text-[10px] font-bold uppercase">Deposit</p>
+            <!-- Node 1 -->
+            <div class="node-card p-5 relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="font-black text-lg">Cluster V.1 <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded ml-2 italic">STARTER</span></h4>
+                        <p class="text-[10px] text-slate-400 mt-1">Daily Profit: $0.50 | 365 Days</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-black text-indigo-400">$10.00</p>
+                        <p class="text-[8px] opacity-40 uppercase">Price</p>
+                    </div>
                 </div>
-                <div class="glass-card p-5 text-center border-b-4 border-purple-500" onclick="switchTab('wallet')">
-                    <i class="fa-solid fa-paper-plane text-purple-400 mb-2"></i>
-                    <p class="text-[10px] font-bold uppercase">Withdraw</p>
-                </div>
+                <button onclick="buyNode('V.1', 10)" class="w-full bg-indigo-600 p-3 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-indigo-500 transition-colors">Activate Node</button>
             </div>
 
-            <!-- Referral Link Box -->
-            <div class="glass-card p-6 bg-gradient-to-r from-indigo-900/20 to-transparent">
-                <h3 class="text-xs font-bold mb-3 uppercase tracking-wider text-indigo-300">Affiliate Network</h3>
-                <div class="flex items-center gap-3 bg-black/40 p-3 rounded-2xl border border-white/5">
-                    <code id="ref-code" class="flex-1 text-xs font-bold text-indigo-400 tracking-widest">NEXA-786X</code>
-                    <button onclick="copyRef()" class="text-[10px] font-black uppercase text-indigo-300">Copy</button>
+            <!-- Node 2 -->
+            <div class="node-card p-5 relative overflow-hidden border-t-2 border-amber-500/50">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="font-black text-lg">Neon Core V.5 <span class="text-[10px] bg-amber-500/20 text-amber-500 px-2 py-0.5 rounded ml-2 italic">POPULAR</span></h4>
+                        <p class="text-[10px] text-slate-400 mt-1">Daily Profit: $3.20 | 365 Days</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-black text-amber-500">$50.00</p>
+                        <p class="text-[8px] opacity-40 uppercase">Price</p>
+                    </div>
                 </div>
-                <p class="text-[9px] mt-3 opacity-50 italic">Get 10% from every deposit your friends make, sweetie!</p>
+                <button onclick="buyNode('V.5', 50)" class="w-full bg-amber-600 p-3 rounded-xl text-[11px] font-black uppercase tracking-widest">Activate Node</button>
+            </div>
+
+            <!-- Referral Empire Section -->
+            <div class="p-6 glass rounded-3xl mt-10 border-dashed border-2 border-indigo-500/30">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-xl"><i class="fa-solid fa-users-rays"></i></div>
+                    <div>
+                        <h4 class="font-bold text-xs">Affiliate Empire</h4>
+                        <p class="text-[9px] text-slate-400">Invite friends and get 15% instant</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <div id="ref-code" class="flex-1 bg-black/40 p-3 rounded-xl text-xs font-mono text-indigo-300 border border-white/5">NEXA-WAIT...</div>
+                    <button onclick="copyRef()" class="bg-white/5 px-4 rounded-xl text-[10px] font-bold uppercase">Copy</button>
+                </div>
             </div>
         </div>
 
-        <!-- SPIN TAB (Modern Casino Design) -->
-        <div id="tab-spin" class="tab-content hidden p-5 text-center">
-            <div class="mb-10">
-                <h2 class="text-2xl font-black italic uppercase">Mega <span class="text-amber-400">Wheel</span></h2>
-                <p class="text-[10px] opacity-60">Spin the wheel to unlock your daily fortune</p>
-            </div>
-
-            <div id="wheel-container">
-                <div id="wheel-pointer"><i class="fa-solid fa-location-arrow fa-rotate-180"></i></div>
-                <div id="wheel"></div>
-                <div class="absolute inset-0 m-auto w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center z-40 border-4 border-gray-800">
-                    <div class="w-3 h-3 bg-indigo-600 rounded-full animate-ping"></div>
-                </div>
-            </div>
-
-            <button onclick="handleSpin()" id="spin-btn" class="w-full mt-12 bg-gradient-to-r from-indigo-600 to-purple-600 p-5 rounded-3xl font-black uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">
-                Execute Spin ($0.50)
-            </button>
-        </div>
-
-        <!-- WALLET TAB -->
-        <div id="tab-wallet" class="tab-content hidden p-5 space-y-6">
-            <div class="glass-card p-6 border-l-4 border-indigo-500">
-                <h4 class="text-xs font-black uppercase text-indigo-400 mb-4">Secure Deposit</h4>
-                <div class="grid grid-cols-2 gap-2 mb-4">
-                    <div class="bg-black/40 p-3 rounded-xl border border-white/5">
-                        <p class="text-[8px] opacity-50">SadaPay/JazzCash</p>
-                        <p class="text-[10px] font-bold">03705519562</p>
-                    </div>
-                    <div class="bg-black/40 p-3 rounded-xl border border-white/5">
-                        <p class="text-[8px] opacity-50">EasyPaisa</p>
-                        <p class="text-[10px] font-bold">03379827882</p>
-                    </div>
-                </div>
-                <input type="number" id="dep-amt" placeholder="Amount in USD" class="mb-3 block w-full bg-zinc-900 border-none rounded-xl p-4 text-sm">
-                <input type="text" id="dep-tid" placeholder="Transaction ID (TID)" class="mb-4 block w-full bg-zinc-900 border-none rounded-xl p-4 text-sm">
-                <button onclick="submitDep()" class="w-full bg-indigo-600 p-4 rounded-2xl font-black uppercase text-xs tracking-widest">Verify Payment</button>
+        <!-- SPIN TAB -->
+        <div id="tab-spin" class="tab-content hidden p-6 text-center space-y-10">
+            <div>
+                <h2 class="text-2xl font-black italic">ELITE <span class="text-indigo-500 font-normal">SPIN</span></h2>
+                <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest">Provably Fair Algorithm</p>
             </div>
             
-            <div id="history-list" class="space-y-3">
-                <!-- Fake history will go here -->
+            <div id="wheel-container">
+                <div class="absolute -top-6 left-1/2 -translate-x-1/2 z-50 text-indigo-500 text-4xl"><i class="fa-solid fa-sort-down"></i></div>
+                <div id="wheel" class="relative overflow-hidden"></div>
             </div>
+
+            <button onclick="handleSpin()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 p-5 rounded-2xl font-black uppercase tracking-[0.3em] shadow-lg shadow-indigo-500/20">Spin Wheel ($0.50)</button>
         </div>
 
-    </div>
+        <!-- ASSETS TAB -->
+        <div id="tab-assets" class="tab-content hidden p-5 space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div onclick="switchTab('deposit')" class="node-card p-6 text-center group cursor-pointer">
+                    <i class="fa-solid fa-arrow-down text-indigo-400 mb-2 text-xl group-hover:translate-y-1 transition-transform"></i>
+                    <p class="text-[10px] font-black uppercase">Top Up</p>
+                </div>
+                <div onclick="switchTab('withdraw')" class="node-card p-6 text-center group cursor-pointer">
+                    <i class="fa-solid fa-arrow-up text-purple-400 mb-2 text-xl group-hover:-translate-y-1 transition-transform"></i>
+                    <p class="text-[10px] font-black uppercase">Payout</p>
+                </div>
+            </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-6 left-6 right-6 h-20 glass-card flex justify-around items-center px-4 z-50">
-        <button onclick="switchTab('home')" class="tab-btn flex flex-col items-center text-zinc-500 active"><i class="fa-solid fa-grid-2 text-xl"></i><span class="text-[8px] font-bold mt-1 uppercase">Vault</span></button>
-        <button onclick="switchTab('spin')" class="tab-btn flex flex-col items-center text-zinc-500"><i class="fa-solid fa-circle-dot text-xl"></i><span class="text-[8px] font-bold mt-1 uppercase">Wheel</span></button>
-        <button onclick="switchTab('wallet')" class="tab-btn flex flex-col items-center text-zinc-500"><i class="fa-solid fa-wallet text-xl"></i><span class="text-[8px] font-bold mt-1 uppercase">Assets</span></button>
+            <div class="glass p-6 rounded-3xl space-y-4">
+                <h4 class="text-xs font-black uppercase tracking-widest text-slate-500">Active Transactions</h4>
+                <div id="history-list" class="space-y-3">
+                    <p class="text-[10px] text-center opacity-30 italic">No recent movements...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-[2.5rem] flex justify-around items-center px-6 z-50 shadow-2xl">
+        <button onclick="switchTab('home')" class="nav-btn text-indigo-500"><i class="fa-solid fa-house-chimney text-lg"></i></button>
+        <button onclick="switchTab('spin')" class="nav-btn text-slate-500"><i class="fa-solid fa-dharmachakra text-lg"></i></button>
+        <button onclick="switchTab('assets')" class="nav-btn text-slate-500"><i class="fa-solid fa-wallet text-lg"></i></button>
+        <button onclick="openAdmin()" class="nav-btn text-slate-500"><i class="fa-solid fa-gear text-lg"></i></button>
     </nav>
 
     <script type="module">
-        // --- LOGIC STARTS HERE ---
+        // --- PRECONFIGURED DATA ---
         const prizes = [
-            { label: "$50", color: "#6366f1", val: 50 }, { label: "$0.01", color: "#1f2937", val: 0.01 },
-            { label: "$5", color: "#8b5cf6", val: 5 }, { label: "$0.05", color: "#111827", val: 0.05 },
-            { label: "JACKPOT", color: "#fbbf24", val: 100 }, { label: "$0.00", color: "#1f2937", val: 0 },
-            { label: "$1", color: "#4f46e5", val: 1 }, { label: "$0.02", color: "#111827", val: 0.02 }
+            { label: "$50", val: 50, col: "#6366f1" }, { label: "$0.01", val: 0.01, col: "#0f172a" },
+            { label: "$5", val: 5, col: "#8b5cf6" }, { label: "$0.05", val: 0.05, col: "#020617" },
+            { label: "MEGA", val: 100, col: "#f59e0b" }, { label: "MISS", val: 0, col: "#0f172a" },
+            { label: "$1", val: 1, col: "#4f46e5" }, { label: "$0.02", val: 0.02, col: "#020617" }
         ];
+
+        // Initialization
+        window.onload = () => {
+            initWheel();
+            startFakeHype();
+            // Simulating user data
+            document.getElementById('ref-code').innerText = "NEXA-ELITE-" + Math.random().toString(36).substring(7).toUpperCase();
+        };
 
         function initWheel() {
             const wheel = document.getElementById('wheel');
             wheel.innerHTML = prizes.map((p, i) => `
-                <div class="wheel-segment" style="transform: rotate(${i*45}deg) skewY(-45deg); background: ${p.color};">
-                    <span style="transform: rotate(-22deg) translateY(10px); display: block;">${p.label}</span>
+                <div class="wheel-segment" style="transform: rotate(${i*45}deg) skewY(-45deg); background: ${p.col};">
+                    <span style="transform: rotate(-22deg) translateY(10px);">${p.label}</span>
                 </div>
             `).join('');
         }
 
         window.switchTab = (tab) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active', 'text-indigo-400'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            event.currentTarget.classList.add('active', 'text-indigo-400');
+            // Logic to handle icon colors could be added here
         };
 
-        // Initialize Wheel
-        initWheel();
+        window.buyNode = (version, price) => {
+            alert(`Sweetie, is Node ${version} ko activate karne ke liye pehle wallet mein $${price} deposit karein! 😉`);
+            switchTab('assets');
+        };
 
-        // Fake Trust Ticker
-        setInterval(() => {
-            const names = ["Ayesha", "Hamza", "Sidra", "Khan_786", "M.Nazim"];
-            const name = names[Math.floor(Math.random()*names.length)];
-            const amt = (Math.random()*5000).toFixed(0);
-            const list = document.getElementById('history-list');
-            const item = `<div class="glass-card p-3 flex justify-between items-center animate-bounce text-[10px] border-l-2 border-green-500">
-                <span class="opacity-60">${name} withdrawn via JazzCash</span>
-                <span class="font-bold text-green-400">+Rs ${amt}</span>
-            </div>`;
-            list.insertAdjacentHTML('afterbegin', item);
-            if(list.children.length > 4) list.lastElementChild.remove();
-        }, 10000);
+        function startFakeHype() {
+            setInterval(() => {
+                const logs = ["Zeeshan won $1.00", "New Node V.1 Active", "Withdrawal Rs 1,200 Processed", "M.Ali joined via Link"];
+                const list = document.getElementById('history-list');
+                const log = logs[Math.floor(Math.random()*logs.length)];
+                const html = `<div class="flex justify-between items-center text-[9px] bg-white/5 p-2 rounded-lg animate-fade-in border-l-2 border-indigo-500">
+                    <span class="opacity-60">${log}</span>
+                    <span class="text-indigo-400 font-bold">JUST NOW</span>
+                </div>`;
+                list.insertAdjacentHTML('afterbegin', html);
+                if(list.children.length > 5) list.lastElementChild.remove();
+            }, 8000);
+        }
 
-        window.copyRef = () => { alert("Empire Link Copied, sweetie! 💋"); };
+        window.copyRef = () => { alert("Elite Invite Link Copied! 💋"); };
     </script>
 </body>
 </html>
