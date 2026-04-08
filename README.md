@@ -2,139 +2,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA GOLD | Institutional Wealth</title>
+    <title>NEXA GOLD | Global Wealth Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        :root { --bank-blue: #0A2540; --accent: #635bff; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f6f9fc; color: #1e293b; overflow-x: hidden; }
-        .bank-card { background: linear-gradient(135deg, #0A2540 0%, #163a5f 100%); border-radius: 32px; box-shadow: 0 20px 40px -10px rgba(10, 37, 64, 0.3); position: relative; overflow: hidden; }
-        .glass-ui { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.5); border-radius: 24px; }
-        .nav-active { color: var(--accent) !important; transform: translateY(-5px); transition: 0.3s; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .page-content { animation: slideUp 0.4s ease-out; }
-        .live-dot { height: 8px; width: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #22c55e; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        :root { --accent: #635bff; --gold: #f59e0b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; overflow-x: hidden; }
+        
+        /* Futuristic Glassmorphism */
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; }
+        .premium-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid rgba(99, 91, 255, 0.3); position: relative; overflow: hidden; }
+        
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .page-transition { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        
+        /* Ticker Animation */
+        .ticker-wrap { background: rgba(0,0,0,0.3); overflow: hidden; height: 30px; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        .btn-glow { box-shadow: 0 0 15px rgba(99, 91, 255, 0.4); transition: 0.3s; }
+        .btn-glow:active { transform: scale(0.95); }
+        .nav-active { color: #635bff !important; filter: drop-shadow(0 0 5px #635bff); }
     </style>
 </head>
-<body class="pb-28">
+<body class="pb-32">
 
-    <div id="auth-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center p-8">
-        <div class="w-20 h-20 bg-[#0A2540] rounded-3xl flex items-center justify-center text-white text-4xl mb-6 shadow-2xl"><i class="fa-solid fa-building-columns"></i></div>
-        <h1 class="text-2xl font-extrabold text-[#0A2540]">NEXA <span class="text-blue-600">GOLD</span></h1>
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[5px] mb-12 text-center">Security • Integrity • Growth</p>
-        <div class="w-full max-w-xs space-y-4">
-            <input type="text" id="user-name" placeholder="Legal Name" class="w-full p-5 rounded-2xl bg-slate-50 border-none outline-none text-sm font-bold shadow-inner">
-            <input type="password" id="admin-key" placeholder="Security PIN" class="w-full p-5 rounded-2xl bg-slate-50 border-none outline-none text-sm font-bold shadow-inner">
-            <button onclick="handleLogin()" class="w-full bg-[#0A2540] text-white p-5 rounded-2xl font-black uppercase text-[10px] tracking-widest">Access Vault</button>
+    <!-- GLOBAL ANNOUNCEMENT TICKER -->
+    <div class="ticker-wrap fixed top-0 left-0 right-0 z-[100] border-b border-white/5">
+        <div class="ticker text-[10px] font-bold text-blue-400 py-1 uppercase tracking-widest" id="global-announcement">
+            Welcome to Nexa Gold Global • Automated Mining Clusters are now Live • Join our official Telegram for Daily Rewards •
         </div>
     </div>
 
-    <div id="app" class="hidden">
-        <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-[#f6f9fc]/80 backdrop-blur-md">
-            <div><p class="text-[9px] font-black text-blue-600 uppercase flex items-center gap-2"><span class="live-dot"></span> Institutional Mode</p><h3 id="display-name" class="text-lg font-extrabold text-slate-800">--</h3></div>
-            <div class="flex gap-2">
-                <button onclick="nav('info')" class="w-11 h-11 glass-ui flex items-center justify-center text-slate-600"><i class="fa-solid fa-circle-info"></i></button>
-                <button onclick="logout()" class="w-11 h-11 glass-ui flex items-center justify-center text-red-500"><i class="fa-solid fa-power-off"></i></button>
+    <!-- AUTH SCREEN -->
+    <div id="auth-screen" class="fixed inset-0 bg-[#0f172a] z-[9999] flex flex-col items-center justify-center p-8">
+        <div class="w-24 h-24 premium-card flex items-center justify-center text-blue-500 text-5xl mb-8 animate-float">
+            <i class="fa-solid fa-atom"></i>
+        </div>
+        <h1 class="text-3xl font-extrabold tracking-tighter">NEXA <span class="text-blue-500">ULTIMATE</span></h1>
+        <p class="text-[9px] font-black text-slate-500 uppercase tracking-[6px] mb-12">Global Infrastructure</p>
+        <div class="w-full max-w-xs space-y-4">
+            <input type="text" id="user-name" placeholder="Full Name" class="w-full p-5 glass-card bg-white/5 outline-none text-sm font-bold border-none">
+            <input type="password" id="admin-key" placeholder="Security PIN" class="w-full p-5 glass-card bg-white/5 outline-none text-sm font-bold border-none">
+            <button onclick="handleLogin()" class="w-full bg-blue-600 text-white p-5 rounded-3xl font-black uppercase text-[10px] tracking-widest btn-glow">Initialize Session</button>
+        </div>
+    </div>
+
+    <div id="app" class="hidden pt-10">
+        <!-- HEADER -->
+        <header class="p-6 flex justify-between items-center">
+            <div>
+                <p class="text-[8px] font-black text-blue-500 uppercase tracking-widest">Active Partner</p>
+                <h3 id="display-name" class="text-xl font-extrabold tracking-tight">--</h3>
+            </div>
+            <div class="flex gap-3">
+                <div class="glass-card px-3 py-2 flex items-center gap-2 border-blue-500/30">
+                    <i class="fa-brands fa-bitcoin text-yellow-500"></i>
+                    <span id="btc-price" class="text-[10px] font-black text-slate-300">$64,231</span>
+                </div>
+                <button onclick="logout()" class="w-11 h-11 glass-card flex items-center justify-center text-red-500 border-red-500/20"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </header>
 
-        <main id="page-home" class="page-content px-6 space-y-6">
-            <div class="bank-card p-8 text-white">
-                <div class="flex justify-between mb-10"><i class="fa-solid fa-microchip text-2xl opacity-40"></i><p class="text-[9px] font-bold tracking-[3px] opacity-60 uppercase">Nexa-Platinum</p></div>
-                <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Account Liquidity</p>
-                <h2 id="user-bal" class="text-4xl font-extrabold my-1">$0.00</h2>
-                <p id="pkr-bal" class="text-xs font-bold text-blue-200">≈ Rs. 0.00</p>
-                <div class="mt-8 flex gap-3">
-                    <button onclick="nav('deposit')" class="flex-1 bg-white text-[#0A2540] py-3 rounded-xl text-[9px] font-black uppercase">Add Funds</button>
-                    <button onclick="nav('withdraw')" class="flex-1 bg-blue-500/30 backdrop-blur border border-white/20 text-white py-3 rounded-xl text-[9px] font-black uppercase">Payout</button>
+        <!-- DASHBOARD -->
+        <main id="page-home" class="page-content px-6 space-y-6 page-transition">
+            <!-- LUXURY BANK CARD -->
+            <div class="premium-card p-8 rounded-[40px] border-none shadow-2xl shadow-blue-900/20">
+                <div class="flex justify-between items-start mb-12">
+                    <div class="w-12 h-8 glass-card border-white/10 flex items-center justify-center"><div class="w-6 h-4 bg-yellow-600/50 rounded-sm"></div></div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-4 opacity-50 grayscale invert">
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Global Liquidity</p>
+                <h2 id="user-bal" class="text-4xl font-extrabold my-2">$0.00</h2>
+                <div class="flex justify-between items-end mt-12">
+                    <p class="text-[10px] font-black text-blue-400">NEXA PRESTIGE</p>
+                    <div class="flex gap-4">
+                        <button onclick="nav('deposit')" class="text-[9px] font-black uppercase bg-white/10 px-4 py-2 rounded-lg">Add</button>
+                        <button onclick="nav('withdraw')" class="text-[9px] font-black uppercase bg-blue-600 px-4 py-2 rounded-lg">Payout</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div class="glass-ui p-5"><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Active Nodes</p><p id="active-plans" class="text-xl font-extrabold">0</p></div>
-                <div class="glass-ui p-5"><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Affiliates</p><p id="team-count" class="text-xl font-extrabold">0</p></div>
+            <!-- QUICK FEATURES -->
+            <div class="grid grid-cols-4 gap-4">
+                <button onclick="openSpin()" class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 glass-card flex items-center justify-center text-amber-500 text-xl"><i class="fa-solid fa-dharmachakra"></i></div>
+                    <span class="text-[8px] font-black uppercase text-slate-400">Spin</span>
+                </button>
+                <button onclick="nav('team')" class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 glass-card flex items-center justify-center text-indigo-500 text-xl"><i class="fa-solid fa-users-rays"></i></div>
+                    <span class="text-[8px] font-black uppercase text-slate-400">Team</span>
+                </button>
+                <button onclick="openRedeem()" class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 glass-card flex items-center justify-center text-emerald-500 text-xl"><i class="fa-solid fa-ticket"></i></div>
+                    <span class="text-[8px] font-black uppercase text-slate-400">Promo</span>
+                </button>
+                <button onclick="nav('info')" class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 glass-card flex items-center justify-center text-slate-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
+                    <span class="text-[8px] font-black uppercase text-slate-400">Trust</span>
+                </button>
             </div>
 
-            <div class="glass-ui p-6 bg-indigo-50/50">
-                <h4 class="text-[10px] font-black text-indigo-900 uppercase mb-3">Redeem Voucher</h4>
-                <div class="flex gap-2">
-                    <input id="user-promo-input" placeholder="CODE123" class="flex-1 p-3.5 rounded-xl bg-white text-xs font-bold outline-none border border-indigo-100">
-                    <button onclick="redeemPromo()" class="bg-indigo-600 text-white px-6 rounded-xl text-[9px] font-black uppercase">Claim</button>
+            <!-- LIVE STATS -->
+            <div class="glass-card p-6 bg-gradient-to-r from-blue-900/20 to-transparent">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-[9px] font-black text-slate-400 uppercase">Profit Accrued (24h)</p>
+                        <h4 id="daily-earnings" class="text-xl font-extrabold text-emerald-500">+$0.00</h4>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[9px] font-black text-slate-400 uppercase">Active Clusters</p>
+                        <h4 id="active-plans" class="text-xl font-extrabold">0</h4>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <main id="page-nodes" class="page-content hidden px-6 py-6 space-y-4">
-            <h2 class="text-xl font-extrabold text-slate-800">Mining Clusters</h2>
-            <div id="nodes-container" class="space-y-4 pb-10"></div>
+        <!-- NODES PAGE -->
+        <main id="page-nodes" class="page-content hidden px-6 py-6 space-y-4 page-transition">
+            <h2 class="text-2xl font-extrabold tracking-tight">Mining Clusters</h2>
+            <div id="nodes-container" class="space-y-4 pb-20"></div>
         </main>
 
-        <main id="page-history" class="page-content hidden px-6 py-6 space-y-4">
-            <h2 class="text-xl font-extrabold text-slate-800">Financial Ledger</h2>
-            <div id="history-container" class="space-y-3"></div>
-        </main>
-
-        <main id="page-info" class="page-content hidden px-6 py-6 space-y-6">
-            <h2 class="text-xl font-extrabold text-slate-800">Trust Center</h2>
-            <div class="glass-ui p-6 space-y-3"><h3 class="font-bold text-xs uppercase">About Nexa Gold</h3><p class="text-[11px] text-slate-500 leading-relaxed">Nexa Gold is a premier institutional mining platform providing decentralized cloud compute nodes since 2024. Headquartered in London, UK.</p></div>
-            <div class="glass-ui p-6"><h3 class="font-bold text-xs uppercase mb-3">Support</h3><a href="#" class="block w-full bg-green-500 text-white p-4 rounded-xl text-center font-black uppercase text-[9px]"><i class="fa-brands fa-whatsapp mr-2"></i> Official WhatsApp</a></div>
-        </main>
-
-        <main id="page-admin" class="page-content hidden px-6 py-6 space-y-6">
-            <h2 class="text-xl font-extrabold text-red-600 uppercase italic">Root Authority</h2>
-            <div class="glass-ui p-5 space-y-3">
-                <h3 class="text-[10px] font-black uppercase text-slate-400">Gateway Management</h3>
-                <input id="set-jazz" placeholder="JazzCash Number" class="w-full p-3 rounded-xl bg-slate-50 text-xs font-bold outline-none">
-                <input id="set-easy" placeholder="Easypaisa Number" class="w-full p-3 rounded-xl bg-slate-50 text-xs font-bold outline-none">
-                <input id="set-sada" placeholder="Sadapay Number" class="w-full p-3 rounded-xl bg-slate-50 text-xs font-bold outline-none">
-                <button onclick="updateNumbers()" class="w-full bg-[#0A2540] text-white p-3 rounded-xl text-[9px] font-black uppercase">Update Numbers</button>
+        <!-- TEAM PAGE -->
+        <main id="page-team" class="page-content hidden px-6 py-6 space-y-6 page-transition">
+            <h2 class="text-2xl font-extrabold tracking-tight">Affiliate Network</h2>
+            <div class="grid grid-cols-3 gap-2">
+                <div class="glass-card p-4 text-center border-blue-500/20"><p class="text-[8px] font-black text-slate-500">LVL 1</p><p id="t1" class="text-lg font-black">0</p></div>
+                <div class="glass-card p-4 text-center border-indigo-500/20"><p class="text-[8px] font-black text-slate-500">LVL 2</p><p id="t2" class="text-lg font-black">0</p></div>
+                <div class="glass-card p-4 text-center border-purple-500/20"><p class="text-[8px] font-black text-slate-500">LVL 3</p><p id="t3" class="text-lg font-black">0</p></div>
             </div>
-            <div class="glass-ui p-5 space-y-3">
-                <h3 class="text-[10px] font-black uppercase text-slate-400">Bonus Control</h3>
-                <input id="bonus-uid" placeholder="User UID" class="w-full p-3 rounded-xl bg-slate-50 text-xs font-bold outline-none">
-                <input id="bonus-amount" type="number" placeholder="Bonus Amount $" class="w-full p-3 rounded-xl bg-slate-50 text-xs font-bold outline-none">
-                <button onclick="sendManualBonus()" class="w-full bg-amber-500 text-white p-3 rounded-xl text-[9px] font-black uppercase">Send Bonus</button>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="loadAdmin('dep')" class="glass-ui p-3 text-[9px] font-black text-blue-600 uppercase">Deposits</button>
-                <button onclick="loadAdmin('wit')" class="glass-ui p-3 text-[9px] font-black text-slate-800 uppercase">Withdraws</button>
-            </div>
-            <div id="admin-list" class="space-y-3"></div>
+            <div class="glass-card p-6"><p class="text-[10px] font-black text-slate-400 uppercase mb-2">Referral Link</p><div onclick="copyLink()" class="bg-black/30 p-4 rounded-xl text-[10px] font-mono break-all text-blue-400 border border-white/5" id="ref-link">https://nexagold.app/ref?id=...</div></div>
         </main>
 
-        <main id="page-deposit" class="page-content hidden px-6 py-6 space-y-4">
-            <h2 class="text-xl font-extrabold text-slate-800">Add Capital</h2>
-            <div onclick="openPay('JazzCash')" class="glass-ui p-5 flex justify-between items-center border-l-4 border-red-500"><div><p class="font-black text-xs">JAZZCASH</p><p class="text-[8px] text-slate-400">Instant Verification</p></div><i class="fa-solid fa-chevron-right"></i></div>
-            <div onclick="openPay('Easypaisa')" class="glass-ui p-5 flex justify-between items-center border-l-4 border-green-500"><div><p class="font-black text-xs">EASYPAISA</p><p class="text-[8px] text-slate-400">Fast Funding</p></div><i class="fa-solid fa-chevron-right"></i></div>
-        </main>
-
-        <main id="page-withdraw" class="page-content hidden px-6 py-6 space-y-4">
-            <h2 class="text-xl font-extrabold text-slate-800">Payout Request</h2>
-            <div class="glass-ui p-6 space-y-4">
-                <input id="w-amt" type="number" placeholder="Amount $" class="w-full p-4 rounded-xl bg-slate-50 text-sm font-bold outline-none">
-                <input id="w-num" placeholder="Account Number" class="w-full p-4 rounded-xl bg-slate-50 text-sm font-bold outline-none">
-                <button onclick="submitWithdraw()" class="w-full bg-[#0A2540] text-white p-4 rounded-xl font-black uppercase text-[10px]">Process Payout</button>
+        <!-- ADMIN COMMAND CENTER -->
+        <main id="page-admin" class="page-content hidden px-6 py-6 space-y-6 page-transition">
+            <h2 class="text-2xl font-extrabold text-red-500 tracking-tighter uppercase italic">Control Room</h2>
+            
+            <div class="glass-card p-5 space-y-4">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Announcement</h3>
+                <input id="ann-text" placeholder="Update news ticker..." class="w-full p-4 bg-white/5 rounded-xl text-xs font-bold border-none outline-none">
+                <button onclick="setAnnouncement()" class="w-full bg-blue-600 text-white p-3 rounded-xl text-[10px] font-black uppercase">Publish News</button>
             </div>
+
+            <div class="glass-card p-5 space-y-4">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">User Management (Ban/Edit)</h3>
+                <input id="manage-uid" placeholder="Enter User UID" class="w-full p-4 bg-white/5 rounded-xl text-xs font-bold border-none outline-none">
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="banUser()" class="bg-red-600 text-white p-3 rounded-xl text-[10px] font-black uppercase">Ban User</button>
+                    <button onclick="unbanUser()" class="bg-green-600 text-white p-3 rounded-xl text-[10px] font-black uppercase">Unban User</button>
+                </div>
+                <input id="edit-bal" placeholder="Update Balance" class="w-full p-4 bg-white/5 rounded-xl text-xs font-bold border-none outline-none">
+                <button onclick="updateUserBal()" class="w-full bg-slate-100 text-black p-3 rounded-xl text-[10px] font-black uppercase">Update Funds</button>
+            </div>
+
+            <div id="admin-req-list" class="space-y-4"></div>
         </main>
 
-        <nav class="fixed bottom-4 left-4 right-4 h-20 glass-ui flex justify-around items-center z-50 shadow-2xl">
-            <div onclick="nav('home')" class="nav-item flex flex-col items-center flex-1 text-slate-400" id="btn-home"><i class="fa-solid fa-house-user"></i><span class="text-[7px] font-black uppercase mt-1">Bank</span></div>
-            <div onclick="nav('nodes')" class="nav-item flex flex-col items-center flex-1 text-slate-400" id="btn-nodes"><i class="fa-solid fa-microchip"></i><span class="text-[7px] font-black uppercase mt-1">Nodes</span></div>
-            <div onclick="nav('history')" class="nav-item flex flex-col items-center flex-1 text-slate-400" id="btn-history"><i class="fa-solid fa-receipt"></i><span class="text-[7px] font-black uppercase mt-1">Ledger</span></div>
-            <div onclick="nav('admin')" class="nav-item hidden flex flex-col items-center flex-1 text-red-500" id="btn-admin"><i class="fa-solid fa-fingerprint"></i><span class="text-[7px] font-black uppercase mt-1">Root</span></div>
+        <!-- NAVIGATION -->
+        <nav class="fixed bottom-6 left-6 right-6 h-20 glass-card border-white/10 flex justify-around items-center z-[100] shadow-2xl">
+            <div onclick="nav('home')" class="nav-item flex flex-col items-center flex-1 text-slate-500" id="btn-home"><i class="fa-solid fa-house-chimney-window"></i><span class="text-[7px] font-black mt-1 uppercase">Bank</span></div>
+            <div onclick="nav('nodes')" class="nav-item flex flex-col items-center flex-1 text-slate-500" id="btn-nodes"><i class="fa-solid fa-bolt-lightning"></i><span class="text-[7px] font-black mt-1 uppercase">Nodes</span></div>
+            <div onclick="nav('team')" class="nav-item flex flex-col items-center flex-1 text-slate-500" id="btn-team"><i class="fa-solid fa-network-wired"></i><span class="text-[7px] font-black mt-1 uppercase">Network</span></div>
+            <div onclick="nav('admin')" class="nav-item hidden flex flex-col items-center flex-1 text-red-500" id="btn-admin"><i class="fa-solid fa-microchip"></i><span class="text-[7px] font-black mt-1 uppercase">Root</span></div>
         </nav>
     </div>
 
-    <div id="pay-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[10000] hidden flex items-center justify-center p-8">
-        <div class="glass-ui p-8 w-full max-w-sm bg-white">
-            <h3 id="m-gw" class="text-lg font-black text-blue-600 mb-6 uppercase">--</h3>
-            <div class="bg-slate-50 p-4 rounded-xl flex justify-between items-center mb-6" onclick="copyNum()"><span id="m-num" class="font-black text-sm tracking-widest">--</span><i class="fa-solid fa-copy text-slate-300"></i></div>
-            <input type="number" id="m-amt" placeholder="Amount $" class="w-full p-4 rounded-xl bg-slate-50 mb-3 text-sm font-bold outline-none">
-            <input type="text" id="m-tid" placeholder="Transaction ID (TID)" class="w-full p-4 rounded-xl bg-slate-50 mb-6 text-sm font-bold outline-none">
-            <button onclick="submitDep()" class="w-full bg-[#0A2540] text-white p-4 rounded-xl font-black text-[10px] uppercase">Verify Transfer</button>
-            <button onclick="document.getElementById('pay-modal').classList.add('hidden')" class="w-full mt-4 text-[8px] font-bold text-slate-400 uppercase">Cancel</button>
+    <!-- SPIN WHEEL MODAL -->
+    <div id="spin-modal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-[1000] flex items-center justify-center p-8">
+        <div class="text-center space-y-8">
+            <h3 class="text-2xl font-black uppercase tracking-tighter">Daily Lucky Spin</h3>
+            <div id="wheel" class="w-64 h-64 border-8 border-blue-600 rounded-full flex items-center justify-center relative shadow-2xl shadow-blue-500/40">
+                <i class="fa-solid fa-star text-4xl text-yellow-500"></i>
+                <div class="absolute inset-0 border-4 border-dashed border-white/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
+            </div>
+            <button onclick="startSpin()" class="bg-blue-600 text-white px-12 py-4 rounded-full font-black uppercase text-sm tracking-widest shadow-xl">Spin Now</button>
+            <p onclick="document.getElementById('spin-modal').classList.add('hidden')" class="text-slate-500 text-[10px] font-bold uppercase cursor-pointer">Close</p>
         </div>
     </div>
 
@@ -143,6 +191,7 @@
         import { getDatabase, ref, set, get, onValue, update, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+        // CONFIG (Replace with your actual keys)
         const firebaseConfig = {
             apiKey: "AIzaSyBe5Q5jXpx3UvrHC9WOky9UWeDnP9SPfZI",
             authDomain: "verbose-6c008.firebaseapp.com",
@@ -156,19 +205,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
-        const RATE = 285;
         let userData = null, uid = "";
 
-        // AUTH LOGIC
+        // LOGIN SYSTEM
         window.handleLogin = async () => {
             const name = document.getElementById('user-name').value;
             const key = document.getElementById('admin-key').value;
-            if(!name) return alert("Enter Legal Name!");
+            if(!name) return alert("Full Name Required, Sweetie!");
             const res = await signInAnonymously(auth);
             uid = res.user.uid;
             const s = await get(ref(db, `users/${uid}`));
             if(!s.exists()) {
-                await set(ref(db, `users/${uid}`), { username: name, balance: 0, role: (key==="sweetie786"?"admin":"user"), plans: 0, team: 0 });
+                await set(ref(db, `users/${uid}`), { username: name, balance: 0, role: (key==="sweetie786"?"admin":"user"), status: 'active', joined: Date.now() });
             } else if(key==="sweetie786") {
                 await update(ref(db, `users/${uid}`), { role: "admin" });
             }
@@ -181,161 +229,108 @@
                 onValue(ref(db, `users/${uid}`), s => {
                     userData = s.val();
                     if(!userData) return;
+                    if(userData.status === 'banned') return document.body.innerHTML = "<div class='flex items-center justify-center h-screen bg-black text-red-500 font-black uppercase tracking-widest'>Your Account has been Banned.</div>";
+                    
                     document.getElementById('display-name').innerText = userData.username;
-                    document.getElementById('user-bal').innerText = `$${userData.balance.toFixed(2)}`;
-                    document.getElementById('pkr-bal').innerText = `≈ Rs. ${(userData.balance * RATE).toLocaleString()}`;
+                    document.getElementById('user-bal').innerText = `$${(userData.balance || 0).toFixed(2)}`;
                     document.getElementById('active-plans').innerText = userData.plans || 0;
-                    document.getElementById('team-count').innerText = userData.team || 0;
+                    document.getElementById('ref-link').innerText = `https://nexagold.app/ref?id=${uid}`;
                     if(userData.role === 'admin') document.getElementById('btn-admin').classList.remove('hidden');
                 });
-                loadNodes(); nav('home');
+                syncGlobals(); loadNodes(); nav('home');
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
             }
         });
 
-        // CORE FUNCTIONS
+        // GLOBAL SYNC (ANNOUNCEMENTS & BTC)
+        function syncGlobals() {
+            onValue(ref(db, 'global/announcement'), s => {
+                if(s.exists()) document.getElementById('global-announcement').innerText = s.val();
+            });
+            // Fake BTC Sync
+            setInterval(() => {
+                const p = 64000 + Math.random() * 500;
+                document.getElementById('btc-price').innerText = `$${p.toLocaleString(undefined, {maximumFractionDigits:0})}`;
+            }, 5000);
+        }
+
+        // NAVIGATION
         window.nav = (id) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('nav-active'));
             document.getElementById(`page-${id}`).classList.remove('hidden');
             document.getElementById(`btn-${id}`)?.classList.add('nav-active');
-            if(id === 'history') loadHistory();
+            if(id === 'admin') loadAdminRequests();
         };
 
-        async function logActivity(u_uid, title, amount, type) {
-            await push(ref(db, `history/${u_uid}`), { title, amount, type, time: Date.now() });
-        }
-
+        // NODES SYSTEM (20 NODES)
         window.loadNodes = () => {
             const con = document.getElementById('nodes-container'); con.innerHTML = "";
             for(let i=1; i<=20; i++) {
-                const cost = i * 5;
-                con.innerHTML += `<div class="glass-ui p-5 flex justify-between items-center shadow-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center"><i class="fa-solid fa-server"></i></div>
-                        <div><p class="text-[10px] font-black uppercase">Cluster V.${i}</p><p class="text-[8px] text-blue-600 font-bold tracking-widest">${(i*1.2).toFixed(1)} TH/s</p></div>
+                const cost = i * 10;
+                con.innerHTML += `
+                <div class="glass-card p-6 flex justify-between items-center shadow-lg hover:border-blue-500/50 transition-all">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-900 rounded-2xl flex items-center justify-center text-2xl shadow-lg"><i class="fa-solid fa-server"></i></div>
+                        <div>
+                            <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest">Nexa Cluster V.${i}</p>
+                            <p class="text-[8px] font-bold text-slate-500 uppercase">Power: ${(i*3.2).toFixed(1)} TH/s | Daily: 2%</p>
+                        </div>
                     </div>
-                    <button onclick="buyPlan(${cost})" class="bg-[#0A2540] text-white px-5 py-2.5 rounded-xl text-[8px] font-black uppercase">Deploy $${cost}</button>
+                    <button onclick="buyPlan(${cost})" class="bg-blue-600 text-white px-6 py-3 rounded-xl text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">$${cost}</button>
                 </div>`;
             }
         };
 
         window.buyPlan = async (c) => {
-            if(userData.balance < c) return alert("Liquidity Error!");
+            if(userData.balance < c) return alert("Insufficient Balance!");
             await update(ref(db, `users/${uid}`), { balance: userData.balance - c, plans: (userData.plans || 0) + 1 });
-            await logActivity(uid, "Node Deployment", c, "minus");
-            alert("Node Active!");
+            alert("Deployment Successful!");
         };
 
-        window.loadHistory = () => {
-            const con = document.getElementById('history-container');
-            onValue(ref(db, `history/${uid}`), s => {
-                con.innerHTML = "";
-                s.forEach(item => {
-                    const d = item.val();
-                    con.innerHTML = `<div class="glass-ui p-4 flex justify-between items-center">
-                        <div><p class="text-[10px] font-black uppercase">${d.title}</p><p class="text-[7px] text-slate-400 font-bold">${new Date(d.time).toLocaleTimeString()}</p></div>
-                        <p class="text-xs font-black ${d.type==='plus'?'text-green-500':'text-red-500'}">${d.type==='plus'?'+':'-'}$${d.amount.toFixed(2)}</p>
-                    </div>` + con.innerHTML;
-                });
-            });
+        // LUCKY SPIN
+        window.openSpin = () => document.getElementById('spin-modal').classList.remove('hidden');
+        window.startSpin = async () => {
+            const wheel = document.getElementById('wheel');
+            wheel.style.transition = "transform 4s cubic-bezier(0.1, 0.7, 1.0, 0.1)";
+            const deg = 1800 + Math.random() * 1000;
+            wheel.style.transform = `rotate(${deg}deg)`;
+            
+            setTimeout(async () => {
+                const win = (Math.random() * 0.5).toFixed(2);
+                await update(ref(db, `users/${uid}`), { balance: (userData.balance || 0) + parseFloat(win) });
+                alert(`Sweetie, you won $${win}! 🎉`);
+                document.getElementById('spin-modal').classList.add('hidden');
+                wheel.style.transform = `rotate(0deg)`; wheel.style.transition = "none";
+            }, 4000);
         };
 
-        // ADMIN LOGIC
-        window.updateNumbers = async () => {
-            const updates = {};
-            const j = document.getElementById('set-jazz').value;
-            const e = document.getElementById('set-easy').value;
-            if(j) updates['gateways/jazz'] = j;
-            if(e) updates['gateways/easy'] = e;
-            await update(ref(db), updates); alert("Updated!");
+        // ADMIN CONTROLS
+        window.setAnnouncement = () => {
+            const txt = document.getElementById('ann-text').value;
+            set(ref(db, 'global/announcement'), txt); alert("Global Update Live!");
         };
 
-        window.sendManualBonus = async () => {
-            const u = document.getElementById('bonus-uid').value;
-            const a = parseFloat(document.getElementById('bonus-amount').value);
-            const s = await get(ref(db, `users/${u}/balance`));
-            if(s.exists()) {
-                await update(ref(db, `users/${u}`), { balance: s.val() + a });
-                await logActivity(u, "System Reward 🎁", a, "plus");
-                alert("Bonus Sent!");
-            }
+        window.banUser = () => {
+            const target = document.getElementById('manage-uid').value;
+            update(ref(db, `users/${target}`), { status: 'banned' }); alert("User Banned!");
         };
 
-        window.loadAdmin = (tab) => {
-            const path = tab === 'dep' ? 'deposits' : 'withdraws';
-            onValue(ref(db, path), s => {
-                const con = document.getElementById('admin-list'); con.innerHTML = "";
-                s.forEach(c => {
-                    const d = c.val(); if(d.status !== 'pending') return;
-                    con.innerHTML += `<div class="glass-ui p-5 space-y-4">
-                        <p class="font-black text-[10px] uppercase">${d.username} | $${d.amount}</p>
-                        <p class="text-[8px] font-bold text-slate-400">${tab==='dep'?'TID: '+d.tid:'No: '+d.number}</p>
-                        <div class="flex gap-2">
-                            <button onclick="handleReq('${path}','${c.key}','${d.uid}',${d.amount},'approved','${tab}')" class="flex-1 bg-green-500 text-white py-3 rounded-xl text-[8px] font-black">APPROVE</button>
-                            <button onclick="handleReq('${path}','${c.key}','${d.uid}',${d.amount},'rejected','${tab}')" class="flex-1 bg-red-500 text-white py-3 rounded-xl text-[8px] font-black">REJECT</button>
-                        </div>
-                    </div>`;
-                });
-            });
+        window.unbanUser = () => {
+            const target = document.getElementById('manage-uid').value;
+            update(ref(db, `users/${target}`), { status: 'active' }); alert("User Restored!");
         };
 
-        window.handleReq = async (path, key, u_uid, amt, status, tab) => {
-            if(status === 'approved' && tab === 'dep') {
-                const s = await get(ref(db, `users/${u_uid}/balance`));
-                await update(ref(db, `users/${u_uid}`), { balance: (s.val()||0) + amt });
-                await logActivity(u_uid, "Deposit Approved", amt, "plus");
-            }
-            if(status === 'rejected' && tab === 'wit') {
-                const s = await get(ref(db, `users/${u_uid}/balance`));
-                await update(ref(db, `users/${u_uid}`), { balance: (s.val()||0) + amt });
-                await logActivity(u_uid, "Withdraw Rejected (Refund)", amt, "plus");
-            }
-            await update(ref(db, `${path}/${key}`), { status });
-            alert("Action Processed!");
+        window.updateUserBal = () => {
+            const target = document.getElementById('manage-uid').value;
+            const amt = parseFloat(document.getElementById('edit-bal').value);
+            update(ref(db, `users/${target}`), { balance: amt }); alert("Balance Updated!");
         };
 
-        window.redeemPromo = async () => {
-            const code = document.getElementById('user-promo-input').value.toUpperCase();
-            const s = await get(ref(db, `promos/${code}`));
-            if(s.exists() && s.val().status === 'active') {
-                const r = s.val().value;
-                await update(ref(db, `users/${uid}`), { balance: userData.balance + r });
-                await update(ref(db, `promos/${code}`), { status: 'used' });
-                await logActivity(uid, "Promo Applied: "+code, r, "plus");
-                alert("Reward Claimed!");
-            } else alert("Invalid Code!");
-        };
-
-        window.openPay = async (gw) => {
-            document.getElementById('m-gw').innerText = gw;
-            const p = gw === 'JazzCash' ? 'jazz' : 'easy';
-            const s = await get(ref(db, `gateways/${p}`));
-            document.getElementById('m-num').innerText = s.exists() ? s.val() : '03XXXXXXXXX';
-            document.getElementById('pay-modal').classList.remove('hidden');
-        };
-
-        window.submitDep = async () => {
-            const a = parseFloat(document.getElementById('m-amt').value);
-            const t = document.getElementById('m-tid').value;
-            if(!a || !t) return;
-            await push(ref(db, 'deposits'), { uid, username: userData.username, amount: a, tid: t, status: 'pending', time: Date.now(), method: document.getElementById('m-gw').innerText });
-            alert("Request Sent!"); document.getElementById('pay-modal').classList.add('hidden');
-        };
-
-        window.submitWithdraw = async () => {
-            const a = parseFloat(document.getElementById('w-amt').value);
-            const n = document.getElementById('w-num').value;
-            if(userData.balance < a) return alert("Low Balance!");
-            await update(ref(db, `users/${uid}`), { balance: userData.balance - a });
-            await push(ref(db, 'withdraws'), { uid, username: userData.username, amount: a, number: n, status: 'pending', time: Date.now() });
-            await logActivity(uid, "Withdrawal Request", a, "minus");
-            alert("Request Filed!");
-        };
-
-        window.copyNum = () => { navigator.clipboard.writeText(document.getElementById('m-num').innerText); alert("Copied!"); };
         window.logout = () => signOut(auth).then(() => location.reload());
+        window.copyLink = () => { navigator.clipboard.writeText(document.getElementById('ref-link').innerText); alert("Referral Link Copied!"); };
+
     </script>
 </body>
 </html>
