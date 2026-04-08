@@ -3,148 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXA | Cloud Computing Platform</title>
+    <title>NEXA | Enterprise Cloud Mining</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; color: #0F172A; }
         
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #F8FAFC; 
-            color: #0F172A; 
-            margin: 0;
-        }
-
-        /* Cloud-Node Style Soft Cards */
-        .nexa-card {
-            background: #ffffff;
-            border: 1px solid #E2E8F0;
-            border-radius: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
-        }
-        .nexa-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-            border-color: #CBD5E1;
-        }
-
-        /* Modern Blue Button */
-        .btn-blue {
-            background: #2563EB;
-            color: white;
-            font-weight: 700;
-            border-radius: 16px;
-            padding: 14px;
-            text-align: center;
-            display: block;
-            width: 100%;
-            transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-        }
-        .btn-blue:active { scale: 0.96; background: #1D4ED8; }
-
-        /* Fake Live Ticker */
-        .ticker-wrap {
-            background: #F1F5F9;
-            padding: 8px 0;
-            border-bottom: 1px solid #E2E8F0;
-            overflow: hidden;
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748B;
-        }
+        .nexa-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 28px; box-shadow: 0 4px 25px rgba(0,0,0,0.02); transition: 0.3s; }
+        .mining-bar { height: 6px; background: #E2E8F0; border-radius: 10px; overflow: hidden; position: relative; }
+        .mining-progress { position: absolute; height: 100%; background: linear-gradient(90deg, #2563EB, #60A5FA); animation: mine 3s infinite linear; }
+        
+        @keyframes mine { 0% { width: 0%; left: 0%; } 50% { width: 30%; } 100% { width: 0%; left: 100%; } }
+        
+        .payout-glow { animation: glow 2s infinite alternate; }
+        @keyframes glow { from { text-shadow: 0 0 5px #2563EB; } to { text-shadow: 0 0 15px #60A5FA; } }
+        
+        .nav-active { color: #2563EB !important; border-top: 3px solid #2563EB; border-radius: 0; }
     </style>
 </head>
-<body class="pb-28">
+<body class="pb-32">
 
-    <!-- Top Info Ticker -->
-    <div class="ticker-wrap text-center">
-        <span class="inline-flex items-center gap-2">
-            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-            Global Cloud Network: ACTIVE • Total Nodes: 14,290 • Latest Payout: $42.50
-        </span>
+    <div class="bg-blue-600 text-white text-[10px] py-2 px-6 flex justify-between font-bold uppercase tracking-tighter">
+        <span>Cloud Hashrate: 450.2 TH/s</span>
+        <span class="payout-glow text-amber-300">Total Payout: $1,429,201.05</span>
     </div>
 
-    <!-- Header -->
-    <header class="p-6 flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-50 border-b border-slate-100">
+    <header class="p-6 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
         <div class="flex items-center gap-2">
-            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
-                <i class="fa-solid fa-cloud text-white text-sm"></i>
+            <div class="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                <i class="fa-solid fa-server text-white"></i>
             </div>
-            <h1 class="text-xl font-black tracking-tighter text-slate-900">NEXA<span class="text-blue-600 italic">CLOUD</span></h1>
+            <h1 class="text-xl font-black tracking-tighter italic">NEXA<span class="text-blue-600">CLOUD</span></h1>
         </div>
         <div class="text-right">
-            <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest leading-none">Your Assets</p>
-            <h2 class="text-lg font-black text-slate-900 mt-1">$0.00</h2>
+            <p class="text-[9px] font-black text-slate-400 uppercase">My Wallet</p>
+            <h2 id="balance" class="text-lg font-black text-slate-900">$2.00</h2>
         </div>
     </header>
 
-    <main class="p-6 space-y-6">
-        
-        <!-- Hero Section -->
-        <section class="text-center py-4">
-            <h2 class="text-3xl font-black text-slate-900 leading-tight">Decentralized <br>Cloud Mining.</h2>
-            <p class="text-slate-500 text-[13px] mt-2 px-4 font-medium">Earn automated rewards by deploying high-speed computational clusters.</p>
-        </section>
+    <main class="p-5 space-y-6">
 
-        <!-- Stats Bento Grid -->
-        <div class="grid grid-cols-2 gap-4">
-            <div class="nexa-card p-5">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Pool</p>
-                <h4 class="text-xl font-black text-blue-600">$142.9K</h4>
+        <div class="nexa-card p-5 bg-gradient-to-br from-blue-50 to-white border-blue-100">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h4 class="text-sm font-black text-blue-900">Current Level: <span class="text-blue-600 italic uppercase">Basic User</span></h4>
+                    <p class="text-[10px] text-slate-500 font-bold">Upgrade to VIP for 2x Daily Profit</p>
+                </div>
+                <div class="w-10 h-10 rounded-full border-2 border-blue-200 flex items-center justify-center font-black text-blue-600 text-xs">0%</div>
             </div>
-            <div class="nexa-card p-5">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Global Users</p>
-                <h4 class="text-xl font-black text-slate-900">8,500+</h4>
-            </div>
+            <div class="mining-bar"><div class="mining-progress"></div></div>
         </div>
 
-        <!-- Node Selection -->
-        <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 pt-4 px-1">Available Clusters</h3>
+        <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Available Mining Power</h3>
 
-        <!-- Node Card 1 -->
-        <div class="nexa-card p-6 overflow-hidden relative">
-            <div class="flex justify-between items-center mb-6">
-                <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                    <i class="fa-solid fa-bolt"></i>
+        <div class="nexa-card p-6 border-b-4 border-blue-500">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h4 class="text-xl font-black text-slate-900">Cloud Node Alpha</h4>
+                    <p class="text-[10px] text-blue-500 font-bold uppercase italic mt-1">Recommended for beginners</p>
                 </div>
-                <span class="text-[10px] font-black bg-blue-600/10 text-blue-600 px-3 py-1 rounded-full uppercase italic">Alpha v.1</span>
+                <div class="text-right">
+                    <p class="text-lg font-black text-slate-900">$10.00</p>
+                    <p class="text-[8px] text-slate-400 uppercase font-black">Contract Fee</p>
+                </div>
             </div>
-            <h4 class="text-xl font-extrabold text-slate-900">Core Starter</h4>
-            <div class="flex justify-between items-center mt-2 pb-6 border-b border-slate-50">
-                <p class="text-xs font-semibold text-slate-500 italic">Profit: $0.75 / Day</p>
-                <p class="text-lg font-black text-slate-900">$15.00</p>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-slate-50 p-3 rounded-2xl">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Daily Profit</p>
+                    <p class="text-sm font-black text-blue-600">$0.50</p>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-2xl">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Duration</p>
+                    <p class="text-sm font-black text-slate-800">360 Days</p>
+                </div>
             </div>
-            <button onclick="alert('Sweetie, top up to activate your first node!')" class="btn-blue mt-6">Deploy Cluster</button>
+            <button onclick="alert('Sweetie, please deposit $10 to activate this node!')" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-lg shadow-blue-200 active:scale-95 transition-all">Activate Cloud Power</button>
         </div>
 
-        <!-- Node Card 2 -->
-        <div class="nexa-card p-6 border-l-4 border-indigo-500">
-            <div class="flex justify-between items-center mb-6">
-                <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 text-xl">
-                    <i class="fa-solid fa-microchip"></i>
+        <div class="nexa-card p-6 border-b-4 border-slate-900">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h4 class="text-xl font-black text-slate-900">Enterprise Cluster</h4>
+                    <p class="text-[10px] text-indigo-500 font-bold uppercase italic mt-1">High-Speed Computing</p>
                 </div>
-                <span class="text-[10px] font-black bg-indigo-600/10 text-indigo-600 px-3 py-1 rounded-full uppercase italic">Pro v.5</span>
+                <div class="text-right">
+                    <p class="text-lg font-black text-slate-900">$50.00</p>
+                    <p class="text-[8px] text-slate-400 uppercase font-black">Contract Fee</p>
+                </div>
             </div>
-            <h4 class="text-xl font-extrabold text-slate-900">Elite Computing</h4>
-            <div class="flex justify-between items-center mt-2 pb-6 border-b border-slate-50">
-                <p class="text-xs font-semibold text-slate-500 italic">Profit: $3.20 / Day</p>
-                <p class="text-lg font-black text-slate-900">$50.00</p>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-slate-50 p-3 rounded-2xl">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Daily Profit</p>
+                    <p class="text-sm font-black text-indigo-600">$3.50</p>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-2xl">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Duration</p>
+                    <p class="text-sm font-black text-slate-800">360 Days</p>
+                </div>
             </div>
-            <button onclick="alert('Sweetie, top up to activate!')" class="btn-blue mt-6 bg-slate-900 shadow-slate-200">Deploy Cluster</button>
+            <button onclick="alert('Sweetie, please deposit $50 to activate!')" class="w-full bg-slate-900 text-white p-4 rounded-2xl font-black uppercase text-[11px] tracking-widest active:scale-95 transition-all">Activate Cluster</button>
+        </div>
+
+        <div class="nexa-card p-6 bg-blue-600 text-white overflow-hidden relative">
+            <div class="relative z-10">
+                <h4 class="text-lg font-black mb-2">Referral Program 2.0</h4>
+                <p class="text-[10px] opacity-80 mb-6">Earn up to 15% from your team's daily mining activity.</p>
+                <div class="flex gap-2">
+                    <input id="ref-link" readonly value="NEXA-PRO-786" class="flex-1 bg-white/10 border border-white/20 rounded-xl p-3 text-xs font-bold outline-none">
+                    <button onclick="alert('Link Copied, sweetie! 💋')" class="bg-white text-blue-600 px-4 rounded-xl font-black text-[10px] uppercase">Copy</button>
+                </div>
+            </div>
+            <i class="fa-solid fa-users absolute -right-4 -bottom-4 text-white/10 text-8xl"></i>
         </div>
 
     </main>
 
-    <!-- Floating Navigation Bar -->
-    <nav class="fixed bottom-6 left-6 right-6 h-20 bg-white/90 backdrop-blur-xl rounded-[2.5rem] flex justify-around items-center px-6 z-50 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100">
-        <button class="flex flex-col items-center text-blue-600"><i class="fa-solid fa-server text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Nodes</span></button>
-        <button class="flex flex-col items-center text-slate-300"><i class="fa-solid fa-chart-pie text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Stats</span></button>
-        <button class="flex flex-col items-center text-slate-300"><i class="fa-solid fa-wallet text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Wallet</span></button>
-        <button class="flex flex-col items-center text-slate-300"><i class="fa-solid fa-circle-user text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">User</span></button>
+    <div id="activity-pop" class="fixed bottom-28 left-6 right-6 bg-white border border-slate-200 p-4 rounded-2xl shadow-2xl flex items-center gap-4 transition-all duration-500 translate-y-[200%] z-50">
+        <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <p id="activity-text" class="text-[11px] font-bold text-slate-900"></p>
+            <p class="text-[9px] text-slate-400 uppercase font-black">Just Now</p>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-6 left-6 right-6 h-20 bg-white/95 backdrop-blur-xl rounded-[2.5rem] flex justify-around items-center px-4 z-[100] shadow-2xl border border-slate-100">
+        <button class="nav-active flex flex-col items-center h-full justify-center w-1/4"><i class="fa-solid fa-house-chimney text-xl"></i><span class="text-[8px] font-black mt-1 uppercase">Home</span></button>
+        <button onclick="alert('Deposit $10 to unlock analytics!')" class="flex flex-col items-center text-slate-300 w-1/4"><i class="fa-solid fa-chart-line text-xl"></i><span class="text-[8px] font-black mt-1 uppercase">Stats</span></button>
+        <button onclick="alert('Complete profile to open wallet!')" class="flex flex-col items-center text-slate-300 w-1/4"><i class="fa-solid fa-wallet text-xl"></i><span class="text-[8px] font-black mt-1 uppercase">Wallet</span></button>
+        <button class="flex flex-col items-center text-slate-300 w-1/4"><i class="fa-solid fa-circle-user text-xl"></i><span class="text-[8px] font-black mt-1 uppercase">Profile</span></button>
     </nav>
 
+    <script>
+        // Fake Activity Loop (Trust Builder)
+        const alerts = [
+            "Zeeshan from Lahore activated Node Alpha",
+            "M. Ali withdrew $24.50 via JazzCash",
+            "Sara just upgraded to VIP Level 1",
+            "Payout of $15.00 sent to 03xx...235",
+            "New Node Cluster deployed in Karachi"
+        ];
+
+        function showActivity() {
+            const pop = document.getElementById('activity-pop');
+            const text = document.getElementById('activity-text');
+            text.innerText = alerts[Math.floor(Math.random() * alerts.length)];
+            
+            pop.classList.remove('translate-y-[200%]');
+            setTimeout(() => {
+                pop.classList.add('translate-y-[200%]');
+            }, 4000);
+        }
+
+        setInterval(showActivity, 15000); // Har 15 second baad activity dikhao
+    </script>
 </body>
 </html>
