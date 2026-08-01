@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar Energy Solutions - Professional Consultation & Leads</title>
+    <title>Solar Energy Solutions - Pro Live Platform & User History CRM</title>
     <style>
         * {
             box-sizing: border-box;
@@ -186,7 +186,7 @@
         }
         .submit-btn:hover { background: #059669; }
 
-        /* Extra Modern Local Phone Dialer Modal */
+        /* Extra Modern Live Phone Dialer Modal */
         #dialerModal {
             display: none;
             position: fixed;
@@ -357,6 +357,7 @@
             border: 1px solid #e2e8f0;
         }
         .chat-msg.user { background: #d1fae5; align-self: flex-end; border-color: #a7f3d0; }
+        .chat-msg.bot { background: #ffffff; align-self: flex-start; border-color: #cbd5e1; }
         .chat-footer {
             padding: 10px;
             background: white;
@@ -424,7 +425,7 @@
             max-width: 480px;
             position: relative;
         }
-        .admin-content { max-width: 750px; max-height: 85vh; overflow-y: auto; }
+        .admin-content { max-width: 800px; max-height: 85vh; overflow-y: auto; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #94a3b8; }
         .google-btn { background: #ef4444; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         #toastNotification {
@@ -451,12 +452,36 @@
         .lead-item {
             background: #f8fafc;
             padding: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border-radius: 8px;
             border-left: 4px solid #10b981;
             font-size: 0.9rem;
             border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
         }
+        .lead-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .lead-actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            color: white;
+        }
+        .btn-approve { background: #10b981; }
+        .btn-approve:hover { background: #059669; }
+        .btn-reject { background: #f59e0b; }
+        .btn-reject:hover { background: #d97706; }
+        .btn-delete { background: #ef4444; }
+        .btn-delete:hover { background: #dc2626; }
         footer { text-align: center; padding: 25px; color: #64748b; font-size: 0.85rem; border-top: 1px solid #e2e8f0; margin-top: 30px; }
     </style>
 </head>
@@ -479,7 +504,7 @@
         </div>
         
         <h2 class="section-title">Consultation & Live Voice Hub</h2>
-        <p>Connect instantly with our US solar specialist <strong>Suzanne Foster</strong> using the extra-modern local phone dialer simulator below, or complete our A-to-Z qualification wizard.</p>
+        <p>Connect instantly with our US solar specialist <strong>Suzanne Foster</strong> using the interactive voice call platform below, or chat live with her automated AI assistant.</p>
         
         <!-- Trust Bar -->
         <div class="trust-bar">
@@ -490,24 +515,36 @@
 
         <div class="features">
             <div class="feature-card">
-                <h3>Local Dialer UI</h3>
-                <p>Authentic phone call screen with live timer and status sync.</p>
+                <h3>Live Web Call</h3>
+                <p>Interactive speech synthesis & simulated live voice streaming with Suzanne.</p>
             </div>
             <div class="feature-card">
-                <h3>A-to-Z Form</h3>
-                <p>Complete US lead parameter capture instantly stored to database.</p>
+                <h3>Real-Time AI Chat</h3>
+                <p>Suzanne Foster AI replies instantly to your queries in the chat box.</p>
             </div>
             <div class="feature-card">
-                <h3>Proposal PDF</h3>
-                <p>Instant custom solar savings report download on submission.</p>
+                <h3>Admin & User History</h3>
+                <p>View real-time user activity history with 1-click clear options.</p>
             </div>
         </div>
 
         <!-- Extra Modern Live Call Launcher Box -->
         <div class="live-call-banner">
-            <h3>📞 Talk Live with Suzanne Foster</h3>
-            <p style="color:#cbd5e1; margin-bottom:15px; font-size:0.9rem;">Launch the realistic phone dialer interface to start your voice consultation session.</p>
+            <h3>📞 Talk Live with Suzanne Foster (Voice Session)</h3>
+            <p style="color:#cbd5e1; margin-bottom:15px; font-size:0.9rem;">Launch the live interactive phone dialer interface to start your voice consultation session.</p>
             <button type="button" class="submit-btn" id="launchDialerBtn" style="background:#10b981; max-width:260px; margin:0 auto; display:block;">Open Live Phone Dialer</button>
+        </div>
+
+        <!-- Real-Time User History Section -->
+        <div class="widget-box" style="background:#ffffff; border: 2px dashed #cbd5e1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin-bottom:0;">📜 Your Real-Time Activity & Submission History</h3>
+                <button type="button" id="clearUserHistoryBtn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer;">Clear My History</button>
+            </div>
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:15px;">Here is your live history of consultations, calls, and qualification form submissions:</p>
+            <div id="userHistoryList" style="max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                <p style="font-size:0.9rem; color:#94a3b8;">No activity history recorded yet.</p>
+            </div>
         </div>
 
         <!-- Solar Calculator -->
@@ -599,7 +636,7 @@
             <span id="closeChat" style="cursor:pointer; font-size:1.2rem;">&times;</span>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="chat-msg">Hello! I'm Suzanne Foster. How can I assist you with your US solar consultation today?</div>
+            <div class="chat-msg bot">Hello! I'm Suzanne Foster. How can I assist you with your US solar consultation today?</div>
         </div>
         <div class="chat-footer">
             <input type="text" id="chatInput" placeholder="Type your message...">
@@ -613,7 +650,7 @@
             <div class="dialer-header">
                 <div class="caller-avatar">👩‍💼</div>
                 <h3 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 5px;">Suzanne Foster</h3>
-                <p style="color: #34d399; font-size: 0.9rem; margin-bottom: 5px;" id="callStatusText">Connected...</p>
+                <p style="color: #34d399; font-size: 0.9rem; margin-bottom: 5px;" id="callStatusText">Connected & Speaking...</p>
                 <div id="callTimer" style="font-size: 1.1rem; font-weight: 300; letter-spacing: 1px; color: #cbd5e1;">00:00</div>
             </div>
 
@@ -669,22 +706,22 @@
         </div>
     </div>
 
-    <!-- Secret Admin Modal -->
+    <!-- Secret Admin CRM Modal with Approval System -->
     <div id="adminModal">
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
-            <h3 style="color:#0f172a; margin-bottom: 10px;">🔒 Realtime US Leads & Call Logs Panel</h3>
-            <p style="font-size:0.85rem; color:#64748b; margin-bottom:15px;">Synced records from phone dialer and qualification wizard:</p>
+            <h3 style="color:#0f172a; margin-bottom: 5px;">🔒 Real-Time US Leads CRM & Approval System</h3>
+            <p style="font-size:0.85rem; color:#64748b; margin-bottom:15px;">Manage, review, approve, reject, or clear consultation leads:</p>
             <div id="leadsContainer"><p>Loading records...</p></div>
         </div>
     </div>
 
     <footer>&copy; 2026 Solar Energy Solutions USA. Powered by AI Voice & Firebase.</footer>
 
-    <!-- Firebase & Core Script with Advanced Features -->
+    <!-- Firebase & Core Script with Real-Time User History & Clear Options -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-      import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+      import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
       import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
       
       const firebaseConfig = {
@@ -711,8 +748,9 @@
           } else {
               currentUserEmail = "Guest";
               document.getElementById("userDisplay").innerText = "Guest";
-              document.getElementById("authBtn").innerText = "Login";
+              document.getElementById("authBtn").innerText = "Logout";
           }
+          loadUserHistory();
       });
 
       const authModal = document.getElementById("authModal");
@@ -753,7 +791,66 @@
           });
       });
 
-      // Floating Chat Widget Logic
+      // Real-Time User History Loader & Clear Feature
+      function loadUserHistory() {
+          const historyList = document.getElementById("userHistoryList");
+          onValue(ref(db, 'leads'), (snap) => {
+              const data = snap.val();
+              historyList.innerHTML = "";
+              if (!data) {
+                  historyList.innerHTML = '<p style="font-size:0.9rem; color:#94a3b8;">No activity history recorded yet.</p>';
+                  return;
+              }
+              let hasItems = false;
+              Object.keys(data).reverse().forEach(key => {
+                  const item = data[key];
+                  // Show history if it belongs to current user or if guest
+                  if (item.user === currentUserEmail || currentUserEmail === "Guest") {
+                      hasItems = true;
+                      const statusColor = item.status === 'Approved' ? '#10b981' : (item.status === 'Rejected' ? '#f59e0b' : '#64748b');
+                      const div = document.createElement("div");
+                      div.style.cssText = "background:white; padding:10px 12px; border-radius:8px; border:1px solid #e2e8f0; font-size:0.85rem; display:flex; justify-content:between; align-items:center;";
+                      div.innerHTML = `
+                          <div>
+                              <strong>[${item.type}]</strong> <span style="background:${statusColor}; color:white; padding:1px 6px; border-radius:8px; font-size:0.65rem;">${item.status || 'Pending'}</span><br>
+                              <span style="color:#334155;">${item.name || item.user} - ${item.energyGoal || item.billRange || ''}</span><br>
+                              <small style="color:#94a3b8;">${item.timestamp}</small>
+                          </div>
+                          <button onclick="deleteUserHistoryItem('${key}')" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer; font-size:1rem;" title="Delete item">&times;</button>
+                      `;
+                      historyList.appendChild(div);
+                  }
+              });
+              if (!hasItems) {
+                  historyList.innerHTML = '<p style="font-size:0.9rem; color:#94a3b8;">No activity history recorded yet.</p>';
+              }
+          });
+      }
+
+      window.deleteUserHistoryItem = function(key) {
+          remove(ref(db, 'leads/' + key)).then(() => {
+              alert("History record cleared.");
+          });
+      };
+
+      document.getElementById("clearUserHistoryBtn").addEventListener("click", () => {
+          if (confirm("Are you sure you want to clear all your consultation history records?")) {
+              // Clear records matching current user
+              onValue(ref(db, 'leads'), (snap) => {
+                  const data = snap.val();
+                  if (data) {
+                      Object.keys(data).forEach(key => {
+                          if (data[key].user === currentUserEmail || currentUserEmail === "Guest") {
+                              remove(ref(db, 'leads/' + key));
+                          }
+                      });
+                      alert("Your history has been cleared successfully.");
+                  }
+              }, { onlyOnce: true });
+          }
+      });
+
+      // Real AI Chat Widget Logic (Suzanne Foster Responding)
       const chatBtn = document.getElementById("floatingChatBtn");
       const chatModal = document.getElementById("chatWidgetModal");
       const closeChat = document.getElementById("closeChat");
@@ -764,9 +861,23 @@
       chatBtn.addEventListener("click", () => { chatModal.style.display = "flex"; });
       closeChat.addEventListener("click", () => { chatModal.style.display = "none"; });
 
+      function getSuzanneAIResponse(userInput) {
+          const text = userInput.toLowerCase();
+          if (text.includes("cost") || text.includes("price") || text.includes("bill")) {
+              return "Solar installation costs vary based on your energy consumption, but with the 30% US Federal Tax Credit and our 0-down financing, most homeowners save immediately from month one!";
+          } else if (text.includes("battery") || text.includes("backup")) {
+              return "Yes! We pair our solar setups with top-tier battery storage systems like Tesla Powerwall so your home stays powered during grid outages.";
+          } else if (text.includes("time") || text.includes("long") || text.includes("install")) {
+              return "The complete installation process usually takes between 1 to 3 days once utility interconnection and permits are approved.";
+          } else {
+              return "That's a great question! As your US solar specialist, I recommend scheduling our free consultation or filling out our quick qualification wizard to lock in your 30% tax savings.";
+          }
+      }
+
       sendChatBtn.addEventListener("click", () => {
           const text = chatInput.value.trim();
           if(!text) return;
+          
           const userMsg = document.createElement("div");
           userMsg.className = "chat-msg user";
           userMsg.innerText = text;
@@ -775,12 +886,19 @@
           chatBody.scrollTop = chatBody.scrollHeight;
 
           setTimeout(() => {
+              const reply = getSuzanneAIResponse(text);
               const botMsg = document.createElement("div");
-              botMsg.className = "chat-msg";
-              botMsg.innerText = "Thanks for your inquiry! Suzanne Foster has received your message and will review your energy goals.";
+              botMsg.className = "chat-msg bot";
+              botMsg.innerText = reply;
               chatBody.appendChild(botMsg);
               chatBody.scrollTop = chatBody.scrollHeight;
-          }, 1000);
+
+              if ('speechSynthesis' in window) {
+                  const utterance = new SpeechSynthesisUtterance(reply);
+                  utterance.rate = 1.0;
+                  window.speechSynthesis.speak(utterance);
+              }
+          }, 800);
       });
 
       // Wizard Submission & PDF Proposal Simulator
@@ -791,6 +909,7 @@
           const name = document.getElementById("wizName").value;
           push(ref(db, 'leads'), {
               type: "US A-to-Z Qualification + PDF",
+              status: "Pending Approval",
               user: currentUserEmail,
               name: name,
               phone: document.getElementById("wizPhone").value,
@@ -808,7 +927,7 @@
           });
       });
 
-      // Phone Dialer Modal Logic & Timer
+      // Phone Dialer Modal Logic & Interactive Voice Speech
       const dialerModal = document.getElementById("dialerModal");
       const launchDialerBtn = document.getElementById("launchDialerBtn");
       const endCallBtn = document.getElementById("endCallBtn");
@@ -820,6 +939,12 @@
           secondsElapsed = 0;
           document.getElementById("callStatusText").innerText = "Connected with Suzanne";
           document.getElementById("callTimer").innerText = "00:00";
+          
+          if ('speechSynthesis' in window) {
+              const greeting = new SpeechSynthesisUtterance("Hello! This is Suzanne Foster from US Solar Energy Solutions. Thank you for connecting with our live voice consultation. How can I assist you with your clean energy goals today?");
+              window.speechSynthesis.speak(greeting);
+          }
+
           callTimerInterval = setInterval(() => {
               secondsElapsed++;
               let mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
@@ -831,10 +956,12 @@
       endCallBtn.addEventListener("click", () => {
           clearInterval(callTimerInterval);
           dialerModal.style.display = "none";
+          if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); }
           
           const timestamp = new Date().toLocaleString();
           push(ref(db, 'leads'), {
-              type: "Suzanne US Live Voice Call Log (Recorded)",
+              type: "Suzanne US Live Voice Call Log",
+              status: "Pending Approval",
               user: currentUserEmail,
               name: currentUserEmail,
               phone: "US Phone Dialer Consultation",
@@ -848,6 +975,21 @@
               alert("US Call ended, HD audio recording saved, and consultation log synced!");
           });
       });
+
+      // Admin Action Functions for Approval, Rejection, and Deletion
+      window.updateLeadStatus = function(key, newStatus) {
+          update(ref(db, 'leads/' + key), { status: newStatus }).then(() => {
+              alert("Lead status successfully updated to: " + newStatus);
+          });
+      };
+
+      window.deleteLeadItem = function(key) {
+          if (confirm("Are you sure you want to delete this lead record?")) {
+              remove(ref(db, 'leads/' + key)).then(() => {
+                  alert("Lead deleted successfully.");
+              });
+          }
+      };
 
       // Randomized US Fake Live Notifications Popup Generator
       const usNames = ["Michael Smith (Austin, TX)", "Sarah Johnson (Miami, FL)", "David Miller (Phoenix, AZ)", "Jessica Davis (Denver, CO)", "Robert Wilson (San Diego, CA)", "Emily Brown (Atlanta, GA)"];
@@ -886,15 +1028,23 @@
                       if (!data) { container.innerHTML = "<p>No records found.</p>"; return; }
                       Object.keys(data).reverse().forEach(key => {
                           const item = data[key];
+                          const statusColor = item.status === 'Approved' ? '#10b981' : (item.status === 'Rejected' ? '#f59e0b' : '#64748b');
                           const div = document.createElement("div");
                           div.className = "lead-item";
                           div.innerHTML = `
-                              <strong>[${item.type}]</strong><br>
-                              <strong>User:</strong> ${item.user}<br>
-                              <strong>Name:</strong> ${item.name} | <strong>Phone:</strong> ${item.phone}<br>
-                              <strong>Details:</strong> ${item.ownership}, ${item.roofType}, ${item.billRange}<br>
-                              <strong>Goal/Note:</strong> ${item.energyGoal} (${item.address})<br>
-                              <small style="color:#64748b;">Time: ${item.timestamp}</small>
+                              <div>
+                                  <strong>[${item.type}]</strong> <span style="background:${statusColor}; color:white; padding:2px 8px; border-radius:10px; font-size:0.7rem;">${item.status || 'Pending'}</span><br>
+                                  <strong>User:</strong> ${item.user}<br>
+                                  <strong>Name:</strong> ${item.name} | <strong>Phone:</strong> ${item.phone}<br>
+                                  <strong>Details:</strong> ${item.ownership}, ${item.roofType}, ${item.billRange}<br>
+                                  <strong>Goal/Note:</strong> ${item.energyGoal} (${item.address})<br>
+                                  <small style="color:#64748b;">Time: ${item.timestamp}</small>
+                              </div>
+                              <div class="lead-actions">
+                                  <button class="btn-approve" onclick="updateLeadStatus('${key}', 'Approved')">Approve</button>
+                                  <button class="btn-reject" onclick="updateLeadStatus('${key}', 'Rejected')">Reject</button>
+                                  <button class="btn-delete" onclick="deleteLeadItem('${key}')">Delete</button>
+                              </div>
                           `;
                           container.appendChild(div);
                       });
