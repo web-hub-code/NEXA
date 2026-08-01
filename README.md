@@ -18,10 +18,11 @@
         header {
             background: linear-gradient(135deg, #1b4d3e, #2c7a5f);
             color: white;
-            padding: 60px 20px;
+            padding: 50px 20px;
             text-align: center;
             cursor: pointer;
             user-select: none;
+            position: relative;
         }
         header h1 {
             font-size: 2.5rem;
@@ -30,6 +31,28 @@
         header p {
             font-size: 1.2rem;
             opacity: 0.9;
+        }
+        /* Top Auth Bar */
+        #authBar {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #authBar button {
+            background: white;
+            color: #1b4d3e;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
         }
         .container {
             max-width: 900px;
@@ -49,6 +72,23 @@
         p {
             margin-bottom: 20px;
             font-size: 1.1rem;
+        }
+        /* Trust Badges Bar */
+        .trust-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .trust-badge {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            padding: 15px;
+            border-radius: 8px;
+            color: #1b4d3e;
+            font-weight: bold;
+            font-size: 0.95rem;
         }
         .features {
             display: grid;
@@ -104,6 +144,67 @@
         .submit-btn:hover {
             background: #1b4d3e;
         }
+        /* FAQ Accordion Styling */
+        .faq-item {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .faq-question {
+            background: #f8fafc;
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #1b4d3e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            padding: 15px;
+            display: none;
+            color: #4b5563;
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+        }
+        /* Auth Modal Styling */
+        #authModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .auth-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        .google-btn {
+            background: #db4437;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .google-btn:hover {
+            background: #c33d2e;
+        }
         /* Status Badge */
         #callStatusBadge {
             display: inline-block;
@@ -148,7 +249,7 @@
             padding: 30px;
             border-radius: 10px;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
@@ -167,6 +268,7 @@
             margin-bottom: 10px;
             border-radius: 6px;
             border-left: 4px solid #2c7a5f;
+            font-size: 0.95rem;
         }
         footer {
             text-align: center;
@@ -181,6 +283,10 @@
 
     <!-- Header acts as the secret tap trigger (Tap header 4 times quickly) -->
     <header id="secretTrigger">
+        <div id="authBar">
+            <span id="userDisplay">Guest</span>
+            <button id="authBtn">Login</button>
+        </div>
         <h1>Solar Energy Solutions</h1>
         <p>Empowering Your Property with Clean, Renewable Power</p>
     </header>
@@ -190,6 +296,13 @@
         <h2 class="section-title">Welcome to Our Consultation Portal</h2>
         <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, Suzanne Foster, right now or use our interactive tools below.</p>
         
+        <!-- New Feature: Trust Badges Bar -->
+        <div class="trust-bar">
+            <div class="trust-badge">🛡️ 25-Year Performance Warranty</div>
+            <div class="trust-badge">⚡ 0-Down Financing Options</div>
+            <div class="trust-badge">👷 100% Certified Solar Experts</div>
+        </div>
+
         <div class="features">
             <div class="feature-card">
                 <h3>Instant Eligibility</h3>
@@ -205,15 +318,16 @@
             </div>
         </div>
 
-        <!-- Interactive Solar Savings Calculator -->
+        <!-- Interactive Solar Savings & ROI Calculator -->
         <div class="widget-box">
-            <h3>⚡ Interactive Solar Savings Calculator</h3>
+            <h3>⚡ Interactive Solar Savings & ROI Calculator</h3>
             <div class="form-group">
                 <label for="monthlyBill">Enter Monthly Electricity Bill ($):</label>
                 <input type="number" id="monthlyBill" placeholder="e.g. 200" oninput="calculateSavings()">
             </div>
             <div id="savingsResult" style="background: #e2e8f0; padding: 15px; border-radius: 6px; font-weight: bold; color: #1b4d3e; display: none;">
-                Estimated Annual Savings: <span id="savedAmount" style="color: #27ae60; font-size: 1.2rem;">$0</span>
+                Estimated Annual Savings: <span id="savedAmount" style="color: #27ae60; font-size: 1.2rem;">$0</span><br>
+                Estimated System Payback Period: <span id="paybackPeriod" style="color: #1b4d3e;">3.2 Years</span>
             </div>
         </div>
 
@@ -247,19 +361,56 @@
             </form>
             <p id="wizardResponseMsg" style="margin-top: 10px; font-weight: bold; color: #2c7a5f; display: none;"></p>
         </div>
+
+        <!-- New Feature: FAQ Accordion Section -->
+        <div class="widget-box" style="margin-top: 30px;">
+            <h3>❓ Frequently Asked Questions</h3>
+            <div class="faq-item">
+                <div class="faq-question">How long do solar panels take to install? <span>+</span></div>
+                <div class="faq-answer">Standard residential installations typically take between 1 to 3 days depending on system size and roof complexity.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Will my solar panels work during a power outage? <span>+</span></div>
+                <div class="faq-answer">Grid-tied systems shut down during outages for safety unless paired with a battery storage backup system.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How much maintenance do solar panels require? <span>+</span></div>
+                <div class="faq-answer">Solar panels require very minimal maintenance—usually just an occasional rinse once or twice a year to remove dust.</div>
+            </div>
+        </div>
     </div>
 
     <!-- Live Social Proof Toast Notification -->
     <div id="toastNotification">🔔 Ahmed from Islamabad just requested a solar quote!</div>
 
+    <!-- Login / Sign-up Modal -->
+    <div id="authModal">
+        <div class="auth-content">
+            <span class="close-btn" id="closeAuth">&times;</span>
+            <h2 style="color: #1b4d3e; margin-bottom: 15px;">Account Access</h2>
+            <form id="emailAuthForm">
+                <div class="form-group">
+                    <input type="email" id="authEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="authPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="submit-btn" id="emailAuthBtn">Login / Sign Up</button>
+            </form>
+            <p style="margin: 15px 0 5px 0; font-size: 0.9rem; color: #666;">OR</p>
+            <button class="google-btn" id="googleLoginBtn">Sign in with Google</button>
+            <p id="authErrorMsg" style="margin-top: 10px; color: red; font-size: 0.9rem; display: none;"></p>
+        </div>
+    </div>
+
     <!-- Secret Admin Panel Modal -->
     <div id="adminModal">
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
-            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads Panel</h2>
-            <p style="font-size: 0.95rem; color: #555;">Live customer data collected from consultations & wizards:</p>
+            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads & Call Logs Panel</h2>
+            <p style="font-size: 0.95rem; color: #555;">Live customer data from Wizards & Suzanne Call Logs:</p>
             <div id="leadsContainer">
-                <p>Loading realtime leads from database...</p>
+                <p>Loading realtime records from database...</p>
             </div>
         </div>
     </div>
@@ -268,10 +419,11 @@
         &copy; 2026 Solar Energy Solutions. All rights reserved. Powered by Vapi AI & Firebase.
     </footer>
 
-    <!-- Firebase, Calculator, Wizard, and Admin Logic -->
+    <!-- Firebase SDKs, Auth, DB, and Logic -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+      import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
       
       const firebaseConfig = {
         apiKey: "AIzaSyCSD1O9tV7xDZu_kljq-0NMhA2DqtW5quE",
@@ -285,20 +437,108 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getDatabase(app);
+      const auth = getAuth(app);
+      const googleProvider = new GoogleAuthProvider();
 
-      // Interactive Calculator Function
+      let currentUserEmail = "Guest";
+
+      // Auth State Observer
+      onAuthStateChanged(auth, (user) => {
+          const userDisplay = document.getElementById("userDisplay");
+          const authBtn = document.getElementById("authBtn");
+          if (user) {
+              currentUserEmail = user.email || user.displayName || "User";
+              userDisplay.innerText = currentUserEmail.split('@')[0];
+              authBtn.innerText = "Logout";
+          } else {
+              currentUserEmail = "Guest";
+              userDisplay.innerText = "Guest";
+              authBtn.innerText = "Login";
+          }
+      });
+
+      // Auth Modal Handlers
+      const authModal = document.getElementById("authModal");
+      const authBtn = document.getElementById("authBtn");
+      const closeAuth = document.getElementById("closeAuth");
+
+      authBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (auth.currentUser) {
+              signOut(auth).then(() => {
+                  alert("Logged out successfully.");
+              });
+          } else {
+              authModal.style.display = "flex";
+          }
+      });
+
+      closeAuth.addEventListener("click", () => {
+          authModal.style.display = "none";
+      });
+
+      // Google Login Handler
+      document.getElementById("googleLoginBtn").addEventListener("click", () => {
+          signInWithPopup(auth, googleProvider)
+              .then(() => {
+                  authModal.style.display = "none";
+              })
+              .catch((error) => {
+                  document.getElementById("authErrorMsg").style.display = "block";
+                  document.getElementById("authErrorMsg").innerText = error.message;
+              });
+      });
+
+      // Email / Password Login or Sign-up Handler
+      const emailAuthForm = document.getElementById("emailAuthForm");
+      emailAuthForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const email = document.getElementById("authEmail").value;
+          const password = document.getElementById("authPassword").value;
+          const errorMsg = document.getElementById("authErrorMsg");
+
+          signInWithEmailAndPassword(auth, email, password)
+              .then(() => {
+                  authModal.style.display = "none";
+              })
+              .catch(() => {
+                  createUserWithEmailAndPassword(auth, email, password)
+                      .then(() => {
+                          authModal.style.display = "none";
+                      })
+                      .catch((err) => {
+                          errorMsg.style.display = "block";
+                          errorMsg.innerText = err.message;
+                      });
+              });
+      });
+
+      // Interactive Calculator & ROI Function
       window.calculateSavings = function() {
           const bill = parseFloat(document.getElementById("monthlyBill").value) || 0;
-          const annualSavings = Math.round(bill * 12 * 0.75); // estimated 75% savings
+          const annualSavings = Math.round(bill * 12 * 0.75); 
           const resBox = document.getElementById("savingsResult");
           const savedSpan = document.getElementById("savedAmount");
+          const paybackSpan = document.getElementById("paybackPeriod");
           if (bill > 0) {
               resBox.style.display = "block";
               savedSpan.innerText = "$" + annualSavings.toLocaleString();
+              let payback = ( (bill * 12 * 3.5) / annualSavings ).toFixed(1);
+              paybackSpan.innerText = payback + " Years";
           } else {
               resBox.style.display = "none";
           }
       };
+
+      // FAQ Accordion Script
+      document.querySelectorAll(".faq-question").forEach(item => {
+          item.addEventListener("click", () => {
+              const answer = item.nextElementSibling;
+              const isOpen = answer.style.display === "block";
+              document.querySelectorAll(".faq-answer").forEach(ans => ans.style.display = "none");
+              answer.style.display = isOpen ? "none" : "block";
+          });
+      });
 
       // Multi-Step Wizard Submission
       const wizardForm = document.getElementById("wizardForm");
@@ -314,6 +554,8 @@
 
           const leadsRef = ref(db, 'leads');
           push(leadsRef, {
+              type: "Wizard Submission",
+              user: currentUserEmail,
               name: name,
               phone: phone,
               bill: `Ownership: ${ownership}`,
@@ -330,6 +572,20 @@
               wizardMsg.innerText = "Error: " + error.message;
           });
       });
+
+      // Function to log Suzanne Live Voice Calls to Firebase
+      window.logCallActivity = function(statusText) {
+          const leadsRef = ref(db, 'leads');
+          push(leadsRef, {
+              type: "Suzanne AI Call Log",
+              user: currentUserEmail,
+              name: currentUserEmail,
+              phone: "Live Web Voice Call",
+              bill: statusText,
+              address: "Voice Session",
+              timestamp: new Date().toLocaleString()
+          });
+      };
 
       // Live Social Proof Toast Trigger Loop
       const toasts = [
@@ -351,7 +607,7 @@
               setTimeout(() => { toast.style.display = "none"; }, 500);
           }, 4000);
       }
-      setInterval(showToast, 12000); // Trigger every 12 seconds
+      setInterval(showToast, 12000);
 
       // 4-Tap Secret Trigger Logic with PIN 5426
       let tapCount = 0;
@@ -391,7 +647,7 @@
           }
       });
 
-      // Fetch Realtime Leads from Firebase RTDB
+      // Fetch Realtime Leads & Call Logs from Firebase RTDB
       function fetchRealtimeLeads() {
           const leadsRef = ref(db, 'leads');
           onValue(leadsRef, (snapshot) => {
@@ -399,25 +655,28 @@
               leadsContainer.innerHTML = "";
               
               if (!data) {
-                  leadsContainer.innerHTML = "<p>No leads recorded yet.</p>";
+                  leadsContainer.innerHTML = "<p>No records found yet.</p>";
                   return;
               }
 
               Object.keys(data).reverse().forEach(key => {
-                  const lead = data[key];
+                  const item = data[key];
                   const leadDiv = document.createElement("div");
                   leadDiv.className = "lead-item";
+                  leadDiv.style.borderLeftColor = item.type === "Suzanne AI Call Log" ? "#3b82f6" : "#2c7a5f";
                   leadDiv.innerHTML = `
-                      <strong>Name:</strong> ${lead.name || 'N/A'}<br>
-                      <strong>Phone:</strong> ${lead.phone || 'N/A'}<br>
-                      <strong>Bill Info:</strong> ${lead.bill || 'N/A'}<br>
-                      <strong>Roof Details:</strong> ${lead.address || 'N/A'}<br>
-                      <small style="color: #666;">Time: ${lead.timestamp || 'Recent'}</small>
+                      <span style="background: ${item.type === "Suzanne AI Call Log" ? "#dbeafe" : "#d1fae5"}; color: ${item.type === "Suzanne AI Call Log" ? "#1e40af" : "#065f46"}; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">${item.type || 'Lead'}</span><br><br>
+                      <strong>User Account:</strong> ${item.user || 'Guest'}<br>
+                      <strong>Name / Details:</strong> ${item.name || 'N/A'}<br>
+                      <strong>Contact / Mode:</strong> ${item.phone || 'N/A'}<br>
+                      <strong>Info 1:</strong> ${item.bill || 'N/A'}<br>
+                      <strong>Info 2:</strong> ${item.address || 'N/A'}<br>
+                      <small style="color: #666;">Timestamp: ${item.timestamp || 'Recent'}</small>
                   `;
                   leadsContainer.appendChild(leadDiv);
               });
           }, (error) => {
-              leadsContainer.innerHTML = `<p style="color: red;">Error loading leads: ${error.message}</p>`;
+              leadsContainer.innerHTML = `<p style="color: red;">Error loading records: ${error.message}</p>`;
           });
       }
     </script>
@@ -447,7 +706,7 @@
           }
         });
 
-        // Listen to Vapi Call Events for Status Badge update
+        // Listen to Vapi Call Events & Log to Firebase
         setTimeout(() => {
             if (window.vapiSDK) {
                 window.vapiSDK.on("call-start", () => {
@@ -455,6 +714,10 @@
                     badge.style.background = "#22c55e";
                     badge.style.color = "white";
                     badge.innerText = "Status: Connected with Suzanne Foster 🟢";
+                    
+                    if (window.logCallActivity) {
+                        window.logCallActivity("Call Started with Suzanne Foster");
+                    }
                 });
 
                 window.vapiSDK.on("call-end", () => {
@@ -462,6 +725,10 @@
                     badge.style.background = "#e2e8f0";
                     badge.style.color = "#333";
                     badge.innerText = "Status: Call Ended. Thank you!";
+                    
+                    if (window.logCallActivity) {
+                        window.logCallActivity("Call Ended / Completed Consultation");
+                    }
                 });
             }
         }, 2000);
