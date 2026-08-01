@@ -114,7 +114,20 @@
       window.addEventListener("DOMContentLoaded", () => {
         window.vapiSDK.run({
           apiKey: "YOUR_VAPI_PUBLIC_API_KEY",
-          assistant: "1fce054b-91d4-4d60-9f39-9af04c51279a"
+          assistant: "1fce054b-91d4-4d60-9f39-9af04c51279a",
+          config: {
+            position: "bottom-right",
+            offset: "40px",
+            width: "300px",
+            height: "500px",
+            idle: {
+              color: "#2c7a5f",
+              type: "pill",
+              title: "Talk with Suzanne",
+              subtitle: "Solar Expert",
+              icon: "https://unpkg.com/lucide-static@latest/icons/phone.svg"
+            }
+          }
         });
       });
     </script>
