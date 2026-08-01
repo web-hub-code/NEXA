@@ -10,70 +10,84 @@
             padding: 0;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
             line-height: 1.6;
         }
         header {
-            background: linear-gradient(135deg, #1b4d3e, #2c7a5f);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
             color: white;
-            padding: 50px 20px;
+            padding: 60px 20px;
             text-align: center;
             cursor: pointer;
             user-select: none;
             position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.75rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
         header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.15rem;
+            opacity: 0.85;
+            font-weight: 300;
         }
         /* Top Auth Bar */
         #authBar {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
+            top: 20px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 30px;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         #authBar button {
-            background: white;
-            color: #1b4d3e;
+            background: #10b981;
+            color: white;
             border: none;
-            padding: 5px 12px;
-            border-radius: 12px;
+            padding: 6px 14px;
+            border-radius: 20px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        #authBar button:hover {
+            background: #059669;
         }
         .container {
-            max-width: 900px;
-            margin: 40px auto;
+            max-width: 960px;
+            margin: -30px auto 40px auto;
             background: white;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 10;
         }
         .section-title {
-            color: #1b4d3e;
+            color: #0f172a;
             font-size: 1.8rem;
             margin-bottom: 20px;
-            border-bottom: 2px solid #2c7a5f;
-            padding-bottom: 8px;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
         }
         p {
             margin-bottom: 20px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            color: #475569;
         }
-        /* Trust Badges Bar */
+        /* Modern Trust Badges */
         .trust-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -82,13 +96,17 @@
             text-align: center;
         }
         .trust-badge {
-            background: #e8f5e9;
-            border: 1px solid #c8e6c9;
-            padding: 15px;
-            border-radius: 8px;
-            color: #1b4d3e;
-            font-weight: bold;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 10px;
+            color: #0f172a;
+            font-weight: 600;
             font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .features {
             display: grid;
@@ -98,232 +116,292 @@
             margin-bottom: 40px;
         }
         .feature-card {
-            background: #f9fbfb;
+            background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 24px;
+            border-radius: 12px;
             text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
         }
         .feature-card h3 {
-            color: #2c7a5f;
+            color: #0f172a;
             margin-bottom: 10px;
+            font-size: 1.15rem;
         }
-        /* Modern Widgets Styling */
+        /* Modernized Widgets Styling */
         .widget-box {
-            background: #f1f5f9;
-            padding: 25px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
             margin-top: 30px;
         }
         .widget-box h3 {
-            color: #1b4d3e;
+            color: #0f172a;
             margin-bottom: 15px;
+            font-size: 1.3rem;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #334155;
         }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
             font-size: 1rem;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
         .submit-btn {
-            background: #2c7a5f;
+            background: #10b981;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             font-size: 1rem;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-weight: bold;
+            font-weight: 600;
+            transition: background 0.2s;
         }
         .submit-btn:hover {
-            background: #1b4d3e;
+            background: #059669;
         }
-        /* FAQ Accordion Styling */
+        /* Modern AI Voice Hub Card */
+        .ai-hub-card {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15);
+        }
+        .ai-hub-card h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .ai-hub-card p {
+            color: #cbd5e1;
+        }
+        .ai-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        @media(max-width: 768px) {
+            .ai-actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* FAQ Accordion */
         .faq-item {
             background: #fff;
             border: 1px solid #e2e8f0;
             margin-bottom: 10px;
-            border-radius: 6px;
+            border-radius: 8px;
             overflow: hidden;
         }
         .faq-question {
-            background: #f8fafc;
-            padding: 15px;
-            font-weight: bold;
+            background: #fff;
+            padding: 18px;
+            font-weight: 600;
             cursor: pointer;
-            color: #1b4d3e;
+            color: #0f172a;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .faq-answer {
-            padding: 15px;
+            padding: 18px;
             display: none;
-            color: #4b5563;
-            background: #fff;
+            color: #475569;
+            background: #f8fafc;
             border-top: 1px solid #e2e8f0;
         }
-        /* Auth Modal Styling */
-        #authModal {
+        /* Modals */
+        #authModal, #adminModal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
             z-index: 9999;
             justify-content: center;
             align-items: center;
         }
-        .auth-content {
+        .auth-content, .admin-content {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
+            padding: 35px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 400px;
-            text-align: center;
+            max-width: 500px;
             position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .admin-content {
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+        .close-btn:hover {
+            color: #0f172a;
         }
         .google-btn {
-            background: #db4437;
+            background: #ef4444;
             color: white;
             border: none;
             padding: 12px;
             width: 100%;
-            border-radius: 6px;
-            font-weight: bold;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 12px;
+            transition: background 0.2s;
         }
         .google-btn:hover {
-            background: #c33d2e;
+            background: #dc2626;
         }
         /* Status Badge */
         #callStatusBadge {
-            display: inline-block;
-            background: #e2e8f0;
-            color: #333;
-            padding: 6px 15px;
-            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 8px 16px;
+            border-radius: 30px;
             font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid #a7f3d0;
         }
         /* Toast Notification */
         #toastNotification {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #1b4d3e;
+            bottom: 30px;
+            left: 30px;
+            background: #0f172a;
             color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            font-size: 0.9rem;
+            padding: 14px 22px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            font-size: 0.95rem;
             z-index: 999;
             display: none;
-            transition: opacity 0.5s ease;
-        }
-        /* Secret Admin Modal Styling */
-        #adminModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        .admin-content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 700px;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #777;
+            transition: opacity 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .lead-item {
-            background: #f1f5f9;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            border-left: 4px solid #2c7a5f;
+            background: #f8fafc;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
             font-size: 0.95rem;
+            border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
         }
         footer {
             text-align: center;
-            padding: 20px;
-            color: #777;
+            padding: 30px;
+            color: #64748b;
             font-size: 0.9rem;
             margin-top: 40px;
+            border-top: 1px solid #e2e8f0;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header acts as the secret tap trigger (Tap header 4 times quickly) -->
+    <!-- Header (Tap 4 times quickly for secret admin panel) -->
     <header id="secretTrigger">
         <div id="authBar">
             <span id="userDisplay">Guest</span>
             <button id="authBtn">Login</button>
         </div>
         <h1>Solar Energy Solutions</h1>
-        <p>Empowering Your Property with Clean, Renewable Power</p>
+        <p>Empowering Your Property with Clean, Intelligent Renewable Power</p>
     </header>
 
     <div class="container">
-        <div id="callStatusBadge">Status: Ready to Connect</div>
-        <h2 class="section-title">Welcome to Our Consultation Portal</h2>
-        <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, Suzanne Foster, right now or use our interactive tools below.</p>
+        <div id="callStatusBadge">
+            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+            AI Assistant Suzanne Ready
+        </div>
+        
+        <h2 class="section-title">Comprehensive Solar Consultation Hub</h2>
+        <p>Speak directly with our advanced AI voice expert <strong>Suzanne Foster</strong> using the modern widget at the bottom-right, or complete our comprehensive A-to-Z qualifying questionnaire below to get your precise customized proposal instantly.</p>
         
         <!-- Trust Badges Bar -->
         <div class="trust-bar">
-            <div class="trust-badge">🛡️ 25-Year Performance Warranty</div>
-            <div class="trust-badge">⚡ 0-Down Financing Options</div>
-            <div class="trust-badge">👷 100% Certified Solar Experts</div>
+            <div class="trust-badge">🛡️ 25-Year Warranty</div>
+            <div class="trust-badge">⚡ 0-Down Financing</div>
+            <div class="trust-badge">👷 100% Certified Engineers</div>
         </div>
 
         <div class="features">
             <div class="feature-card">
-                <h3>Instant Eligibility</h3>
-                <p>Quick assessment of your roof space and electricity consumption.</p>
+                <h3>A-to-Z Qualification</h3>
+                <p>Complete data capture for roof orientation, shading, and power needs.</p>
             </div>
             <div class="feature-card">
-                <h3>Tailored Savings</h3>
-                <p>Learn about customized solar packages designed for your home.</p>
+                <h3>Real-time AI Sync</h3>
+                <p>Seamlessly syncs voice conversations and form entries directly to admin dashboard.</p>
             </div>
             <div class="feature-card">
-                <h3>Expert Callback</h3>
-                <p>Connect with a senior solar consultant at your convenience.</p>
+                <h3>Instant ROI Forecast</h3>
+                <p>Accurate estimation of annual savings and payback duration.</p>
             </div>
         </div>
 
-        <!-- AI Voice Call Session Registration Widget -->
-        <div class="widget-box" style="border: 2px dashed #2c7a5f; background: #e8f5e9;">
-            <h3>🎙️ Connect & Log Conversation with Suzanne</h3>
-            <p style="font-size: 0.95rem; margin-bottom: 15px;">After talking with Suzanne via the bottom-right microphone widget, click below to log your session data directly to the admin dashboard.</p>
-            <button type="button" class="submit-btn" id="logAiCallBtn" style="background: #1b4d3e;">Register My Voice Chat Session</button>
-            <p id="aiLogMsg" style="margin-top: 10px; font-weight: bold; color: #2c7a5f; display: none;"></p>
+        <!-- Modern AI Voice Call Session & A-to-Z Qualification Hub -->
+        <div class="ai-hub-card">
+            <h3>🎙️ Modern AI Voice & Live Qualification Sync</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 15px;">Talk with Suzanne via the floating voice widget, then instantly log your live A-to-Z qualifying parameters to the central database.</p>
+            
+            <div class="ai-actions-grid">
+                <div>
+                    <label style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 5px; display:block;">Voice Session Status:</label>
+                    <input type="text" id="aiSessionNotes" placeholder="e.g. Discussed 10kW system & roof shade" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                </div>
+                <div style="display: flex; align-items: flex-end;">
+                    <button type="button" class="submit-btn" id="logAiCallBtn" style="background: #10b981; height: 46px;">Sync Voice Consultation Data</button>
+                </div>
+            </div>
+            <p id="aiLogMsg" style="margin-top: 12px; font-weight: 600; color: #34d399; font-size: 0.9rem; display: none;"></p>
         </div>
 
         <!-- Interactive Solar Savings & ROI Calculator -->
@@ -331,71 +409,108 @@
             <h3>⚡ Interactive Solar Savings & ROI Calculator</h3>
             <div class="form-group">
                 <label for="monthlyBill">Enter Monthly Electricity Bill ($):</label>
-                <input type="number" id="monthlyBill" placeholder="e.g. 200" oninput="calculateSavings()">
+                <input type="number" id="monthlyBill" placeholder="e.g. 250" oninput="calculateSavings()">
             </div>
-            <div id="savingsResult" style="background: #e2e8f0; padding: 15px; border-radius: 6px; font-weight: bold; color: #1b4d3e; display: none;">
-                Estimated Annual Savings: <span id="savedAmount" style="color: #27ae60; font-size: 1.2rem;">$0</span><br>
-                Estimated System Payback Period: <span id="paybackPeriod" style="color: #1b4d3e;">3.2 Years</span>
+            <div id="savingsResult" style="background: #e2e8f0; padding: 18px; border-radius: 8px; font-weight: bold; color: #0f172a; display: none;">
+                Estimated Annual Savings: <span id="savedAmount" style="color: #059669; font-size: 1.25rem;">$0</span><br>
+                Estimated System Payback Period: <span id="paybackPeriod" style="color: #0f172a;">3.1 Years</span>
             </div>
         </div>
 
-        <!-- Multi-Step Lead Qualification Wizard -->
+        <!-- Comprehensive A-to-Z Qualifying Questionnaire Wizard -->
         <div class="widget-box" style="margin-top: 30px;">
-            <h3>📋 Multi-Step Solar Qualification Wizard</h3>
+            <h3>📋 Complete A-to-Z Solar Qualifying Questionnaire</h3>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">Provide complete details so our engineers and AI specialist Suzanne can prepare your exact system configuration.</p>
+            
             <form id="wizardForm">
-                <div class="form-group">
-                    <label>Do you own your property?</label>
-                    <select id="ownership" required>
-                        <option value="">Select option</option>
-                        <option value="Yes - Owner">Yes, I own it</option>
-                        <option value="No - Renter">No, I rent</option>
-                    </select>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>1. Property Ownership Status:</label>
+                        <select id="ownership" required>
+                            <option value="">Select option</option>
+                            <option value="Yes - Homeowner">Yes, I own the property</option>
+                            <option value="No - Renter">No, I rent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>2. Roof Type & Condition:</label>
+                        <select id="roofType" required>
+                            <option value="">Select roof type</option>
+                            <option value="Shingle - Excellent Sun">Asphalt Shingle (Full Sun)</option>
+                            <option value="Tile - Partial Shade">Tile Roof (Partial Shade)</option>
+                            <option value="Metal - Flat / Sloped">Metal Roof</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Roof Type / Sunlight Exposure:</label>
-                    <select id="roofType" required>
-                        <option value="">Select roof type</option>
-                        <option value="Excellent - Full Sun">Excellent (Full Sun)</option>
-                        <option value="Good - Partial Shade">Good (Partial Shade)</option>
-                    </select>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>3. Average Monthly Power Bill:</label>
+                        <select id="billRange" required>
+                            <option value="">Select range</option>
+                            <option value="$100 - $200">$100 - $200 / month</option>
+                            <option value="$200 - $400">$200 - $400 / month</option>
+                            <option value="$400+">$400+ / month</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>4. Primary Energy Goal:</label>
+                        <select id="energyGoal" required>
+                            <option value="">Select primary goal</option>
+                            <option value="Max Bill Reduction">Maximum Bill Reduction</option>
+                            <option value="Battery Backup Protection">Backup Protection (Outages)</option>
+                            <option value="Complete Energy Independence">Complete Off-Grid Independence</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="text" id="wizName" placeholder="Your Full Name" required>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>5. Full Name:</label>
+                        <input type="text" id="wizName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>6. Phone / WhatsApp Number:</label>
+                        <input type="tel" id="wizPhone" placeholder="e.g. +92 300 1234567" required>
+                    </div>
                 </div>
+
                 <div class="form-group">
-                    <input type="tel" id="wizPhone" placeholder="Phone Number / WhatsApp" required>
+                    <label>7. Property Address / City:</label>
+                    <input type="text" id="wizAddress" placeholder="Enter city or street address" required>
                 </div>
-                <button type="submit" class="submit-btn">Submit Qualified Lead</button>
+
+                <button type="submit" class="submit-btn" style="margin-top: 10px;">Submit A-to-Z Qualification Profile</button>
             </form>
-            <p id="wizardResponseMsg" style="margin-top: 10px; font-weight: bold; color: #2c7a5f; display: none;"></p>
+            <p id="wizardResponseMsg" style="margin-top: 12px; font-weight: 600; color: #10b981; display: none;"></p>
         </div>
 
         <!-- FAQ Accordion Section -->
         <div class="widget-box" style="margin-top: 30px;">
             <h3>❓ Frequently Asked Questions</h3>
             <div class="faq-item">
-                <div class="faq-question">How long do solar panels take to install? <span>+</span></div>
-                <div class="faq-answer">Standard residential installations typically take between 1 to 3 days depending on system size and roof complexity.</div>
+                <div class="faq-question">How long do solar panel installations take? <span>+</span></div>
+                <div class="faq-answer">Standard residential installations typically take between 1 to 3 days depending on system capacity and roof layout.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Will my solar panels work during a power outage? <span>+</span></div>
-                <div class="faq-answer">Grid-tied systems shut down during outages for safety unless paired with a battery storage backup system.</div>
+                <div class="faq-question">Will my system function during grid power outages? <span>+</span></div>
+                <div class="faq-answer">Grid-tied systems automatically shut down during blackouts for safety unless paired with an integrated battery backup solution.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">How much maintenance do solar panels require? <span>+</span></div>
-                <div class="faq-answer">Solar panels require very minimal maintenance—usually just an occasional rinse once or twice a year to remove dust.</div>
+                <div class="faq-question">What kind of maintenance is required? <span>+</span></div>
+                <div class="faq-answer">Solar setups require very minimal upkeep—typically just an occasional annual rinse to remove dust or debris.</div>
             </div>
         </div>
     </div>
 
     <!-- Live Social Proof Toast Notification -->
-    <div id="toastNotification">🔔 Ahmed from Islamabad just requested a solar quote!</div>
+    <div id="toastNotification">🔔 Ahmed from Islamabad just completed a solar qualification wizard!</div>
 
     <!-- Login / Sign-up Modal -->
     <div id="authModal">
         <div class="auth-content">
             <span class="close-btn" id="closeAuth">&times;</span>
-            <h2 style="color: #1b4d3e; margin-bottom: 15px;">Account Access</h2>
+            <h2 style="color: #0f172a; margin-bottom: 20px;">Account Access</h2>
             <form id="emailAuthForm">
                 <div class="form-group">
                     <input type="email" id="authEmail" placeholder="Email Address" required>
@@ -405,9 +520,9 @@
                 </div>
                 <button type="submit" class="submit-btn" id="emailAuthBtn">Login / Sign Up</button>
             </form>
-            <p style="margin: 15px 0 5px 0; font-size: 0.9rem; color: #666;">OR</p>
+            <p style="margin: 20px 0 10px 0; font-size: 0.9rem; color: #64748b; text-align: center;">OR</p>
             <button class="google-btn" id="googleLoginBtn">Sign in with Google</button>
-            <p id="authErrorMsg" style="margin-top: 10px; color: red; font-size: 0.9rem; display: none;"></p>
+            <p id="authErrorMsg" style="margin-top: 12px; color: #ef4444; font-size: 0.9rem; display: none; text-align: center;"></p>
         </div>
     </div>
 
@@ -415,8 +530,8 @@
     <div id="adminModal">
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
-            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads & AI Call Logs Panel</h2>
-            <p style="font-size: 0.95rem; color: #555;">Live records from Wizards & Suzanne Voice Sessions:</p>
+            <h2 style="color: #0f172a; margin-bottom: 10px;">🔒 Realtime A-to-Z Leads & AI Voice Logs</h2>
+            <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 20px;">Live synchronized customer parameters and consultation transcripts:</p>
             <div id="leadsContainer">
                 <p>Loading realtime records from database...</p>
             </div>
@@ -427,7 +542,7 @@
         &copy; 2026 Solar Energy Solutions. All rights reserved. Powered by Vapi AI & Firebase.
     </footer>
 
-    <!-- Firebase SDKs, Auth, DB, and Logic -->
+    <!-- Firebase SDKs & Core Logic -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -450,7 +565,6 @@
 
       let currentUserEmail = "Guest";
 
-      // Auth State Observer
       onAuthStateChanged(auth, (user) => {
           const userDisplay = document.getElementById("userDisplay");
           const authBtn = document.getElementById("authBtn");
@@ -465,7 +579,6 @@
           }
       });
 
-      // Auth Modal Handlers
       const authModal = document.getElementById("authModal");
       const authBtn = document.getElementById("authBtn");
       const closeAuth = document.getElementById("closeAuth");
@@ -473,31 +586,23 @@
       authBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           if (auth.currentUser) {
-              signOut(auth).then(() => {
-                  alert("Logged out successfully.");
-              });
+              signOut(auth).then(() => { alert("Logged out successfully."); });
           } else {
               authModal.style.display = "flex";
           }
       });
 
-      closeAuth.addEventListener("click", () => {
-          authModal.style.display = "none";
-      });
+      closeAuth.addEventListener("click", () => { authModal.style.display = "none"; });
 
-      // Google Login Handler
       document.getElementById("googleLoginBtn").addEventListener("click", () => {
           signInWithPopup(auth, googleProvider)
-              .then(() => {
-                  authModal.style.display = "none";
-              })
+              .then(() => { authModal.style.display = "none"; })
               .catch((error) => {
                   document.getElementById("authErrorMsg").style.display = "block";
                   document.getElementById("authErrorMsg").innerText = error.message;
               });
       });
 
-      // Email / Password Login or Sign-up Handler
       const emailAuthForm = document.getElementById("emailAuthForm");
       emailAuthForm.addEventListener("submit", (e) => {
           e.preventDefault();
@@ -506,14 +611,10 @@
           const errorMsg = document.getElementById("authErrorMsg");
 
           signInWithEmailAndPassword(auth, email, password)
-              .then(() => {
-                  authModal.style.display = "none";
-              })
+              .then(() => { authModal.style.display = "none"; })
               .catch(() => {
                   createUserWithEmailAndPassword(auth, email, password)
-                      .then(() => {
-                          authModal.style.display = "none";
-                      })
+                      .then(() => { authModal.style.display = "none"; })
                       .catch((err) => {
                           errorMsg.style.display = "block";
                           errorMsg.innerText = err.message;
@@ -521,7 +622,6 @@
               });
       });
 
-      // Interactive Calculator & ROI Function
       window.calculateSavings = function() {
           const bill = parseFloat(document.getElementById("monthlyBill").value) || 0;
           const annualSavings = Math.round(bill * 12 * 0.75); 
@@ -538,7 +638,6 @@
           }
       };
 
-      // FAQ Accordion Script
       document.querySelectorAll(".faq-question").forEach(item => {
           item.addEventListener("click", () => {
               const answer = item.nextElementSibling;
@@ -548,7 +647,7 @@
           });
       });
 
-      // Multi-Step Wizard Submission
+      // A-to-Z Questionnaire Wizard Submission
       const wizardForm = document.getElementById("wizardForm");
       const wizardMsg = document.getElementById("wizardResponseMsg");
 
@@ -556,78 +655,86 @@
           e.preventDefault();
           const ownership = document.getElementById("ownership").value;
           const roofType = document.getElementById("roofType").value;
+          const billRange = document.getElementById("billRange").value;
+          const energyGoal = document.getElementById("energyGoal").value;
           const name = document.getElementById("wizName").value;
           const phone = document.getElementById("wizPhone").value;
+          const address = document.getElementById("wizAddress").value;
           const timestamp = new Date().toLocaleString();
 
           const leadsRef = ref(db, 'leads');
           push(leadsRef, {
-              type: "Wizard Submission",
+              type: "A-to-Z Qualification Wizard",
               user: currentUserEmail,
               name: name,
               phone: phone,
-              bill: `Ownership: ${ownership}`,
-              address: `Roof: ${roofType}`,
+              ownership: ownership,
+              roofType: roofType,
+              billRange: billRange,
+              energyGoal: energyGoal,
+              address: address,
               timestamp: timestamp
           }).then(() => {
               wizardMsg.style.display = "block";
-              wizardMsg.style.color = "#2c7a5f";
-              wizardMsg.innerText = "Success! Your consultation profile is submitted.";
+              wizardMsg.innerText = "Success! Your A-to-Z qualification profile has been saved.";
               wizardForm.reset();
+              setTimeout(() => { wizardMsg.style.display = "none"; }, 5000);
           }).catch((error) => {
-              wizardMsg.style.display = "block";
-              wizardMsg.style.color = "red";
-              wizardMsg.innerText = "Error: " + error.message;
+              alert("Error: " + error.message);
           });
       });
 
-      // Manual AI Call Session Logging Button Handler
+      // AI Voice Call Sync Button Handler
       const logAiCallBtn = document.getElementById("logAiCallBtn");
       const aiLogMsg = document.getElementById("aiLogMsg");
+      const aiSessionNotes = document.getElementById("aiSessionNotes");
 
       logAiCallBtn.addEventListener("click", () => {
           const timestamp = new Date().toLocaleString();
+          const notes = aiSessionNotes.value || "Completed voice consultation with Suzanne";
           const leadsRef = ref(db, 'leads');
+          
           push(leadsRef, {
-              type: "Suzanne AI Call Log",
+              type: "Suzanne AI Voice Consultation",
               user: currentUserEmail,
               name: currentUserEmail,
-              phone: "Live Voice Consultation Session",
-              bill: "Completed Conversation with Suzanne Foster",
-              address: "Web Voice Widget",
+              phone: "Live Voice Call Hub",
+              ownership: "Captured via AI Voice",
+              roofType: "Assessed by Suzanne",
+              billRange: "Discussed on Call",
+              energyGoal: notes,
+              address: "Voice Session Widget",
               timestamp: timestamp
           }).then(() => {
               aiLogMsg.style.display = "block";
-              aiLogMsg.innerText = "✅ Your voice chat session has been logged to the admin dashboard!";
+              aiLogMsg.innerText = "✅ Voice session and qualifying notes synced to admin database!";
+              aiSessionNotes.value = "";
               setTimeout(() => { aiLogMsg.style.display = "none"; }, 4000);
           }).catch((err) => {
-              alert("Error logging session: " + err.message);
+              alert("Error syncing session: " + err.message);
           });
       });
 
-      // Live Social Proof Toast Trigger Loop
       const toasts = [
-          "🔔 Ali from Lahore just booked a solar consultation!",
-          "🔔 Sara from Karachi estimated her solar savings!",
-          "🔔 Bilal from Rawalpindi connected with Suzanne Foster!",
-          "🔔 Usman from Islamabad just submitted a qualification form!"
+          "🔔 Ali from Lahore completed the A-to-Z solar wizard!",
+          "🔔 Sara from Karachi connected with Suzanne Foster!",
+          "🔔 Bilal from Rawalpindi submitted system requirements!",
+          "🔔 Usman from Islamabad checked estimated solar ROI!"
       ];
       
       function showToast() {
           const toast = document.getElementById("toastNotification");
-          const randomText = toasts[Math.floor(Math.random() * toasts.length)];
-          toast.innerText = randomText;
+          toast.innerText = toasts[Math.floor(Math.random() * toasts.length)];
           toast.style.display = "block";
           toast.style.opacity = "1";
-          
           setTimeout(() => {
               toast.style.opacity = "0";
               setTimeout(() => { toast.style.display = "none"; }, 500);
           }, 4000);
       }
-      setInterval(showToast, 12000);
+      setInterval(showToast, 13000);
 
-      // 4-Tap Secret Trigger Logic with PIN 5426
+      // Secret Admin Panel 4-Tap Trigger with PIN 5426
       let tapCount = 0;
       let tapTimer = null;
       const trigger = document.getElementById("secretTrigger");
@@ -638,7 +745,6 @@
       trigger.addEventListener("click", () => {
           tapCount++;
           clearTimeout(tapTimer);
-          
           if (tapCount === 4) {
               tapCount = 0;
               let enteredPin = prompt("Enter Secret Admin PIN:");
@@ -649,27 +755,18 @@
                   alert("Incorrect Secret PIN!");
               }
           } else {
-              tapTimer = setTimeout(() => {
-                  tapCount = 0;
-              }, 600);
+              tapTimer = setTimeout(() => { tapCount = 0; }, 600);
           }
       });
 
-      closeBtn.addEventListener("click", () => {
-          modal.style.display = "none";
-      });
+      closeBtn.addEventListener("click", () => { modal.style.display = "none"; });
+      window.addEventListener("click", (e) => { e.target === modal && (modal.style.display = "none"); });
 
-      window.addEventListener("click", (e) => {
-          e.target === modal && (modal.style.display = "none");
-      });
-
-      // Fetch Realtime Leads & AI Call Logs from Firebase RTDB
       function fetchRealtimeLeads() {
           const leadsRef = ref(db, 'leads');
           onValue(leadsRef, (snapshot) => {
               const data = snapshot.val();
               leadsContainer.innerHTML = "";
-              
               if (!data) {
                   leadsContainer.innerHTML = "<p>No records found yet.</p>";
                   return;
@@ -679,15 +776,17 @@
                   const item = data[key];
                   const leadDiv = document.createElement("div");
                   leadDiv.className = "lead-item";
-                  leadDiv.style.borderLeftColor = item.type === "Suzanne AI Call Log" ? "#3b82f6" : "#2c7a5f";
                   leadDiv.innerHTML = `
-                      <span style="background: ${item.type === "Suzanne AI Call Log" ? "#dbeafe" : "#d1fae5"}; color: ${item.type === "Suzanne AI Call Log" ? "#1e40af" : "#065f46"}; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">${item.type || 'Lead'}</span><br><br>
+                      <span style="background: #e2e8f0; color: #0f172a; padding: 3px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;">${item.type || 'Record'}</span><br><br>
                       <strong>User Account:</strong> ${item.user || 'Guest'}<br>
-                      <strong>Name / Details:</strong> ${item.name || 'N/A'}<br>
-                      <strong>Contact / Mode:</strong> ${item.phone || 'N/A'}<br>
-                      <strong>Info 1:</strong> ${item.bill || 'N/A'}<br>
-                      <strong>Info 2:</strong> ${item.address || 'N/A'}<br>
-                      <small style="color: #666;">Timestamp: ${item.timestamp || 'Recent'}</small>
+                      <strong>Name:</strong> ${item.name || 'N/A'}<br>
+                      <strong>Phone:</strong> ${item.phone || 'N/A'}<br>
+                      <strong>Ownership:</strong> ${item.ownership || 'N/A'}<br>
+                      <strong>Roof Type:</strong> ${item.roofType || 'N/A'}<br>
+                      <strong>Bill / Range:</strong> ${item.billRange || 'N/A'}<br>
+                      <strong>Energy Goal / Notes:</strong> ${item.energyGoal || 'N/A'}<br>
+                      <strong>Address:</strong> ${item.address || 'N/A'}<br>
+                      <small style="color: #64748b;">Timestamp: ${item.timestamp || 'Recent'}</small>
                   `;
                   leadsContainer.appendChild(leadDiv);
               });
@@ -709,11 +808,11 @@
           assistant: "1fce054b-91d4-4d60-9f39-9af04c51279a",
           config: {
             position: "bottom-right",
-            offset: "40px",
-            width: "300px",
-            height: "500px",
+            offset: "30px",
+            width: "320px",
+            height: "520px",
             idle: {
-              color: "#2c7a5f",
+              color: "#10b981",
               type: "pill",
               title: "Talk with Suzanne",
               subtitle: "Solar Expert",
