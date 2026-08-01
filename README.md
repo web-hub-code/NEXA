@@ -296,7 +296,7 @@
         <h2 class="section-title">Welcome to Our Consultation Portal</h2>
         <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, Suzanne Foster, right now or use our interactive tools below.</p>
         
-        <!-- New Feature: Trust Badges Bar -->
+        <!-- Trust Badges Bar -->
         <div class="trust-bar">
             <div class="trust-badge">🛡️ 25-Year Performance Warranty</div>
             <div class="trust-badge">⚡ 0-Down Financing Options</div>
@@ -316,6 +316,14 @@
                 <h3>Expert Callback</h3>
                 <p>Connect with a senior solar consultant at your convenience.</p>
             </div>
+        </div>
+
+        <!-- AI Voice Call Session Registration Widget -->
+        <div class="widget-box" style="border: 2px dashed #2c7a5f; background: #e8f5e9;">
+            <h3>🎙️ Connect & Log Conversation with Suzanne</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 15px;">After talking with Suzanne via the bottom-right microphone widget, click below to log your session data directly to the admin dashboard.</p>
+            <button type="button" class="submit-btn" id="logAiCallBtn" style="background: #1b4d3e;">Register My Voice Chat Session</button>
+            <p id="aiLogMsg" style="margin-top: 10px; font-weight: bold; color: #2c7a5f; display: none;"></p>
         </div>
 
         <!-- Interactive Solar Savings & ROI Calculator -->
@@ -362,7 +370,7 @@
             <p id="wizardResponseMsg" style="margin-top: 10px; font-weight: bold; color: #2c7a5f; display: none;"></p>
         </div>
 
-        <!-- New Feature: FAQ Accordion Section -->
+        <!-- FAQ Accordion Section -->
         <div class="widget-box" style="margin-top: 30px;">
             <h3>❓ Frequently Asked Questions</h3>
             <div class="faq-item">
@@ -407,8 +415,8 @@
     <div id="adminModal">
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
-            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads & Call Logs Panel</h2>
-            <p style="font-size: 0.95rem; color: #555;">Live customer data from Wizards & Suzanne Call Logs:</p>
+            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads & AI Call Logs Panel</h2>
+            <p style="font-size: 0.95rem; color: #555;">Live records from Wizards & Suzanne Voice Sessions:</p>
             <div id="leadsContainer">
                 <p>Loading realtime records from database...</p>
             </div>
@@ -573,19 +581,29 @@
           });
       });
 
-      // Function to log Suzanne Live Voice Calls to Firebase
-      window.logCallActivity = function(statusText) {
+      // Manual AI Call Session Logging Button Handler
+      const logAiCallBtn = document.getElementById("logAiCallBtn");
+      const aiLogMsg = document.getElementById("aiLogMsg");
+
+      logAiCallBtn.addEventListener("click", () => {
+          const timestamp = new Date().toLocaleString();
           const leadsRef = ref(db, 'leads');
           push(leadsRef, {
               type: "Suzanne AI Call Log",
               user: currentUserEmail,
               name: currentUserEmail,
-              phone: "Live Web Voice Call",
-              bill: statusText,
-              address: "Voice Session",
-              timestamp: new Date().toLocaleString()
+              phone: "Live Voice Consultation Session",
+              bill: "Completed Conversation with Suzanne Foster",
+              address: "Web Voice Widget",
+              timestamp: timestamp
+          }).then(() => {
+              aiLogMsg.style.display = "block";
+              aiLogMsg.innerText = "✅ Your voice chat session has been logged to the admin dashboard!";
+              setTimeout(() => { aiLogMsg.style.display = "none"; }, 4000);
+          }).catch((err) => {
+              alert("Error logging session: " + err.message);
           });
-      };
+      });
 
       // Live Social Proof Toast Trigger Loop
       const toasts = [
@@ -642,12 +660,10 @@
       });
 
       window.addEventListener("click", (e) => {
-          if (e.target === modal) {
-              modal.style.display = "none";
-          }
+          e.target === modal && (modal.style.display = "none");
       });
 
-      // Fetch Realtime Leads & Call Logs from Firebase RTDB
+      // Fetch Realtime Leads & AI Call Logs from Firebase RTDB
       function fetchRealtimeLeads() {
           const leadsRef = ref(db, 'leads');
           onValue(leadsRef, (snapshot) => {
@@ -681,7 +697,7 @@
       }
     </script>
 
-    <!-- Vapi Web Widget SDK Script & Call Status Handlers -->
+    <!-- Vapi Web Widget SDK Script -->
     <script
       src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"
       defer
@@ -705,33 +721,6 @@
             }
           }
         });
-
-        // Listen to Vapi Call Events & Log to Firebase
-        setTimeout(() => {
-            if (window.vapiSDK) {
-                window.vapiSDK.on("call-start", () => {
-                    const badge = document.getElementById("callStatusBadge");
-                    badge.style.background = "#22c55e";
-                    badge.style.color = "white";
-                    badge.innerText = "Status: Connected with Suzanne Foster 🟢";
-                    
-                    if (window.logCallActivity) {
-                        window.logCallActivity("Call Started with Suzanne Foster");
-                    }
-                });
-
-                window.vapiSDK.on("call-end", () => {
-                    const badge = document.getElementById("callStatusBadge");
-                    badge.style.background = "#e2e8f0";
-                    badge.style.color = "#333";
-                    badge.innerText = "Status: Call Ended. Thank you!";
-                    
-                    if (window.logCallActivity) {
-                        window.logCallActivity("Call Ended / Completed Consultation");
-                    }
-                });
-            }
-        }, 2000);
       });
     </script>
 </body>
