@@ -748,7 +748,7 @@
           } else {
               currentUserEmail = "Guest";
               document.getElementById("userDisplay").innerText = "Guest";
-              document.getElementById("authBtn").innerText = "Logout";
+              document.getElementById("authBtn").innerText = "Login";
           }
           loadUserHistory();
       });
@@ -804,12 +804,11 @@
               let hasItems = false;
               Object.keys(data).reverse().forEach(key => {
                   const item = data[key];
-                  // Show history if it belongs to current user or if guest
                   if (item.user === currentUserEmail || currentUserEmail === "Guest") {
                       hasItems = true;
                       const statusColor = item.status === 'Approved' ? '#10b981' : (item.status === 'Rejected' ? '#f59e0b' : '#64748b');
                       const div = document.createElement("div");
-                      div.style.cssText = "background:white; padding:10px 12px; border-radius:8px; border:1px solid #e2e8f0; font-size:0.85rem; display:flex; justify-content:between; align-items:center;";
+                      div.style.cssText = "background:white; padding:10px 12px; border-radius:8px; border:1px solid #e2e8f0; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center;";
                       div.innerHTML = `
                           <div>
                               <strong>[${item.type}]</strong> <span style="background:${statusColor}; color:white; padding:1px 6px; border-radius:8px; font-size:0.65rem;">${item.status || 'Pending'}</span><br>
@@ -835,7 +834,6 @@
 
       document.getElementById("clearUserHistoryBtn").addEventListener("click", () => {
           if (confirm("Are you sure you want to clear all your consultation history records?")) {
-              // Clear records matching current user
               onValue(ref(db, 'leads'), (snap) => {
                   const data = snap.val();
                   if (data) {
