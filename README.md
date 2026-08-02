@@ -474,7 +474,6 @@
 
       let currentUserEmail = "Guest";
 
-      // Auth State Observer
       onAuthStateChanged(auth, (user) => {
           const userDisplay = document.getElementById("userDisplay");
           const authBtn = document.getElementById("authBtn");
@@ -489,7 +488,6 @@
           }
       });
 
-      // Auth Modal Handlers
       const authModal = document.getElementById("authModal");
       const authBtn = document.getElementById("authBtn");
       const closeAuth = document.getElementById("closeAuth");
@@ -509,7 +507,6 @@
           authModal.style.display = "none";
       });
 
-      // Google Login Handler
       document.getElementById("googleLoginBtn").addEventListener("click", () => {
           signInWithPopup(auth, googleProvider)
               .then(() => {
@@ -521,7 +518,6 @@
               });
       });
 
-      // Email / Password Login or Sign-up Handler
       const emailAuthForm = document.getElementById("emailAuthForm");
       emailAuthForm.addEventListener("submit", (e) => {
           e.preventDefault();
@@ -545,7 +541,6 @@
               });
       });
 
-      // Interactive Calculator & ROI Function
       window.calculateSavings = function() {
           const bill = parseFloat(document.getElementById("monthlyBill").value) || 0;
           const annualSavings = Math.round(bill * 12 * 0.75); 
@@ -562,7 +557,6 @@
           }
       };
 
-      // FAQ Accordion Script
       document.querySelectorAll(".faq-question").forEach(item => {
           item.addEventListener("click", () => {
               const answer = item.nextElementSibling;
@@ -576,7 +570,6 @@
           });
       });
 
-      // Multi-Step Wizard Submission to Firebase
       const wizardForm = document.getElementById("wizardForm");
       wizardForm.addEventListener("submit", (e) => {
           e.preventDefault();
@@ -601,68 +594,89 @@
               });
       });
 
-      // Vapi AI Integration Setup (Using your provided keys and Assistant ID)
+      // Vapi AI Integration Setup with Enhanced Debugging & Error Handling
       const vapiPublicKey = "e0ffb174-f51f-418d-93e3-93ea7f72810b";
       const vapiAssistantId = "1fce054b-91d4-4d60-9f39-9af04c51279a";
 
       window.addEventListener("load", () => {
+          const statusBadge = document.getElementById("callStatusBadge");
+          const customCallBtn = document.getElementById("vapiCallBtn");
+
           if (window.vapiSDK) {
-              window.vapiInstance = window.vapiSDK.run({
-                  apiKey: vapiPublicKey,
-                  assistant: vapiAssistantId,
-                  config: {
-                      position: "bottom-right",
-                      buttonColor: "#27ae60",
-                      pulseColor: "#2ecc71"
-                  }
-              });
-
-              // Status badge status sync
-              const statusBadge = document.getElementById("callStatusBadge");
-              const customCallBtn = document.getElementById("vapiCallBtn");
-
-              window.vapiInstance.on("call-start", () => {
-                  statusBadge.innerText = "Status: Connected with Suzanne Foster 🎙️";
-                  statusBadge.style.background = "#d4edda";
-                  statusBadge.style.color = "#155724";
-                  customCallBtn.innerText = "🔴 End Voice Call";
-                  customCallBtn.classList.add("active");
-                  
-                  // Log call start to Firebase
-                  push(ref(db, 'call_logs'), {
-                      action: "Call Started",
-                      user: currentUserEmail,
-                      timestamp: new Date().toISOString()
+              try {
+                  window.vapiInstance = window.vapiSDK.run({
+                      apiKey: vapiPublicKey,
+                      assistant: vapiAssistantId,
+                      config: {
+                          position: "bottom-right",
+                          buttonColor: "#27ae60",
+                          pulseColor: "#2ecc71"
+                      }
                   });
-              });
 
-              window.vapiInstance.on("call-end", () => {
-                  statusBadge.innerText = "Status: Ready to Connect";
-                  statusBadge.style.background = "#e2e8f0";
-                  statusBadge.style.color = "#333";
-                  customCallBtn.innerText = "📞 Start Voice Call";
-                  customCallBtn.classList.remove("active");
-
-                  // Log call end to Firebase
-                  push(ref(db, 'call_logs'), {
-                      action: "Call Ended",
-                      user: currentUserEmail,
-                      timestamp: new Date().toISOString()
+                  window.vapiInstance.on("call-start", () => {
+                      statusBadge.innerText = "Status: Connected with Suzanne Foster 🎙️";
+                      statusBadge.style.background = "#d4edda";
+                      statusBadge.style.color = "#155724";
+                      customCallBtn.innerText = "🔴 End Voice Call";
+                      customCallBtn.classList.add("active");
+                      
+                      push(ref(db, 'call_logs'), {
+                          action: "Call Started",
+                          user: currentUserEmail,
+                          timestamp: new Date().toISOString()
+                      });
                   });
-              });
 
-              // Manual trigger button integration
-              customCallBtn.addEventListener("click", () => {
-                  if (customCallBtn.classList.contains("active")) {
-                      window.vapiInstance.stop();
-                  } else {
-                      window.vapiInstance.start();
-                  }
-              });
+                  window.vapiInstance.on("call-end", () => {
+                      statusBadge.innerText = "Status: Ready to Connect";
+                      statusBadge.style.background = "#e2e8f0";
+                      statusBadge.style.color = "#333";
+                      customCallBtn.innerText = "📞 Start Voice Call";
+                      customCallBtn.classList.remove("active");
+
+                      push(ref(db, 'call_logs'), {
+                          action: "Call Ended",
+                          user: currentUserEmail,
+                          timestamp: new Date().toISOString()
+                      });
+                  });
+
+                  window.vapiInstance.on("error", (e) => {
+                      console.error("Vapi Error Event:", e);
+                      statusBadge.innerText = "Status: Connection Error (Check Mic / Keys)";
+                      statusBadge.style.background = "#f8d7da";
+                      statusBadge.style.color = "#721c24";
+                      customCallBtn.innerText = "📞 Start Voice Call";
+                      customCallBtn.classList.remove("active");
+                  });
+
+                  customCallBtn.addEventListener("click", async () => {
+                      // Request explicit mic permission first
+                      try {
+                          await navigator.mediaDevices.getUserMedia({ audio: true });
+                      } catch (micErr) {
+                          alert("Microphone permission is required to speak with Suzanne. Please allow mic access in your browser settings.");
+                          return;
+                      }
+
+                      if (customCallBtn.classList.contains("active")) {
+                          window.vapiInstance.stop();
+                      } else {
+                          statusBadge.innerText = "Status: Connecting to Suzanne...";
+                          window.vapiInstance.start();
+                      }
+                  });
+
+              } catch (initErr) {
+                  console.error("Vapi Init Exception:", initErr);
+                  statusBadge.innerText = "Status: Vapi Initialization Failed";
+              }
+          } else {
+              statusBadge.innerText = "Status: SDK Failed to Load";
           }
       });
 
-      // Secret Admin Panel Trigger (Tap Header 4 times quickly)
       let tapCount = 0;
       let tapTimer = null;
       const secretTrigger = document.getElementById("secretTrigger");
@@ -718,7 +732,6 @@
           }, { onlyOnce: true });
       }
 
-      // Live Social Proof Toast Rotator (US Based)
       const toasts = [
           "🔔 Michael from California just requested a solar quote!",
           "⚡ Emily from Texas calculated $1,400 in annual savings!",
