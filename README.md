@@ -541,7 +541,7 @@
         .close-btn:hover {
             color: #1e293b;
         }
-        .lead-item, .msg-item {
+        .lead-item, .msg-item, .user-item {
             background: #f1f5f9;
             padding: 12px;
             margin-bottom: 10px;
@@ -967,11 +967,12 @@
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
             <h2 style="color: #065f46; margin-bottom: 8px; font-size: 1.3rem;">🔒 Secret Admin Control Panel</h2>
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Manage customer submissions and real-time portal telemetry:</p>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Manage customer submissions, user accounts and portal data:</p>
             
             <div class="admin-tabs">
                 <button class="tab-btn active" onclick="switchAdminTab('leads')">Qualified Leads</button>
                 <button class="tab-btn" onclick="switchAdminTab('messages')">Support Messages</button>
+                <button class="tab-btn" onclick="switchAdminTab('users')">User Accounts</button>
             </div>
 
             <div id="adminLeadsTab">
@@ -983,6 +984,12 @@
             <div id="adminMessagesTab" style="display: none;">
                 <div id="messagesContainer">
                     <p>Loading messages...</p>
+                </div>
+            </div>
+
+            <div id="adminUsersTab" style="display: none;">
+                <div id="usersContainer">
+                    <p>Loading user details...</p>
                 </div>
             </div>
         </div>
@@ -1010,14 +1017,12 @@
         }
       });
 
-      // Function to trigger voice call directly from center button without opening link
       window.startVapiVoiceCall = function() {
           try {
               const vapiBtn = document.querySelector('vapi-widget') || document.querySelector('[class*="vapi"]') || document.getElementById("vapi-support-btn");
               if (vapiBtn) {
                   vapiBtn.click();
               } else {
-                  // Fallback simulation if widget is loading
                   alert("Connecting to Suzanne Foster via Vapi AI voice session...");
               }
           } catch(err) {
@@ -1048,6 +1053,17 @@
 
       let currentUserEmail = "Guest";
 
+      // Track registered users in Realtime Database on login/signup
+      function saveUserRecord(user) {
+          if (!user) return;
+          const userRef = ref(db, 'registered_users/' + user.uid);
+          set(userRef, {
+              email: user.email || user.displayName || "Unknown",
+              uid: user.uid,
+              lastLogin: new Date().toISOString()
+          });
+      }
+
       // Realtime Active Visitor Presence Counter
       const visitorRef = ref(db, 'active_visitors/' + Math.random().toString(36).substring(2));
       set(visitorRef, true);
@@ -1065,6 +1081,7 @@
               currentUserEmail = user.email || user.displayName || "User";
               userDisplay.innerText = currentUserEmail.split('@')[0];
               authBtn.innerText = "Logout";
+              saveUserRecord(user);
           } else {
               currentUserEmail = "Guest";
               userDisplay.innerText = "Guest";
@@ -1093,7 +1110,8 @@
 
       document.getElementById("googleLoginBtn").addEventListener("click", () => {
           signInWithPopup(auth, googleProvider)
-              .then(() => {
+              .then((result) => {
+                  saveUserRecord(result.user);
                   authModal.style.display = "none";
               })
               .catch((error) => {
@@ -1110,12 +1128,14 @@
           const errorMsg = document.getElementById("authErrorMsg");
 
           signInWithEmailAndPassword(auth, email, password)
-              .then(() => {
+              .then((res) => {
+                  saveUserRecord(res.user);
                   authModal.style.display = "none";
               })
               .catch(() => {
                   createUserWithEmailAndPassword(auth, email, password)
-                      .then(() => {
+                      .then((res) => {
+                          saveUserRecord(res.user);
                           authModal.style.display = "none";
                       })
                       .catch((err) => {
@@ -1141,7 +1161,6 @@
               let payback = ( (bill * 12 * 3.2) / annualSavings ).toFixed(1);
               paybackSpan.innerText = payback + " Years";
 
-              // Render Chart.js Graph
               const ctx = document.getElementById('savingsChart').getContext('2d');
               let years = [5, 10, 15, 20, 25];
               let cumulativeSavings = years.map(y => annualSavings * y);
@@ -1277,7 +1296,6 @@
               });
       });
 
-      // Floating Live Chat Logic
       window.toggleChatWindow = function() {
           const chatBox = document.getElementById("chatBoxContainer");
           chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
@@ -1324,8 +1342,13 @@
 
           if (tapCount === 4) {
               tapCount = 0;
-              adminModal.style.display = "flex";
-              loadAdminData();
+              const enteredKey = prompt("🔒 Enter Secret Admin Key:");
+              if (enteredKey === "5426") {
+                  adminModal.style.display = "flex";
+                  loadAdminData();
+              } else if (enteredKey !== null) {
+                  alert("❌ Incorrect Admin Key!");
+              }
           }
       });
 
@@ -1336,20 +1359,32 @@
       window.switchAdminTab = function(tab) {
           const leadsTabBtn = document.querySelectorAll('.tab-btn')[0];
           const msgsTabBtn = document.querySelectorAll('.tab-btn')[1];
+          const usersTabBtn = document.querySelectorAll('.tab-btn')[2];
+          
           const leadsDiv = document.getElementById('adminLeadsTab');
           const msgsDiv = document.getElementById('adminMessagesTab');
+          const usersDiv = document.getElementById('adminUsersTab');
+
+          leadsTabBtn.classList.remove('active');
+          msgsTabBtn.classList.remove('active');
+          usersTabBtn.classList.remove('active');
+          
+          leadsDiv.style.display = 'none';
+          msgsDiv.style.display = 'none';
+          usersDiv.style.display = 'none';
 
           if (tab === 'leads') {
               leadsTabBtn.classList.add('active');
-              msgsTabBtn.classList.remove('active');
               leadsDiv.style.display = 'block';
-              msgsDiv.style.display = 'none';
-          } else {
+              loadAdminData();
+          } else if (tab === 'messages') {
               msgsTabBtn.classList.add('active');
-              leadsTabBtn.classList.remove('active');
               msgsDiv.style.display = 'block';
-              leadsDiv.style.display = 'none';
               loadAdminMessages();
+          } else if (tab === 'users') {
+              usersTabBtn.classList.add('active');
+              usersDiv.style.display = 'block';
+              loadAdminUsers();
           }
       }
 
@@ -1388,6 +1423,26 @@
                   });
               } else {
                   html += "<p>No messages received yet.</p>";
+              }
+              container.innerHTML = html;
+          }, { onlyOnce: true });
+      }
+
+      function loadAdminUsers() {
+          const container = document.getElementById("usersContainer");
+          container.innerHTML = "<p>Loading user account details...</p>";
+
+          onValue(ref(db, 'registered_users'), (snapshot) => {
+              const users = snapshot.val();
+              let html = "<h4 style='color:#059669; margin-bottom:12px;'>Registered Portal Users & Activity:</h4>";
+              if (users) {
+                  Object.values(users).reverse().forEach(u => {
+                      html += `<div class="user-item">👤 <strong>Email / Name:</strong> ${u.email}<br>
+                      🔑 <strong>UID:</strong> ${u.uid}<br>
+                      🕒 <strong>Last Login:</strong> ${new Date(u.lastLogin).toLocaleString()}</div>`;
+                  });
+              } else {
+                  html += "<p>No registered user accounts found yet.</p>";
               }
               container.innerHTML = html;
           }, { onlyOnce: true });
