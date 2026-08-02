@@ -427,8 +427,8 @@
         &copy; 2026 Solar Energy Solutions. All rights reserved. Powered by Vapi AI & Firebase.
     </footer>
 
-    <!-- Vapi Web SDK Script -->
-    <script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+    <!-- Vapi Web SDK ESM import via UNPKG bundle -->
+    <script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.js"></script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -572,7 +572,7 @@
               });
       });
 
-      // Vapi Direct SDK Integration Fix
+      // Updated Vapi Client Class Initialization
       const vapiPublicKey = "e0ffb174-f51f-418d-93e3-93ea7f72810b";
       const vapiAssistantId = "1fce054b-91d4-4d60-9f39-9af04c51279a";
 
@@ -580,19 +580,12 @@
           const statusBadge = document.getElementById("callStatusBadge");
           const customCallBtn = document.getElementById("vapiCallBtn");
 
-          if (window.vapiSDK) {
+          if (window.Vapi) {
               try {
-                  // Initialize Vapi SDK without auto-floating button to avoid conflicts
-                  window.vapiInstance = window.vapiSDK.run({
-                      apiKey: vapiPublicKey,
-                      assistant: vapiAssistantId,
-                      config: {
-                          bookMeeting: false,
-                          mode: "fab"
-                      }
-                  });
+                  const vapi = new window.Vapi(vapiPublicKey);
+                  window.vapiClient = vapi;
 
-                  window.vapiInstance.on("call-start", () => {
+                  vapi.on("call-start", () => {
                       statusBadge.innerText = "Status: Connected with Suzanne Foster 🎙️";
                       statusBadge.style.background = "#d4edda";
                       statusBadge.style.color = "#155724";
@@ -606,7 +599,7 @@
                       });
                   });
 
-                  window.vapiInstance.on("call-end", () => {
+                  vapi.on("call-end", () => {
                       statusBadge.innerText = "Status: Ready to Connect";
                       statusBadge.style.background = "#e2e8f0";
                       statusBadge.style.color = "#333";
@@ -620,9 +613,9 @@
                       });
                   });
 
-                  window.vapiInstance.on("error", (e) => {
+                  vapi.on("error", (e) => {
                       console.error("Vapi Error Event:", e);
-                      statusBadge.innerText = "Status: Connection Error (Check Mic / Keys)";
+                      statusBadge.innerText = "Status: Connection Error (" + (e.message || "Check Mic") + ")";
                       statusBadge.style.background = "#f8d7da";
                       statusBadge.style.color = "#721c24";
                       customCallBtn.innerText = "📞 Start Voice Call";
@@ -633,15 +626,15 @@
                       try {
                           await navigator.mediaDevices.getUserMedia({ audio: true });
                       } catch (micErr) {
-                          alert("Microphone permission is required to speak with Suzanne. Please allow mic access in your browser settings.");
+                          alert("Microphone permission is required to speak with Suzanne. Please allow mic access.");
                           return;
                       }
 
                       if (customCallBtn.classList.contains("active")) {
-                          window.vapiInstance.stop();
+                          vapi.stop();
                       } else {
                           statusBadge.innerText = "Status: Connecting to Suzanne...";
-                          window.vapiInstance.start(vapiAssistantId);
+                          vapi.start(vapiAssistantId);
                       }
                   });
 
