@@ -32,7 +32,6 @@
             font-size: 1.2rem;
             opacity: 0.9;
         }
-        /* Top Auth Bar */
         #authBar {
             position: absolute;
             top: 15px;
@@ -73,7 +72,6 @@
             margin-bottom: 20px;
             font-size: 1.1rem;
         }
-        /* Trust Badges Bar */
         .trust-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -108,7 +106,6 @@
             color: #2c7a5f;
             margin-bottom: 10px;
         }
-        /* Modern Widgets Styling */
         .widget-box {
             background: #f1f5f9;
             padding: 25px;
@@ -144,7 +141,6 @@
         .submit-btn:hover {
             background: #1b4d3e;
         }
-        /* FAQ Accordion Styling */
         .faq-item {
             background: #fff;
             border: 1px solid #e2e8f0;
@@ -169,7 +165,6 @@
             background: #fff;
             border-top: 1px solid #e2e8f0;
         }
-        /* Auth Modal Styling */
         #authModal {
             display: none;
             position: fixed;
@@ -202,10 +197,6 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        .google-btn:hover {
-            background: #c33d2e;
-        }
-        /* Status Badge */
         #callStatusBadge {
             display: inline-block;
             background: #e2e8f0;
@@ -216,7 +207,6 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
-        /* Vapi Voice Call Button */
         .vapi-btn {
             background: #27ae60;
             color: white;
@@ -238,7 +228,6 @@
         .vapi-btn.active {
             background: #c0392b;
         }
-        /* Toast Notification */
         #toastNotification {
             position: fixed;
             bottom: 20px;
@@ -253,7 +242,6 @@
             display: none;
             transition: opacity 0.5s ease;
         }
-        /* Secret Admin Modal Styling */
         #adminModal {
             display: none;
             position: fixed;
@@ -303,7 +291,6 @@
 </head>
 <body>
 
-    <!-- Header acts as secret trigger (Tap 4 times quickly) -->
     <header id="secretTrigger">
         <div id="authBar">
             <span id="userDisplay">Guest</span>
@@ -318,14 +305,12 @@
         <h2 class="section-title">Welcome to Our Consultation Portal</h2>
         <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, Suzanne Foster, right now or use our interactive tools below.</p>
         
-        <!-- Vapi AI Voice Widget Section -->
         <div class="widget-box" style="text-align: center; background: #e8f5e9; border-color: #c8e6c9;">
             <h3>🎙️ Talk Live with Suzanne Foster (AI Energy Specialist)</h3>
             <p style="font-size: 1rem; margin-bottom: 15px;">Have questions about solar panels, federal tax credits, or financing? Tap below to start a live voice conversation instantly.</p>
             <button id="vapiCallBtn" class="vapi-btn">📞 Start Voice Call</button>
         </div>
 
-        <!-- Trust Badges Bar -->
         <div class="trust-bar">
             <div class="trust-badge">🛡️ 25-Year Performance Warranty</div>
             <div class="trust-badge">⚡ 0-Down Financing Options</div>
@@ -347,7 +332,6 @@
             </div>
         </div>
 
-        <!-- Interactive Solar Savings & ROI Calculator -->
         <div class="widget-box">
             <h3>⚡ Interactive Solar Savings & ROI Calculator</h3>
             <div class="form-group">
@@ -360,7 +344,6 @@
             </div>
         </div>
 
-        <!-- Multi-Step Lead Qualification Wizard -->
         <div class="widget-box" style="margin-top: 30px;">
             <h3>📋 Multi-Step Solar Qualification Wizard</h3>
             <form id="wizardForm">
@@ -391,7 +374,6 @@
             <p id="wizardResponseMsg" style="margin-top: 10px; font-weight: bold; color: #2c7a5f; display: none;"></p>
         </div>
 
-        <!-- FAQ Accordion Section -->
         <div class="widget-box" style="margin-top: 30px;">
             <h3>❓ Frequently Asked Questions</h3>
             <div class="faq-item">
@@ -409,10 +391,8 @@
         </div>
     </div>
 
-    <!-- Live Social Proof Toast Notification -->
     <div id="toastNotification">🔔 Michael from California just requested a solar quote!</div>
 
-    <!-- Login / Sign-up Modal -->
     <div id="authModal">
         <div class="auth-content">
             <span class="close-btn" id="closeAuth">&times;</span>
@@ -432,7 +412,6 @@
         </div>
     </div>
 
-    <!-- Secret Admin Panel Modal -->
     <div id="adminModal">
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
@@ -451,7 +430,6 @@
     <!-- Vapi Web SDK Script -->
     <script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
 
-    <!-- Firebase SDKs, Auth, DB, and Logic -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
       import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -594,7 +572,7 @@
               });
       });
 
-      // Vapi AI Integration Setup with Enhanced Debugging & Error Handling
+      // Vapi Direct SDK Integration Fix
       const vapiPublicKey = "e0ffb174-f51f-418d-93e3-93ea7f72810b";
       const vapiAssistantId = "1fce054b-91d4-4d60-9f39-9af04c51279a";
 
@@ -604,13 +582,13 @@
 
           if (window.vapiSDK) {
               try {
+                  // Initialize Vapi SDK without auto-floating button to avoid conflicts
                   window.vapiInstance = window.vapiSDK.run({
                       apiKey: vapiPublicKey,
                       assistant: vapiAssistantId,
                       config: {
-                          position: "bottom-right",
-                          buttonColor: "#27ae60",
-                          pulseColor: "#2ecc71"
+                          bookMeeting: false,
+                          mode: "fab"
                       }
                   });
 
@@ -652,7 +630,6 @@
                   });
 
                   customCallBtn.addEventListener("click", async () => {
-                      // Request explicit mic permission first
                       try {
                           await navigator.mediaDevices.getUserMedia({ audio: true });
                       } catch (micErr) {
@@ -664,7 +641,7 @@
                           window.vapiInstance.stop();
                       } else {
                           statusBadge.innerText = "Status: Connecting to Suzanne...";
-                          window.vapiInstance.start();
+                          window.vapiInstance.start(vapiAssistantId);
                       }
                   });
 
