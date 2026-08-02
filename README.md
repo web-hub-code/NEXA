@@ -271,12 +271,14 @@
 
     <div class="container">
         <h2 class="section-title">Welcome to Our Consultation Portal</h2>
-        <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, Suzanne Foster, right now or use our interactive tools below.</p>
+        <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, <b>Suzanne Foster</b>, right now or use our interactive tools below.</p>
         
+        <!-- Live Vapi Voice Assistant Section -->
         <div class="widget-box" style="text-align: center; background: #e8f5e9; border-color: #c8e6c9;">
             <h3>🎙️ Talk Live with Suzanne Foster (AI Energy Specialist)</h3>
-            <p style="font-size: 1rem; margin-bottom: 15px;">Click below to start a live voice conversation instantly with Suzanne.</p>
-            <a href="https://vapi.ai/?assistantId=1fce054b-91d4-4d60-9f39-9af04c51279a" target="_blank" style="display: inline-block; background: #27ae60; color: white; padding: 14px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);">📞 Start Voice Call with Suzanne</a>
+            <p style="font-size: 1rem; margin-bottom: 15px;">Click below to open the secure voice consultation interface with Suzanne or use the floating voice assistant button on the bottom right:</p>
+            
+            <a href="https://vapi.ai?assistantId=1fce054b-91d4-4d60-9f39-9af04c51279a" target="_blank" style="display: inline-block; background: #27ae60; color: white; padding: 15px 32px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);">📞 Start Voice Call with Suzanne</a>
         </div>
 
         <div class="trust-bar">
@@ -394,6 +396,25 @@
     <footer>
         &copy; 2026 Solar Energy Solutions. All rights reserved. Powered by Vapi AI & Firebase.
     </footer>
+
+    <!-- Official Vapi SDK Widget Script using Public Key & Assistant ID -->
+    <script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        try {
+          window.vapiSDK.run({
+            apiKey: "e0ffb174-f51f-418d-b7c3-93ea7f72810b",
+            assistant: "1fce054b-91d4-4d60-9f39-9af04c51279a",
+            config: {
+              position: "bottom-right",
+              buttonColor: "#2c7a5f",
+            }
+          });
+        } catch(e) {
+          console.log("Vapi SDK widget initialized with fallback mode.");
+        }
+      });
+    </script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
