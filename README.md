@@ -197,37 +197,6 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        #callStatusBadge {
-            display: inline-block;
-            background: #e2e8f0;
-            color: #333;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .vapi-btn {
-            background: #27ae60;
-            color: white;
-            border: none;
-            padding: 14px 25px;
-            font-size: 1.1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.3s ease;
-        }
-        .vapi-btn:hover {
-            background: #219653;
-        }
-        .vapi-btn.active {
-            background: #c0392b;
-        }
         #toastNotification {
             position: fixed;
             bottom: 20px;
@@ -301,14 +270,13 @@
     </header>
 
     <div class="container">
-        <div id="callStatusBadge">Status: Ready to Connect</div>
         <h2 class="section-title">Welcome to Our Consultation Portal</h2>
         <p>Discover how much you can save on your monthly utility bills with customized solar energy installations. Speak directly with our AI energy specialist, Suzanne Foster, right now or use our interactive tools below.</p>
         
         <div class="widget-box" style="text-align: center; background: #e8f5e9; border-color: #c8e6c9;">
             <h3>🎙️ Talk Live with Suzanne Foster (AI Energy Specialist)</h3>
-            <p style="font-size: 1rem; margin-bottom: 15px;">Have questions about solar panels, federal tax credits, or financing? Tap below to start a live voice conversation instantly.</p>
-            <button id="vapiCallBtn" class="vapi-btn">📞 Start Voice Call</button>
+            <p style="font-size: 1rem; margin-bottom: 15px;">Click below to start a live voice conversation instantly with Suzanne.</p>
+            <a href="https://vapi.ai/?assistantId=1fce054b-91d4-4d60-9f39-9af04c51279a" target="_blank" style="display: inline-block; background: #27ae60; color: white; padding: 14px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);">📞 Start Voice Call with Suzanne</a>
         </div>
 
         <div class="trust-bar">
@@ -415,8 +383,8 @@
     <div id="adminModal">
         <div class="admin-content">
             <span class="close-btn" id="closeAdmin">&times;</span>
-            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads & Call Logs Panel</h2>
-            <p style="font-size: 0.95rem; color: #555;">Live customer data from Wizards & Suzanne Call Logs:</p>
+            <h2 style="color: #1b4d3e; margin-bottom: 15px;">🔒 Secret Realtime Leads Panel</h2>
+            <p style="font-size: 0.95rem; color: #555;">Live customer data from Wizards:</p>
             <div id="leadsContainer">
                 <p>Loading realtime records from database...</p>
             </div>
@@ -426,9 +394,6 @@
     <footer>
         &copy; 2026 Solar Energy Solutions. All rights reserved. Powered by Vapi AI & Firebase.
     </footer>
-
-    <!-- Vapi Web SDK ESM import via UNPKG bundle -->
-    <script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.js"></script>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -572,81 +537,6 @@
               });
       });
 
-      // Updated Vapi Client Class Initialization
-      const vapiPublicKey = "e0ffb174-f51f-418d-93e3-93ea7f72810b";
-      const vapiAssistantId = "1fce054b-91d4-4d60-9f39-9af04c51279a";
-
-      window.addEventListener("load", () => {
-          const statusBadge = document.getElementById("callStatusBadge");
-          const customCallBtn = document.getElementById("vapiCallBtn");
-
-          if (window.Vapi) {
-              try {
-                  const vapi = new window.Vapi(vapiPublicKey);
-                  window.vapiClient = vapi;
-
-                  vapi.on("call-start", () => {
-                      statusBadge.innerText = "Status: Connected with Suzanne Foster 🎙️";
-                      statusBadge.style.background = "#d4edda";
-                      statusBadge.style.color = "#155724";
-                      customCallBtn.innerText = "🔴 End Voice Call";
-                      customCallBtn.classList.add("active");
-                      
-                      push(ref(db, 'call_logs'), {
-                          action: "Call Started",
-                          user: currentUserEmail,
-                          timestamp: new Date().toISOString()
-                      });
-                  });
-
-                  vapi.on("call-end", () => {
-                      statusBadge.innerText = "Status: Ready to Connect";
-                      statusBadge.style.background = "#e2e8f0";
-                      statusBadge.style.color = "#333";
-                      customCallBtn.innerText = "📞 Start Voice Call";
-                      customCallBtn.classList.remove("active");
-
-                      push(ref(db, 'call_logs'), {
-                          action: "Call Ended",
-                          user: currentUserEmail,
-                          timestamp: new Date().toISOString()
-                      });
-                  });
-
-                  vapi.on("error", (e) => {
-                      console.error("Vapi Error Event:", e);
-                      statusBadge.innerText = "Status: Connection Error (" + (e.message || "Check Mic") + ")";
-                      statusBadge.style.background = "#f8d7da";
-                      statusBadge.style.color = "#721c24";
-                      customCallBtn.innerText = "📞 Start Voice Call";
-                      customCallBtn.classList.remove("active");
-                  });
-
-                  customCallBtn.addEventListener("click", async () => {
-                      try {
-                          await navigator.mediaDevices.getUserMedia({ audio: true });
-                      } catch (micErr) {
-                          alert("Microphone permission is required to speak with Suzanne. Please allow mic access.");
-                          return;
-                      }
-
-                      if (customCallBtn.classList.contains("active")) {
-                          vapi.stop();
-                      } else {
-                          statusBadge.innerText = "Status: Connecting to Suzanne...";
-                          vapi.start(vapiAssistantId);
-                      }
-                  });
-
-              } catch (initErr) {
-                  console.error("Vapi Init Exception:", initErr);
-                  statusBadge.innerText = "Status: Vapi Initialization Failed";
-              }
-          } else {
-              statusBadge.innerText = "Status: SDK Failed to Load";
-          }
-      });
-
       let tapCount = 0;
       let tapTimer = null;
       const secretTrigger = document.getElementById("secretTrigger");
@@ -685,20 +575,7 @@
               } else {
                   html += "<p>No leads found yet.</p>";
               }
-
-              onValue(ref(db, 'call_logs'), (callSnapshot) => {
-                  const calls = callSnapshot.val();
-                  html += "<h4 style='color:#1b4d3e; margin: 15px 0 10px 0;'>Vapi Call Logs:</h4>";
-                  if (calls) {
-                      Object.values(calls).reverse().forEach(call => {
-                          html += `<div class="lead-item" style="border-left-color: #27ae60;"><strong>${call.action}</strong> - User: ${call.user}<br><small style="color:#777;">${new Date(call.timestamp).toLocaleString()}</small></div>`;
-                      });
-                  } else {
-                      html += "<p>No call logs found yet.</p>";
-                  }
-                  container.innerHTML = html;
-              }, { onlyOnce: true });
-
+              container.innerHTML = html;
           }, { onlyOnce: true });
       }
 
