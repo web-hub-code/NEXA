@@ -397,13 +397,13 @@
         &copy; 2026 Solar Energy Solutions. All rights reserved. Powered by Vapi AI & Firebase.
     </footer>
 
-    <!-- Official Vapi SDK Widget Script using Public Key & Assistant ID -->
+    <!-- Official Vapi SDK Widget Script using Correct API Key & Assistant ID -->
     <script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         try {
           window.vapiSDK.run({
-            apiKey: "e0ffb174-f51f-418d-b7c3-93ea7f72810b",
+            apiKey: "e0ffb174-f51f-418d-87c9-93ea7f72810b",
             assistant: "1fce054b-91d4-4d60-9f39-9af04c51279a",
             config: {
               position: "bottom-right",
