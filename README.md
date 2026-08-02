@@ -303,7 +303,7 @@
 </head>
 <body>
 
-    <!-- Header acts as the secret tap trigger (Tap header 4 times quickly) -->
+    <!-- Header acts as secret trigger (Tap 4 times quickly) -->
     <header id="secretTrigger">
         <div id="authBar">
             <span id="userDisplay">Guest</span>
@@ -601,9 +601,9 @@
               });
       });
 
-      // Vapi AI Integration Setup
-      const vapiPublicKey = "YOUR_VAPI_PUBLIC_KEY"; // Replace with your actual Vapi Public Key
-      const vapiAssistantId = "YOUR_VAPI_ASSISTANT_ID"; // Replace with Suzanne Foster's Assistant ID
+      // Vapi AI Integration Setup (Using your provided keys and Assistant ID)
+      const vapiPublicKey = "e0ffb174-f51f-418d-93e3-93ea7f72810b";
+      const vapiAssistantId = "1fce054b-91d4-4d60-9f39-9af04c51279a";
 
       window.addEventListener("load", () => {
           if (window.vapiSDK) {
