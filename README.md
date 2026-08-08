@@ -1005,8 +1005,8 @@
       window.addEventListener("DOMContentLoaded", () => {
         try {
           window.vapiSDK.run({
-            apiKey: "0b479e9a-8eb3-42b7-90fd-597a0cb1bd74",
-            assistant: "f30dfdf2-dfc0-4641-8ca1-790276659350",
+            apiKey: "e0ffb174-f51f-418d-87c9-93ea7f72810b",
+            assistant: "1fce054b-91d4-4d60-9f39-9af04c51279a",
             config: {
               position: "bottom-right",
               buttonColor: "#059669",
